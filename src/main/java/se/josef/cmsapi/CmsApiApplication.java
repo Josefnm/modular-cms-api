@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 public class CmsApiApplication {
 
 	public static void main(String[] args) {
-		System.out.println(System.getenv().toString());
 		SpringApplication.run(CmsApiApplication.class, args);
 	}
 
