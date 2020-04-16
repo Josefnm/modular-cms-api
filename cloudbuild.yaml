@@ -1,0 +1,50 @@
+steps:
+  - name: gcr.io/cloud-builders/gsutil
+    dir: /root
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        (
+          gsutil cp gs://${_GCS_CACHE_BUCKET}/m2-cache.tar.gz /tmp/m2-cache.tar.gz &&
+          tar -xzf /tmp/m2-cache.tar.gz
+        ) || echo 'Cache not found'
+    volumes:
+      - name: m2
+        path: /root/.m2/
+
+  - name: maven:3.6.0-jdk-11-slim
+    id: build
+    entrypoint: mvn
+    args:
+      - "clean"
+      - "install"
+      - "jib:build"
+      - "-Dimage=eu.gcr.io/${PROJECT_ID}/${_IMAGE_NAME}"
+      - "-Djib.container.environment=SPRING_PROFILES_ACTIVE=${_SPRING_PROFILES_ACTIVE}"
+    volumes:
+      - name: m2
+        path: /root/.m2/
+
+  - name: gcr.io/cloud-builders/gsutil
+    waitFor:
+      - build
+    dir: /root
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        tar -czf /tmp/m2-cache.tar.gz .m2 &&
+        gsutil cp /tmp/m2-cache.tar.gz gs://${_GCS_CACHE_BUCKET}/m2-cache.tar.gz
+    volumes:
+      - name: m2
+        path: /root/.m2/
+
+  - name: gcr.io/cloud-builders/gke-deploy:stable
+    waitFor:
+      - build
+    args:
+      - "run"
+      - "--filename=gkeConfig.yaml"
+      - "--location=europe-west1-b"
+      - "--cluster=${_CLUSTER_NAME}"

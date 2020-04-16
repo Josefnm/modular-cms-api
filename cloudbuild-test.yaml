@@ -1,0 +1,37 @@
+steps:
+  - name: gcr.io/cloud-builders/gsutil
+    dir: /root
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        (
+          gsutil cp gs://${_GCS_CACHE_BUCKET}/m2-cache.tar.gz /tmp/m2-cache.tar.gz &&
+          tar -xzf /tmp/m2-cache.tar.gz
+        ) || echo 'Cache not found'
+    volumes:
+      - name: m2
+        path: /root/.m2/
+
+  - name: maven:3.6.0-jdk-11-slim
+    id: build
+    entrypoint: mvn
+    args:
+      - test
+    volumes:
+      - name: m2
+        path: /root/.m2/
+
+  - name: gcr.io/cloud-builders/gsutil
+    waitFor:
+      - build
+    dir: /root
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        tar -czf /tmp/m2-cache.tar.gz .m2 &&
+        gsutil cp /tmp/m2-cache.tar.gz gs://${_GCS_CACHE_BUCKET}/m2-cache.tar.gz
+    volumes:
+      - name: m2
+        path: /root/.m2/

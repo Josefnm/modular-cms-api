@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms-api
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cms-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: cms-api
+    spec:
+      containers:
+        - image: eu.gcr.io/josefs-cms/cms-api-prod:latest
+          imagePullPolicy: Always
+          name: cms-api
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: uri
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/run/secret/cloud.google.com/firebase-service-account.json
+          volumeMounts:
+            - name: firebase-service-account
+              mountPath: /var/run/secret/cloud.google.com
+      volumes:
+        - name: firebase-service-account
+          secret:
+            secretName: firebase-key
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cms-api-hpa
+  namespace: default
+spec:
+  maxReplicas: 5
+  metrics:
+    - resource:
+        name: cpu
+        targetAverageUtilization: 80
+      type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cms-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+  name: cms-api-service
+  namespace: default
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: cms-api
+  sessionAffinity: None
+  type: LoadBalancer
+  loadBalancerIP: 35.195.191.106
