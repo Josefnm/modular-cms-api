@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
     private String id;
+    // Firebase id
     private String fireId;
     private String userName;
     private String email;

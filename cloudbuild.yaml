@@ -1,4 +1,6 @@
 steps:
+
+  # loads cached files
   - name: gcr.io/cloud-builders/gsutil
     dir: /root
     entrypoint: bash
@@ -13,6 +15,7 @@ steps:
       - name: m2
         path: /root/.m2/
 
+  # builds and creates a docker image
   - name: maven:3.6.0-jdk-11-slim
     id: build
     entrypoint: mvn
@@ -26,6 +29,7 @@ steps:
       - name: m2
         path: /root/.m2/
 
+  # saves cached files
   - name: gcr.io/cloud-builders/gsutil
     waitFor:
       - build
@@ -40,12 +44,13 @@ steps:
       - name: m2
         path: /root/.m2/
 
+  # configures kubernetes and deploys the image to it
   - name: gcr.io/cloud-builders/gke-deploy:stable
     waitFor:
       - build
     args:
       - "run"
-      - "--filename=gkeConfig.yaml"
+      - "--filename=k8s-config"
       - "--location=europe-west1-b"
       - "--cluster=${_CLUSTER_NAME}"
       - "--image=eu.gcr.io/${PROJECT_ID}/${_IMAGE_NAME}:latest"
