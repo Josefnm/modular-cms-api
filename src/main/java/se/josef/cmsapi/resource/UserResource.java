@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import se.josef.cmsapi.model.document.User;
 import se.josef.cmsapi.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -31,6 +32,13 @@ public class UserResource {
     public @ResponseBody
     List<User> getAllComments() {
         return userService.getAllUsers();
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/cross")
+    public @ResponseBody
+    String checkOrigin(HttpServletRequest request) {
+        return request.getHeader("origin");
     }
 
 }
