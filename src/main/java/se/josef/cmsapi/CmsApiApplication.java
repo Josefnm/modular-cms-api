@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 //TODO remove exclusions when security is added
-@SpringBootApplication(exclude = { SecurityAutoConfiguration.class})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class CmsApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CmsApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CmsApiApplication.class, args);
+    }
 
 }

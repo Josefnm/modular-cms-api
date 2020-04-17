@@ -6,7 +6,6 @@ import se.josef.cmsapi.repository.UserRepository;
 
 import java.util.List;
 
-
 @Service
 public class UserService {
 

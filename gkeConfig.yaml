@@ -2,7 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cms-api
-  namespace: default
+  labels:
+    app: cms-api
 spec:
   replicas: 3
   selector:
@@ -19,9 +20,9 @@ spec:
         app: cms-api
     spec:
       containers:
-        - image: eu.gcr.io/josefs-cms/cms-api-prod:latest
+        - name: cms-api
+          image: eu.gcr.io/josefs-cms/cms-api-prod:latest
           imagePullPolicy: Always
-          name: cms-api
           ports:
             - containerPort: 8080
           env:
@@ -44,15 +45,16 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: cms-api-hpa
-  namespace: default
+  labels:
+    app: cms-api
 spec:
+  minReplicas: 1
   maxReplicas: 5
   metrics:
-    - resource:
+    - type: Resource
+      resource:
         name: cpu
         targetAverageUtilization: 80
-      type: Resource
-  minReplicas: 1
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
@@ -64,15 +66,15 @@ metadata:
   finalizers:
     - service.kubernetes.io/load-balancer-cleanup
   name: cms-api-service
-  namespace: default
+  labels:
+    app: cms-api
 spec:
   externalTrafficPolicy: Cluster
   ports:
-    - port: 8080
-      protocol: TCP
+    - protocol: TCP
+      port: 8080
       targetPort: 8080
   selector:
     app: cms-api
-  sessionAffinity: None
   type: LoadBalancer
   loadBalancerIP: 35.195.191.106
