@@ -11,7 +11,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/users")
                     //TODO properly configure this once security is implemented.
-                    .allowedOrigins("/**")
+                    .allowedOrigins("*")
                     .allowedMethods("*");
         }
 }
