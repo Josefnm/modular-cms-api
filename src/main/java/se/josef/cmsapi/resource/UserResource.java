@@ -34,7 +34,6 @@ public class UserResource {
         return userService.getAllUsers();
     }
 
-
     @GetMapping(value = "/cross")
     public @ResponseBody
     String checkOrigin(HttpServletRequest request) {
