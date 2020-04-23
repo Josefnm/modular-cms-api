@@ -25,8 +25,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User saveUser(User comment) {
-        return userRepository.save(comment);
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
     public List<User> getAllUsers() {
