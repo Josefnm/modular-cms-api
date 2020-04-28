@@ -67,6 +67,7 @@ public class UserService {
                 .getContext()
                 .getAuthentication()
                 .getCredentials();
+
         return firebaseToken.getUid();
     }
 }

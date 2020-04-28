@@ -15,18 +15,12 @@ public class RequestUtils {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Autowired
-    private String accessToken;
-
     public <T> ResponseEntity<T> httpRequest(String path, HttpMethod httpMethod, Class<T> responseType, T body, int port) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", accessToken);
-
         return restTemplate
                 .exchange(
                         "http://localhost:" + port + path,
                         httpMethod,
-                        new HttpEntity<>(body,headers),
+                        new HttpEntity<>(body),
                         responseType
                 );
     }

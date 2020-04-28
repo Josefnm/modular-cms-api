@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 @Configuration
 @Slf4j
+@Profile("!test")
 public class FirebaseConfig {
 
     public FirebaseConfig() {

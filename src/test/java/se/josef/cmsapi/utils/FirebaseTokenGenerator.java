@@ -1,9 +1,10 @@
 package se.josef.cmsapi.utils;
 
+//TODO fix security for testing.
+/*
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import se.josef.cmsapi.util.JsonUtil;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -59,8 +53,8 @@ public class FirebaseTokenGenerator {
         try {
             String customToken = firebaseAuth.getInstance().createCustomToken(uid);
             Map<String, String> tokens = getTokens(customToken);
-            accessToken = "Bearer "+tokens.get("idToken");
-log.info(accessToken);
+            accessToken = "Bearer " + tokens.get("idToken");
+            log.info(accessToken);
         } catch (FirebaseAuthException | JsonProcessingException e) {
             log.error("Error generating access token:" + e.getMessage());
         }
@@ -70,7 +64,7 @@ log.info(accessToken);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        HttpEntity<TokenRequest> httpEntity = new HttpEntity<>(new TokenRequest(customToken,"true"),headers);
+        HttpEntity<TokenRequest> httpEntity = new HttpEntity<>(new TokenRequest(customToken, "true"), headers);
         String url = customTokenUri + firebaseApiKey;
 
         String response = restTemplate
@@ -85,3 +79,4 @@ log.info(accessToken);
     }
 
 }
+*/

@@ -1,6 +1,10 @@
 # This is used by cloud build to run automatic tests on pushes to branches that are not to be deployed.
 
 steps:
+  - steps:
+      - name: gcr.io/cloud-builders/gcloud
+        entrypoint: 'bash'
+        args: [ '-c', 'gcloud secrets versions access latest --secret=firebase-key > firebase-service-account.json' ]
   - name: gcr.io/cloud-builders/gsutil
     dir: /root
     entrypoint: bash
@@ -20,9 +24,7 @@ steps:
     entrypoint: mvn
     args:
       - "test"
-      - "-DargLine=-DFIREBASE_API_KEY=${_FIREBASE_API_KEY}"
       - "-DFIREBASE_API_KEY=${_FIREBASE_API_KEY}"
-      - "-Djib.container.environment=FIREBASE_API_KEY=${_FIREBASE_API_KEY}"
     volumes:
       - name: m2
         path: /root/.m2/

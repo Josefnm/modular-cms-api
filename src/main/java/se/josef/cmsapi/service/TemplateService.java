@@ -1,14 +1,15 @@
 package se.josef.cmsapi.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import se.josef.cmsapi.exception.ContentException;
 import se.josef.cmsapi.model.document.Template;
 import se.josef.cmsapi.repository.TemplateRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Slf4j
 public class TemplateService {
 
     private final TemplateRepository templateRepository;
@@ -21,6 +22,12 @@ public class TemplateService {
     }
 
     public Template saveTemplate(Template template) {
+        try{
+            log.info("userId:{}",userService.getUserId());
+        }catch (Exception e){
+            log.info("error:{}",e.getMessage());
+        }
+
         return templateRepository.save(template);
     }
 

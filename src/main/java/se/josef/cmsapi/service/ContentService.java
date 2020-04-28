@@ -18,7 +18,6 @@ public class ContentService {
 
     public ContentService(ContentRepository contentRepository, UserService userService) {
         this.contentRepository = contentRepository;
-
         this.userService = userService;
     }
 
@@ -40,9 +39,6 @@ public class ContentService {
         return contentRepository
                 .findByOwnerIdOrderByCreatedDesc(userService.getUserId());
     }
-
-
-
 
     private <T> List<T>  filterContentFieldByType(Content content,DataType dataType) {
         return content
