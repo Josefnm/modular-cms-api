@@ -29,8 +29,20 @@ public class ContentResource {
 
     @GetMapping()
     public @ResponseBody
-    List<Content> getAllComments() {
+    List<Content> getAllContent() {
         return contentService.getAllContent();
+    }
+
+    @GetMapping("/getById/{id}")
+    public @ResponseBody
+    Content getContentById(@PathVariable String id) {
+        return contentService.getContentById(id);
+    }
+
+    @GetMapping("/getOwn")
+    public @ResponseBody
+    List<Content> getContentForCurrentUser() {
+        return contentService.getContentForCurrentUser();
     }
 
 }

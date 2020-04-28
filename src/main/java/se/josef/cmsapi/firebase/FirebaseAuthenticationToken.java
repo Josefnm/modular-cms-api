@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseToken;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
@@ -12,10 +13,9 @@ public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
     private final String principal;
     private FirebaseToken credentials;
 
-    public FirebaseAuthenticationToken(String principal, FirebaseToken credentials,
-                                       Collection<? extends GrantedAuthority> authorities) {
-        super(authorities);
-        this.principal = principal;
+    public FirebaseAuthenticationToken(FirebaseToken credentials) {
+        super(new ArrayList<>());
+        this.principal = credentials.getUid();
         this.credentials = credentials;
         super.setAuthenticated(true);
     }

@@ -2,10 +2,11 @@ package se.josef.cmsapi.model.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 @Data
 @AllArgsConstructor
 public class ErrorResponse {
-    private int statusCode;
+    private HttpStatus statusCode;
     private String message;
 }

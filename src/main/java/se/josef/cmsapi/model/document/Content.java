@@ -17,8 +17,10 @@ public class Content {
     private String id;
     private String ownerId;
     private String templateId;
-    private String name;
     private Date created;
     private Date updated;
+    private String name;
+    private String description;
+    private Boolean isPublic;
     private List<ContentField<?>> contentFields;
 }

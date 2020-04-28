@@ -3,8 +3,15 @@ package se.josef.cmsapi.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,5 +36,11 @@ public class FirebaseConfig {
                 log.error("IO Exception:" + e.getMessage());
             }
         }
+    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+    public FirebaseAuth getFirebaseAuth() {
+
+        return FirebaseAuth.getInstance();
     }
 }

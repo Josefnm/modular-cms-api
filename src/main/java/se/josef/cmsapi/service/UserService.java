@@ -25,32 +25,28 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public User signupUser(UserForm userForm) {
+    public User signup(UserForm userForm) {
 
         try {
-
-            UserRecord.CreateRequest createRequest = new UserRecord
-                    .CreateRequest()
-                    .setEmail(userForm.getEmail())
-                    .setPassword(userForm.getPassword());
-
-            UserRecord userRecord = FirebaseAuth.getInstance().createUser(createRequest);
 
             Optional<User> userFromDb = userRepository.findByEmailOrUserName(userForm.getEmail(), userForm.getUserName());
 
             if (userFromDb.isEmpty()) {
+
+                UserRecord.CreateRequest createRequest = new UserRecord
+                        .CreateRequest()
+                        .setEmail(userForm.getEmail())
+                        .setPassword(userForm.getPassword());
+
+                UserRecord userRecord = FirebaseAuth.getInstance().createUser(createRequest);
                 User user = new User(userRecord.getUid(), userForm.getUserName(), userForm.getEmail());
                 User savedUser = userRepository.save(user);
                 log.info("Saved user to database with id: {}", savedUser.getId());
-                return user;
+                return savedUser;
             } else {
                 if (userFromDb.get().getEmail().equals(userForm.getEmail())) {
                     log.warn("User already exists with email: {}", userForm.getEmail());
