@@ -21,6 +21,7 @@ steps:
     args:
       - "test"
       - "-DargLine=-DFIREBASE_API_KEY=${_FIREBASE_API_KEY}"
+      - "-DFIREBASE_API_KEY=${_FIREBASE_API_KEY}"
       - "-Djib.container.environment=FIREBASE_API_KEY=${_FIREBASE_API_KEY}"
     volumes:
       - name: m2
