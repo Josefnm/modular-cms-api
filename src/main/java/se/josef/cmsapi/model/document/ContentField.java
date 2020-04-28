@@ -14,4 +14,5 @@ public class ContentField<T extends Serializable> {
     private T data;
     private DataType dataType;
 
+
 }

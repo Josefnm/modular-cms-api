@@ -2,6 +2,7 @@ package se.josef.cmsapi.resource;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.document.Template;
 import se.josef.cmsapi.service.TemplateService;
 
@@ -23,13 +24,26 @@ public class TemplateResource {
 
     @PostMapping()
     public @ResponseBody
-    Template addUser(@RequestBody Template template) {
+    Template saveTemplate(@RequestBody Template template) {
         return templateService.saveTemplate(template);
     }
 
     @GetMapping()
     public @ResponseBody
-    List<Template> getAllComments() {
+    List<Template> getAllTemplates() {
         return templateService.getAllTemplates();
+    }
+
+
+    @GetMapping("/getById/{id}")
+    public @ResponseBody
+    Template getTemplateById(@PathVariable String id) {
+        return templateService.getContentById(id);
+    }
+
+    @GetMapping("/getOwn")
+    public @ResponseBody
+    List<Template> getTemplateForCurrentUser() {
+        return templateService.getContentForCurrentUser();
     }
 }

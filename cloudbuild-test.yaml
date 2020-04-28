@@ -19,7 +19,8 @@ steps:
     id: build
     entrypoint: mvn
     args:
-      - test
+      - "test"
+      - "-DFIREBASE_API_KEY=${_FIREBASE_API_KEY}"
     volumes:
       - name: m2
         path: /root/.m2/
