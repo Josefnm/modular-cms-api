@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: cms-api
   labels:
-    app: cms
+    app: cms-api
 spec:
   replicas: 3
   selector:
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: cms
+        app: cms-api
     spec:
       containers:
         - name: cms-api
