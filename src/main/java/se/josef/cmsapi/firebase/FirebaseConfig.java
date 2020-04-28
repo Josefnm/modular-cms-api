@@ -1,4 +1,4 @@
-package se.josef.cmsapi.config;
+package se.josef.cmsapi.firebase;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

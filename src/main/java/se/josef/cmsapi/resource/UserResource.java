@@ -24,7 +24,12 @@ public class UserResource {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping
+    public @ResponseBody
+    User getUserById() {
+        return userService.getCurrentUser();
+    }
+    @GetMapping(value = "/all")
     public @ResponseBody
     List<User> getAllUsers() {
         return userService.getAllUsers();

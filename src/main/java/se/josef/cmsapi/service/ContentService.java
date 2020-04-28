@@ -32,7 +32,9 @@ public class ContentService {
     public Content getContentById(String id) {
         return contentRepository
                 .findByIdAndOwnerIdOrIsPublic(id,  userService.getUserId(),true)
-                .orElseThrow(() -> new ContentException(String.format("Content with id %s is unavailable", id)));
+                .orElseThrow(() ->
+                        new ContentException(String.format("Content with id %s is unavailable", id))
+                );
     }
 
     public List<Content> getContentForCurrentUser() {
