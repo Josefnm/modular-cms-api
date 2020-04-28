@@ -14,7 +14,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api
+          - path: /api/*
             backend:
               serviceName: cms-api-service
               servicePort: 80
