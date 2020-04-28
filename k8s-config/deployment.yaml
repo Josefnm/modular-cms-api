@@ -23,10 +23,6 @@ spec:
         - name: cms-api
           image: eu.gcr.io/josefs-cms/cms-api-prod:latest
           imagePullPolicy: Always
-          readinessProbe:
-            httpGet:
-              path: /api
-              port: 8080
           ports:
             - containerPort: 8080
           env:
