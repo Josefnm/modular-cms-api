@@ -1,6 +1,7 @@
 package se.josef.cmsapi.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
@@ -12,13 +13,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class RequestUtils {
 
+
+
     @Autowired
     private TestRestTemplate restTemplate;
 
     public <T> ResponseEntity<T> httpRequest(String path, HttpMethod httpMethod, Class<T> responseType, T body, int port) {
         return restTemplate
                 .exchange(
-                        "http://localhost:" + port + path,
+                        "http://localhost:" + "/api" + path,
                         httpMethod,
                         new HttpEntity<>(body),
                         responseType
