@@ -3,7 +3,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: cms-api-hpa
   labels:
-    app: cms
+    app: cms-api
 spec:
   minReplicas: 1
   maxReplicas: 5
