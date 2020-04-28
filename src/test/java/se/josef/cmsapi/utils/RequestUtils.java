@@ -18,7 +18,7 @@ public class RequestUtils {
     public <T> ResponseEntity<T> httpRequest(String path, HttpMethod httpMethod, Class<T> responseType, T body, int port) {
         return restTemplate
                 .exchange(
-                        "http://localhost:" + port+"/api" + path,
+                        "http://localhost:" + port + path,
                         httpMethod,
                         new HttpEntity<>(body),
                         responseType

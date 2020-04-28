@@ -1,11 +1,13 @@
 package se.josef.cmsapi.resource;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Slf4j
 public class HealthCheckResource {
 
     /*
@@ -13,6 +15,13 @@ public class HealthCheckResource {
      */
     @GetMapping()
     public ResponseEntity<?> HealthCheck() {
+        log.info("health check /");
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/api")
+    public ResponseEntity<?> HealthCheck2() {
+        log.info("health check /api");
         return ResponseEntity.ok().build();
     }
 
