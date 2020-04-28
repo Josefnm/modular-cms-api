@@ -19,7 +19,9 @@ steps:
     id: build
     entrypoint: mvn
     args:
-      - "test"
+      - "clean"
+      - "install"
+      - "jib:build"
       - "-Djib.container.environment=FIREBASE_API_KEY=${_FIREBASE_API_KEY}"
     volumes:
       - name: m2
