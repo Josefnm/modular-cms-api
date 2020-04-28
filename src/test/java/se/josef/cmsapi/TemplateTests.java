@@ -31,6 +31,7 @@ import static se.josef.cmsapi.utils.MockDataUtil.getRandomLowercaseNumeric;
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TemplateTests {
+
     private static final String templateId = getRandomLowercaseNumeric(24);
     private static final String userId = getRandomLowercaseNumeric(24);
 
@@ -38,6 +39,8 @@ public class TemplateTests {
     private int port;
     @Mock
     private TemplateRepository templateRepository;
+    @Autowired
+    private RequestUtils requestUtils;
 
     @BeforeEach
     void setMockOutput() {
@@ -45,9 +48,6 @@ public class TemplateTests {
         when(templateRepository.save(any())).thenReturn(template);
 
     }
-
-    @Autowired
-    private RequestUtils requestUtils;
 
     @Test
     public void saveTemplate() {
