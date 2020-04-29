@@ -19,10 +19,4 @@ public class HealthCheckResource {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/api")
-    public ResponseEntity<?> HealthCheck2() {
-        log.info("health check /api");
-        return ResponseEntity.ok().build();
-    }
-
 }

@@ -2,7 +2,6 @@ package se.josef.cmsapi.resource;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.document.Template;
 import se.josef.cmsapi.service.TemplateService;
 
@@ -12,7 +11,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @Slf4j
-@RequestMapping(value = "/api/templates", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/template", produces = APPLICATION_JSON_VALUE)
 @RestController
 public class TemplateResource {
 

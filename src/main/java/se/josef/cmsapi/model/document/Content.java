@@ -16,6 +16,7 @@ public class Content {
 
     private String id;
     private String ownerId;
+    private String projectId;
     private String templateId;
     private Date created;
     private Date updated;
