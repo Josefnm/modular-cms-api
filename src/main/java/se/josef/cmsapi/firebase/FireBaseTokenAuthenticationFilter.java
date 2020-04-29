@@ -19,7 +19,7 @@ public class FireBaseTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final static String HEADER_KEY = "Authorization";
 
-    // Experimenting a bit with functions.
+    // Experimenting with functions.
     TFunction<String, FirebaseToken> authenticateFirebaseToken = FirebaseAuth.getInstance()::verifyIdToken;
     TFunction<String, String> getAuthToken = headerValue -> headerValue.substring(7);
 

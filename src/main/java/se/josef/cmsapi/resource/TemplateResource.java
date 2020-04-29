@@ -34,13 +34,13 @@ public class TemplateResource {
     }
 
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public @ResponseBody
     Template getTemplateById(@PathVariable String id) {
         return templateService.getContentById(id);
     }
 
-    @GetMapping("/getOwn")
+    @GetMapping("/user")
     public @ResponseBody
     List<Template> getTemplateForCurrentUser() {
         return templateService.getContentForCurrentUser();

@@ -23,7 +23,7 @@ public class ContentResource {
 
     @PostMapping()
     public @ResponseBody
-    Content addUser(@RequestBody Content content) {
+    Content addContent(@RequestBody Content content) {
         return contentService.saveContent(content);
     }
 
@@ -33,13 +33,13 @@ public class ContentResource {
         return contentService.getAllContent();
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public @ResponseBody
     Content getContentById(@PathVariable String id) {
         return contentService.getContentById(id);
     }
 
-    @GetMapping("/getOwn")
+    @GetMapping("/user")
     public @ResponseBody
     List<Content> getContentForCurrentUser() {
         return contentService.getContentForCurrentUser();

@@ -39,9 +39,10 @@ public class TemplateService {
     public Template getContentById(String id) {
         return templateRepository
                 .findByIdAndOwnerIdOrIsPublic(id,  userService.getUserId(),true)
-                .orElseThrow(() -> new ContentException(String.format("Content with id %s is unavailable", id)));
+                .orElseThrow(() ->
+                        new ContentException(String.format("Content with id %s is unavailable", id))
+                );
     }
-
 
     public List<Template> getContentForCurrentUser() {
         return templateRepository

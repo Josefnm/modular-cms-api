@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import se.josef.cmsapi.exception.AuthException;
+import se.josef.cmsapi.exception.ContentException;
+import se.josef.cmsapi.exception.UserException;
 import se.josef.cmsapi.model.document.User;
 import se.josef.cmsapi.model.web.UserForm;
 import se.josef.cmsapi.repository.UserRepository;
@@ -27,6 +29,14 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public User getCurrentUser() {
+        return userRepository
+                .findById(getUserId())
+                .orElseThrow(() ->
+                        new UserException("Could not find user profile")
+                );
     }
 
     public User signup(UserForm userForm) {
