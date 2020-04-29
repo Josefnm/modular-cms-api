@@ -11,7 +11,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @Slf4j
-@RequestMapping(value = "/templates", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/templates", produces = APPLICATION_JSON_VALUE)
 @RestController
 public class TemplateResource {
 

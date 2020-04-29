@@ -27,7 +27,9 @@ public class FireBaseTokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String headerValue = request.getHeader(HEADER_KEY);
-        log.info("here");
+        String headerValue2 = request.getHeader("origin");
+        log.info("origin: {}",headerValue2);
+
         if (headerValue != null && !headerValue.isBlank()) {
             try {
                 Authentication authentication = getAuthToken
