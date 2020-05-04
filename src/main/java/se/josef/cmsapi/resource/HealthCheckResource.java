@@ -17,8 +17,8 @@ public class HealthCheckResource {
     Used by k8 health checks
      */
     @GetMapping()
-    public ResponseEntity<?> HealthCheck() {
-        log.info("health check /");
+    public ResponseEntity<?> HealthCheck(HttpServletRequest request) {
+        log.info("health check path:/ origin: {}",request.getHeader("origin"));
         return ResponseEntity.ok().build();
     }
 
