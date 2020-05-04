@@ -11,7 +11,6 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-@Builder
 public class TemplateForm {
     private String projectId;
     private String name;

@@ -3,11 +3,18 @@ package se.josef.cmsapi.model.document;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.List;
 
+
+/**
+ * A model for a type of content.
+ */
 @Document
 @Data
 @AllArgsConstructor
@@ -15,9 +22,13 @@ import java.util.List;
 public class Template {
 
     private String id;
+    @Indexed
     private String ownerId;
+    @Indexed
     private String projectId;
+    @CreatedDate
     private Date created;
+    @LastModifiedDate
     private Date updated;
     private String name;
     private String description;

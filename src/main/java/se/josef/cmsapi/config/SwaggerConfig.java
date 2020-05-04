@@ -16,6 +16,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Collections;
 import java.util.List;
 
+/*
+Visit gosef.se/api/swagger-ui.html to check and test endpoints
+ */
 @EnableSwagger2
 @Configuration
 public class SwaggerConfig {
@@ -59,7 +62,7 @@ public class SwaggerConfig {
                 .forPaths(PathSelectors.any())
                 .build();
     }
-
+    // Allows adding auth Bearer token in the ui, the actual security settings for swagger doesn't really do anything.
     private ApiKey apiKey() {
         return new ApiKey(AUTHORIZATION_HEADER, AUTHORIZATION_HEADER, PASS_AS);
     }

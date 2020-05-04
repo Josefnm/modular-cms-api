@@ -30,8 +30,8 @@ public class ContentResource {
 
     @GetMapping()
     public @ResponseBody
-    List<Content> getAllContent() {
-        return contentService.getAllContent();
+    List<Content> getAllPublicContent() {
+        return contentService.getAllPublicContent();
     }
 
     @GetMapping("/{id}")
@@ -44,6 +44,12 @@ public class ContentResource {
     public @ResponseBody
     List<Content> getContentForCurrentUser() {
         return contentService.getContentForCurrentUser();
+    }
+
+    @GetMapping("/projectId/{projectId}")
+    public @ResponseBody
+    List<Content> getByProjectId(@PathVariable String projectId) {
+        return contentService.findByProjectId(projectId);
     }
 
 }

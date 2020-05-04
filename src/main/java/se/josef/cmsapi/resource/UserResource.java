@@ -42,12 +42,6 @@ public class UserResource {
         return userService.getAllUsers();
     }
 
-    @GetMapping(value = "/cross")
-    public @ResponseBody
-    String checkOrigin(HttpServletRequest request) {
-        return request.getHeader("origin");
-    }
-
     @PostMapping(value = "/signup")
     public @ResponseBody
     User signup(@NotNull @RequestBody UserForm userForm) {

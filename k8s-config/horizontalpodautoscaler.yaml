@@ -1,3 +1,4 @@
+#scales number of deployments on high load
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:

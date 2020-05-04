@@ -25,6 +25,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.security.permitAll}")
     private String[] allowedUris;
 
+    /**
+     * configures types/origin of requests allowed
+     * @return
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -46,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and()
                 .authorizeRequests()
+                // allowed paths loaded from properties
                 .antMatchers(allowedUris).permitAll()
                 .antMatchers("/**").authenticated()
                 .and()

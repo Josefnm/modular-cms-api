@@ -9,6 +9,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import se.josef.cmsapi.model.web.ErrorResponse;
 
+
+/**
+ * returns specified error codes and messages as responses when throwing specified exceptions
+ */
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -26,5 +30,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         ErrorResponse message = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
+    @ExceptionHandler(value = SecurityException.class)
+    protected ResponseEntity<Object> securityConflictHandler(RuntimeException ex, WebRequest request) {
+        ErrorResponse message = new ErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
+
+        return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }
 }

@@ -1,4 +1,4 @@
-
+# Routes traffic to the web app and api using same domain
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -17,4 +17,4 @@ spec:
           - path: /api/*
             backend:
               serviceName: cms-api-service
-              servicePort: 80
+              servicePort: 8080

@@ -3,6 +3,10 @@ package se.josef.cmsapi.interfaces;
 import java.util.Objects;
 import java.util.function.Function;
 
+
+/**
+ * Function that throws errors
+ */
 @FunctionalInterface
 public interface TFunction<T, R> extends Function<T, R> {
 

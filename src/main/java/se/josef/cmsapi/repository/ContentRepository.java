@@ -10,7 +10,10 @@ import java.util.Optional;
 @Repository
 public interface ContentRepository extends MongoRepository<Content, String> {
 
-    Optional<Content> findByIdAndOwnerIdOrIsPublic(String id, String ownerId, Boolean isPublic);
+    Optional<Content> findByIdAndOwnerIdOrIsPublicTrue(String id, String ownerId);
+
+    List<Content> findByProjectIdOrderByCreatedDesc(String userId);
 
     List<Content> findByOwnerIdOrderByCreatedDesc(String userId);
+    List<Content> findByIsPublicTrue();
 }

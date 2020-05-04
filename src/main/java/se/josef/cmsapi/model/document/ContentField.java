@@ -6,6 +6,10 @@ import se.josef.cmsapi.enums.DataType;
 
 import java.io.Serializable;
 
+
+/**
+ * T can be determined by dataTypes value
+ */
 @Data
 @AllArgsConstructor
 public class ContentField<T extends Serializable> {
@@ -13,6 +17,4 @@ public class ContentField<T extends Serializable> {
     private String name;
     private T data;
     private DataType dataType;
-
-
 }
