@@ -3,6 +3,7 @@ package se.josef.cmsapi.resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import se.josef.cmsapi.model.document.Template;
+import se.josef.cmsapi.model.web.TemplateForm;
 import se.josef.cmsapi.service.TemplateService;
 
 import java.util.List;
@@ -23,16 +24,9 @@ public class TemplateResource {
 
     @PostMapping()
     public @ResponseBody
-    Template saveTemplate(@RequestBody Template template) {
-        return templateService.saveTemplate(template);
+    Template saveTemplate(@RequestBody TemplateForm templateForm) {
+        return templateService.saveTemplate(templateForm);
     }
-
-    @GetMapping()
-    public @ResponseBody
-    List<Template> getAllTemplates() {
-        return templateService.getAllTemplates();
-    }
-
 
     @GetMapping("/projectId/{projectId}")
     public @ResponseBody
@@ -44,12 +38,12 @@ public class TemplateResource {
     @GetMapping("/{id}")
     public @ResponseBody
     Template getTemplateById(@PathVariable String id) {
-        return templateService.getContentById(id);
+        return templateService.getTemplateById(id);
     }
 
     @GetMapping("/user")
     public @ResponseBody
     List<Template> getTemplateForCurrentUser() {
-        return templateService.getContentForCurrentUser();
+        return templateService.getTemplateForCurrentUser();
     }
 }

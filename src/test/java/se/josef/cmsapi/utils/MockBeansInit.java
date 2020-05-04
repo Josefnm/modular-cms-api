@@ -36,10 +36,4 @@ public class MockBeansInit {
     @SpyBean
     private UserService userService;
 
-    @PostConstruct
-    void setMockOutput() {
-
-        Mockito.doReturn("userId").when(userService).getUserId();
-
-    }
 }

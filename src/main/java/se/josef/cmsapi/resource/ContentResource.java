@@ -3,6 +3,7 @@ package se.josef.cmsapi.resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import se.josef.cmsapi.model.document.Content;
+import se.josef.cmsapi.model.web.ContentForm;
 import se.josef.cmsapi.service.ContentService;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class ContentResource {
 
     @PostMapping()
     public @ResponseBody
-    Content addContent(@RequestBody Content content) {
-        return contentService.saveContent(content);
+    Content addContent(@RequestBody ContentForm contentForm) {
+        return contentService.saveContent(contentForm);
     }
 
     @GetMapping()

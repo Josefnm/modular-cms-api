@@ -3,6 +3,7 @@ package se.josef.cmsapi.resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import se.josef.cmsapi.model.document.Project;
+import se.josef.cmsapi.model.web.ProjectForm;
 import se.josef.cmsapi.service.ProjectService;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class ProjectResource {
 
     @PostMapping()
     public @ResponseBody
-    Project addUser(@RequestBody Project project) {
-        return projectService.saveProject(project);
+    Project addUser(@RequestBody ProjectForm projectForm) {
+        return projectService.saveProject(projectForm);
     }
 
     @DeleteMapping("/{id}")
