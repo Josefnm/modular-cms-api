@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface TemplateRepository extends MongoRepository<Template, String> {
 
-    Optional<Template> findByIdAndOwnerIdOrIsPublic(String id, String ownerId, Boolean isPublic);
+    Optional<Template> findByIdAndOwnerId(String id, String ownerId);
 
     List<Template> findByOwnerIdOrderByCreatedDesc(String userId);
     List<Template> findByProjectIdOrderByCreatedDesc(String userId);

@@ -27,13 +27,6 @@ public class TemplateResource {
         return templateService.saveTemplate(template);
     }
 
-    @GetMapping()
-    public @ResponseBody
-    List<Template> getAllTemplates() {
-        return templateService.getAllTemplates();
-    }
-
-
     @GetMapping("/projectId/{projectId}")
     public @ResponseBody
     List<Template> getByProjectId(@PathVariable String projectId) {
@@ -44,12 +37,12 @@ public class TemplateResource {
     @GetMapping("/{id}")
     public @ResponseBody
     Template getTemplateById(@PathVariable String id) {
-        return templateService.getContentById(id);
+        return templateService.getTemplateById(id);
     }
 
     @GetMapping("/user")
     public @ResponseBody
     List<Template> getTemplateForCurrentUser() {
-        return templateService.getContentForCurrentUser();
+        return templateService.getTemplateForCurrentUser();
     }
 }

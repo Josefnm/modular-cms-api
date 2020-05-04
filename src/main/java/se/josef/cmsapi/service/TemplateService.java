@@ -37,20 +37,19 @@ public class TemplateService {
 
 
     public List<Template> findByProjectId(String projectId) {
-        log.debug(String.valueOf(templateRepository.findByProjectIdOrderByCreatedDesc(projectId).size()));
         return templateRepository.findByProjectIdOrderByCreatedDesc(projectId);
     }
 
-
-    public Template getContentById(String id) {
+    //TODO check access against project owner/members instead
+    public Template getTemplateById(String id) {
         return templateRepository
-                .findByIdAndOwnerIdOrIsPublic(id, userService.getUserId(), true)
+                .findByIdAndOwnerId(id, userService.getUserId())
                 .orElseThrow(() ->
                         new ContentException(String.format("Content with id %s is unavailable", id))
                 );
     }
 
-    public List<Template> getContentForCurrentUser() {
+    public List<Template> getTemplateForCurrentUser() {
         return templateRepository
                 .findByOwnerIdOrderByCreatedDesc(userService.getUserId());
     }
