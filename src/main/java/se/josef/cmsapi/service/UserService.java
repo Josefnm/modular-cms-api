@@ -13,6 +13,7 @@ import se.josef.cmsapi.model.document.User;
 import se.josef.cmsapi.model.web.UserForm;
 import se.josef.cmsapi.repository.UserRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +59,7 @@ public class UserService {
                         .setPassword(userForm.getPassword());
 
                 UserRecord userRecord = FirebaseAuth.getInstance().createUser(createRequest);
-                User user = new User(userRecord.getUid(), userForm.getUserName(), userForm.getEmail());
+                User user = new User(userRecord.getUid(), userForm.getUserName(), userForm.getEmail(),new Date());
                 User savedUser = userRepository.save(user);
                 log.info("Saved user to database with id: {}", savedUser.getId());
                 return savedUser;

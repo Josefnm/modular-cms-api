@@ -4,8 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import se.josef.cmsapi.exception.ProjectException;
 import se.josef.cmsapi.model.document.Project;
+import se.josef.cmsapi.model.web.ProjectForm;
 import se.josef.cmsapi.repository.ProjectRepository;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,8 +24,18 @@ public class ProjectService {
         this.userService = userService;
     }
 
-    public Project saveProject(Project Project) {
-        return projectRepository.save(Project);
+    public Project saveProject(ProjectForm projectForm) {
+        String ownerId=userService.getUserId();
+        Date created=new Date();
+        Project project=Project.builder()
+                .ownerId(ownerId)
+                .name(projectForm.getName())
+                .description(projectForm.getDescription())
+                .memberIds(new ArrayList<>())
+                .created(created)
+                .updated(created)
+                .build();
+        return projectRepository.save(project);
     }
 
     public Project deleteProject(String projectId) {

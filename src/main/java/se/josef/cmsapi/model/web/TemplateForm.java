@@ -1,28 +1,20 @@
-package se.josef.cmsapi.model.document;
-
+package se.josef.cmsapi.model.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
+import se.josef.cmsapi.model.document.TemplateField;
 
 import java.util.Date;
 import java.util.List;
 
-@Document
 @Data
 @AllArgsConstructor
 @Builder
-public class Content {
-
-    private String id;
-    private String ownerId;
+public class TemplateForm {
     private String projectId;
-    private String templateId;
-    private Date created;
-    private Date updated;
     private String name;
     private String description;
-    private Boolean isPublic;
-    private List<ContentField<?>> contentFields;
+    private List<TemplateField> templateFields;
 }

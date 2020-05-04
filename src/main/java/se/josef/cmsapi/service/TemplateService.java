@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import se.josef.cmsapi.exception.ContentException;
 import se.josef.cmsapi.model.document.Template;
+import se.josef.cmsapi.model.web.TemplateForm;
 import se.josef.cmsapi.repository.TemplateRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,12 +23,18 @@ public class TemplateService {
         this.userService = userService;
     }
 
-    public Template saveTemplate(Template template) {
-        try {
-            log.info("userId:{}", userService.getUserId());
-        } catch (Exception e) {
-            log.info("error:{}", e.getMessage());
-        }
+    public Template saveTemplate(TemplateForm templateForm) {
+        Date created=new Date();
+        String ownerId=userService.getUserId();
+        Template template=Template.builder()
+                .ownerId(ownerId)
+                .templateFields(templateForm.getTemplateFields())
+                .name(templateForm.getName())
+                .projectId(templateForm.getProjectId())
+                .description(templateForm.getDescription())
+                .created(created)
+                .updated(created)
+                .build();
 
         return templateRepository.save(template);
     }
