@@ -34,6 +34,13 @@ public class TemplateResource {
     }
 
 
+    @GetMapping("/projectId/{projectId}")
+    public @ResponseBody
+    List<Template> getByProjectId(@PathVariable String projectId) {
+        return templateService.findByProjectId(projectId);
+    }
+
+
     @GetMapping("/{id}")
     public @ResponseBody
     Template getTemplateById(@PathVariable String id) {

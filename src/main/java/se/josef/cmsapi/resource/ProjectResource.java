@@ -3,8 +3,6 @@ package se.josef.cmsapi.resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import se.josef.cmsapi.model.document.Project;
-import se.josef.cmsapi.model.document.Project;
-import se.josef.cmsapi.service.ProjectService;
 import se.josef.cmsapi.service.ProjectService;
 
 import java.util.List;
@@ -29,19 +27,25 @@ public class ProjectResource {
         return projectService.saveProject(project);
     }
 
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    Project addUser(@PathVariable String id) {
+        return projectService.deleteProject(id);
+    }
+
     @GetMapping()
     public @ResponseBody
     List<Project> getAllProject() {
         return projectService.getAllProjects();
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public @ResponseBody
-    Project getCProjectById(@PathVariable String id) {
+    Project getProjectById(@PathVariable String id) {
         return projectService.getProjectById(id);
     }
 
-    @GetMapping("/getOwn")
+    @GetMapping("/user")
     public @ResponseBody
     List<Project> getProjectForCurrentUser() {
         return projectService.getProjectsByUserId();

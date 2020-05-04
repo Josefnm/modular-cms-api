@@ -19,6 +19,5 @@ public class Template {
     private Date updated;
     private String name;
     private String description;
-    private Boolean isPublic;
     private List<TemplateField> templateFields;
 }

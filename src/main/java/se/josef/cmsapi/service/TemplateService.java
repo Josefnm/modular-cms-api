@@ -22,10 +22,10 @@ public class TemplateService {
     }
 
     public Template saveTemplate(Template template) {
-        try{
-            log.info("userId:{}",userService.getUserId());
-        }catch (Exception e){
-            log.info("error:{}",e.getMessage());
+        try {
+            log.info("userId:{}", userService.getUserId());
+        } catch (Exception e) {
+            log.info("error:{}", e.getMessage());
         }
 
         return templateRepository.save(template);
@@ -36,9 +36,15 @@ public class TemplateService {
     }
 
 
+    public List<Template> findByProjectId(String projectId) {
+        log.debug(String.valueOf(templateRepository.findByProjectIdOrderByCreatedDesc(projectId).size()));
+        return templateRepository.findByProjectIdOrderByCreatedDesc(projectId);
+    }
+
+
     public Template getContentById(String id) {
         return templateRepository
-                .findByIdAndOwnerIdOrIsPublic(id,  userService.getUserId(),true)
+                .findByIdAndOwnerIdOrIsPublic(id, userService.getUserId(), true)
                 .orElseThrow(() ->
                         new ContentException(String.format("Content with id %s is unavailable", id))
                 );

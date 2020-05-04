@@ -1,5 +1,6 @@
 package se.josef.cmsapi.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import se.josef.cmsapi.exception.ProjectException;
 import se.josef.cmsapi.model.document.Project;
@@ -8,6 +9,7 @@ import se.josef.cmsapi.repository.ProjectRepository;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
@@ -36,7 +38,18 @@ public class ProjectService {
     }
 
     public List<Project> getProjectsByUserId() {
-        return projectRepository.findAllByMemberIdsOrderByCreatedDesc(userService.getUserId());
+        log.info("here");
+        try {
+            String uid = userService.getUserId();
+            List<Project> res = projectRepository.findAllByMemberIdsOrOwnerIdOrderByCreatedDesc(uid, uid);
+            List<Project> res2 = projectRepository.findAllByOwnerIdOrderByCreatedDesc(uid);
+            log.info(String.valueOf(res.size()));
+            log.info(String.valueOf(res2.size()));
+            return projectRepository.findAllByMemberIdsOrOwnerIdOrderByCreatedDesc(uid, uid);
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+            throw e;
+        }
     }
 
     public Project getProjectById(String id) {

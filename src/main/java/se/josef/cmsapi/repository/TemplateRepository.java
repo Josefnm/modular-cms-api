@@ -13,4 +13,5 @@ public interface TemplateRepository extends MongoRepository<Template, String> {
     Optional<Template> findByIdAndOwnerIdOrIsPublic(String id, String ownerId, Boolean isPublic);
 
     List<Template> findByOwnerIdOrderByCreatedDesc(String userId);
+    List<Template> findByProjectIdOrderByCreatedDesc(String userId);
 }

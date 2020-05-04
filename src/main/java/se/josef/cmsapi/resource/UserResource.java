@@ -26,9 +26,16 @@ public class UserResource {
 
     @GetMapping
     public @ResponseBody
-    User getUserById() {
+    User getUser() {
         return userService.getCurrentUser();
     }
+
+    @GetMapping(value="/{id}")
+    public @ResponseBody
+    User getUserById(@PathVariable String id) {
+        return userService.getById(id);
+    }
+
     @GetMapping(value = "/all")
     public @ResponseBody
     List<User> getAllUsers() {
@@ -41,7 +48,7 @@ public class UserResource {
         return request.getHeader("origin");
     }
 
-    @PostMapping( value = "/signup")
+    @PostMapping(value = "/signup")
     public @ResponseBody
     User signup(@NotNull @RequestBody UserForm userForm) {
         return userService.signup(userForm);
