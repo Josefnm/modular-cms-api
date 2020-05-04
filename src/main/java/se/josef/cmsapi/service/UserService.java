@@ -59,7 +59,12 @@ public class UserService {
                         .setPassword(userForm.getPassword());
 
                 UserRecord userRecord = FirebaseAuth.getInstance().createUser(createRequest);
-                User user = new User(userRecord.getUid(), userForm.getUserName(), userForm.getEmail(),new Date());
+                User user = User.builder()
+                        .id(userRecord.getUid())
+                        .userName(userForm.getUserName())
+                        .email(userForm.getEmail())
+                        .build();
+
                 User savedUser = userRepository.save(user);
                 log.info("Saved user to database with id: {}", savedUser.getId());
                 return savedUser;

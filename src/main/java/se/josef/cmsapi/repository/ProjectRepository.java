@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface ProjectRepository extends MongoRepository<Project, String> {
 
     List<Project> findAllByMemberIdsOrOwnerIdOrderByCreatedDesc(String memberId,String ownerId);
+
     List<Project> findAllByOwnerIdOrderByCreatedDesc(String ownerId);
 
     Optional<Project> findByIdAndMemberIds(String id, String memberId);

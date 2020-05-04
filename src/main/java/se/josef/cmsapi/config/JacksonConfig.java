@@ -12,6 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JacksonConfig {
 
+    /**
+     * Configures serialization and deserialization for requests
+     * @return
+     */
     @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -20,12 +24,6 @@ public class JacksonConfig {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-/*
-        SimpleModule module = new SimpleModule();
-        module.addDeserializer(ContentField.class, new ContentFieldDeserializer());
-        objectMapper.registerModule(module);
-*/
-
         return objectMapper;
     }
 }

@@ -39,11 +39,6 @@ public class TemplateService {
         return templateRepository.save(template);
     }
 
-    public List<Template> getAllTemplates() {
-        return templateRepository.findAll();
-    }
-
-
     public List<Template> findByProjectId(String projectId) {
         return templateRepository.findByProjectIdOrderByCreatedDesc(projectId);
     }

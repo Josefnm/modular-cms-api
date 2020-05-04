@@ -29,6 +29,7 @@ spec:
               port: 8080
           ports:
             - containerPort: 8080
+            # sensitive vars loaded using cloud secrets
           env:
             - name: MONGODB_URI
               valueFrom:
@@ -42,6 +43,7 @@ spec:
                   key: api-key
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/run/secret/cloud.google.com/firebase-service-account.json
+              # loads firebase credentials file from secrets
           volumeMounts:
             - name: firebase-service-account
               mountPath: /var/run/secret/cloud.google.com

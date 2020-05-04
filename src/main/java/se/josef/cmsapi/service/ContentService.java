@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import se.josef.cmsapi.enums.DataType;
 import se.josef.cmsapi.exception.ContentException;
 import se.josef.cmsapi.model.document.Content;
-import se.josef.cmsapi.model.document.ContentField;
 import se.josef.cmsapi.model.web.ContentForm;
 import se.josef.cmsapi.repository.ContentRepository;
 
@@ -25,28 +24,28 @@ public class ContentService {
     }
 
     public Content saveContent(ContentForm contentForm) {
-        String ownerId=userService.getUserId();
-        Date created=new Date();
-        Content content=Content.builder()
+        String ownerId = userService.getUserId();
+        Date created = new Date();
+        Content content = Content.builder()
                 .ownerId(ownerId)
+                .created(created)
+                .updated(created)
                 .contentFields(contentForm.getContentFields())
                 .name(contentForm.getName())
                 .description(contentForm.getDescription())
-                .created(created)
-                .updated(created)
                 .projectId(contentForm.getProjectId())
                 .templateId(contentForm.getTemplateId())
                 .build();
         return contentRepository.save(content);
     }
 
-    public List<Content> getAllContent() {
-        return contentRepository.findAll();
+    public List<Content> getAllPublicContent() {
+        return contentRepository.findByIsPublicTrue();
     }
 
     public Content getContentById(String id) {
         return contentRepository
-                .findByIdAndOwnerIdOrIsPublic(id, userService.getUserId(), true)
+                .findByIdAndOwnerIdOrIsPublicTrue(id, userService.getUserId())
                 .orElseThrow(() ->
                         new ContentException(String.format("Content with id %s is unavailable", id))
                 );
@@ -57,6 +56,11 @@ public class ContentService {
                 .findByOwnerIdOrderByCreatedDesc(userService.getUserId());
     }
 
+    public List<Content> findByProjectId(String projectId) {
+        return contentRepository.findByProjectIdOrderByCreatedDesc(projectId);
+    }
+
+    //testing method
     private <T> List<T> filterContentFieldByType(Content content, DataType dataType) {
         return content
                 .getContentFields()

@@ -23,6 +23,9 @@ public class FireBaseTokenAuthenticationFilter extends OncePerRequestFilter {
     TFunction<String, FirebaseToken> authenticateFirebaseToken = FirebaseAuth.getInstance()::verifyIdToken;
     TFunction<String, String> getAuthToken = headerValue -> headerValue.substring(7);
 
+    /**
+     * checks headers for auth tokens, checks them against firebase and adds credentials to security context if they are valid
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -36,7 +39,8 @@ public class FireBaseTokenAuthenticationFilter extends OncePerRequestFilter {
                         .applyThrows(headerValue);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
-                throw new SecurityException("Error authenticating" + e.getLocalizedMessage());
+                log.error("Authentication token not valid: " + e.getLocalizedMessage());
+
             }
         }
         filterChain.doFilter(request, response);
