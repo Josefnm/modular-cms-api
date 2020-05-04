@@ -12,8 +12,9 @@ import se.josef.cmsapi.model.web.ErrorResponse;
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+    //TODO add more specific exception response codes
     @ExceptionHandler(value = {
-            AuthException.class,  UserException.class,ContentException.class})
+            AuthException.class, UserException.class, ContentException.class, ProjectException.class})
     protected ResponseEntity<Object> clientConflictHandler(RuntimeException ex, WebRequest request) {
         ErrorResponse message = new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
 
@@ -22,7 +23,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler
     protected ResponseEntity<Object> serverConflictHandler(RuntimeException ex, WebRequest request) {
-        ErrorResponse message = new ErrorResponse( HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        ErrorResponse message = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }

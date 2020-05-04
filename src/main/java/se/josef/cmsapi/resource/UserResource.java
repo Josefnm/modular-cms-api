@@ -14,7 +14,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @Slf4j
-@RequestMapping(value = "/api/users", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/user", produces = APPLICATION_JSON_VALUE)
 @RestController
 public class UserResource {
 
@@ -24,7 +24,19 @@ public class UserResource {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping
+    public @ResponseBody
+    User getUser() {
+        return userService.getCurrentUser();
+    }
+
+    @GetMapping(value="/{id}")
+    public @ResponseBody
+    User getUserById(@PathVariable String id) {
+        return userService.getById(id);
+    }
+
+    @GetMapping(value = "/all")
     public @ResponseBody
     List<User> getAllUsers() {
         return userService.getAllUsers();
@@ -36,7 +48,7 @@ public class UserResource {
         return request.getHeader("origin");
     }
 
-    @PostMapping( value = "/signup")
+    @PostMapping(value = "/signup")
     public @ResponseBody
     User signup(@NotNull @RequestBody UserForm userForm) {
         return userService.signup(userForm);

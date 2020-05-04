@@ -19,7 +19,7 @@ public class FireBaseTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final static String HEADER_KEY = "Authorization";
 
-    // Experimenting a bit with functions.
+    // Experimenting with functions.
     TFunction<String, FirebaseToken> authenticateFirebaseToken = FirebaseAuth.getInstance()::verifyIdToken;
     TFunction<String, String> getAuthToken = headerValue -> headerValue.substring(7);
 
@@ -27,8 +27,6 @@ public class FireBaseTokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String headerValue = request.getHeader(HEADER_KEY);
-        String headerValue2 = request.getHeader("origin");
-        log.info("origin: {}",headerValue2);
 
         if (headerValue != null && !headerValue.isBlank()) {
             try {

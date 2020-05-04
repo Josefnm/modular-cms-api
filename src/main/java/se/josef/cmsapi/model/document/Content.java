@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +15,7 @@ public class Content {
 
     private String id;
     private String ownerId;
+    private String projectId;
     private String templateId;
     private Date created;
     private Date updated;

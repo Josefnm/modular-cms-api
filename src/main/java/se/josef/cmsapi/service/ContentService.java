@@ -31,8 +31,10 @@ public class ContentService {
 
     public Content getContentById(String id) {
         return contentRepository
-                .findByIdAndOwnerIdOrIsPublic(id,  userService.getUserId(),true)
-                .orElseThrow(() -> new ContentException(String.format("Content with id %s is unavailable", id)));
+                .findByIdAndOwnerIdOrIsPublic(id, userService.getUserId(), true)
+                .orElseThrow(() ->
+                        new ContentException(String.format("Content with id %s is unavailable", id))
+                );
     }
 
     public List<Content> getContentForCurrentUser() {
@@ -40,11 +42,11 @@ public class ContentService {
                 .findByOwnerIdOrderByCreatedDesc(userService.getUserId());
     }
 
-    private <T> List<T>  filterContentFieldByType(Content content,DataType dataType) {
+    private <T> List<T> filterContentFieldByType(Content content, DataType dataType) {
         return content
                 .getContentFields()
                 .stream()
-                .filter(contentField->contentField.getDataType().equals(dataType))
+                .filter(contentField -> contentField.getDataType().equals(dataType))
                 .map(contentField -> (T) contentField.getData())
                 .collect(Collectors.toList());
     }
