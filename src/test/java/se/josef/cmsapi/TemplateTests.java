@@ -38,7 +38,6 @@ public class TemplateTests {
 
     private static final String templateId = getRandomLowercaseNumeric(24);
     private static final String userId = getRandomLowercaseNumeric(24);
-    private static final Template template = getNewTemplate();
 
     @LocalServerPort
     private int port;
@@ -52,7 +51,6 @@ public class TemplateTests {
 
     @BeforeEach
     void setMockOutput() {
-        System.out.println("before");
         Template template = getNewTemplate();
         doReturn(userId).when(userService).getUserId();
         when(templateRepository.save(any())).thenReturn(template);
@@ -91,6 +89,7 @@ public class TemplateTests {
                 new Date(),
                 getRandomAlphabets(15),
                 getRandomAlphabets(100),
+                true,
                 tfs);
     }
 }
