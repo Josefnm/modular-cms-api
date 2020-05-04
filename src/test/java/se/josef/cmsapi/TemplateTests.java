@@ -55,7 +55,7 @@ public class TemplateTests {
 
     @Test
     public void saveTemplate() {
-        ResponseEntity<Template> response = requestUtils.httpRequest("/templates", HttpMethod.POST, Template.class, getNewTemplate(), port);
+        ResponseEntity<Template> response = requestUtils.httpRequest("/template", HttpMethod.POST, Template.class, getNewTemplate(), port);
         assertEquals(templateId, response.getBody().getId());
 
     }
