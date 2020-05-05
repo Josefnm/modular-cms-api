@@ -19,10 +19,10 @@ import java.util.List;
 public class Project {
 
     private String id;
-    // creater of project
+    // creator of project
     @Indexed
     private String ownerId;
-    // editor access to project
+    // Users with editor access to project
     @Indexed
     private List<String> memberIds;
     @CreatedDate

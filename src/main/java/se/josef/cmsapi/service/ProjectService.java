@@ -25,8 +25,8 @@ public class ProjectService {
     }
 
     public Project saveProject(ProjectForm projectForm) {
-        String ownerId=userService.getUserId();
-        Date created=new Date();
+        var ownerId=userService.getUserId();
+        var created=new Date();
         Project project=Project.builder()
                 .ownerId(ownerId)
                 .name(projectForm.getName())

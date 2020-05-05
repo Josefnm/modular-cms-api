@@ -50,7 +50,7 @@ public class TemplateTests {
 
     @BeforeEach
     void setMockOutput() {
-        Template template = getNewTemplate();
+        var template = getNewTemplate();
         doReturn(userId).when(userService).getUserId();
         when(templateRepository.save(any())).thenReturn(template);
         when(templateRepository.findByIdAndOwnerId(templateId, userId)).thenReturn(java.util.Optional.of(template));
@@ -59,27 +59,27 @@ public class TemplateTests {
 
     @Test
     public void saveTemplateSuccess() {
-        ResponseEntity<Template> response = requestUtils.postRequest("/template", Template.class, getNewTemplate(), port);
+        var response = requestUtils.postRequest("/template", Template.class, getNewTemplate(), port);
         assertEquals(templateId, response.getBody().getId());
     }
 
     @Test
     public void getTemplateByIdSuccess() {
-        ResponseEntity<Template> response = requestUtils.getRequest("/template/" + templateId, Template.class, port);
+        var response = requestUtils.getRequest("/template/" + templateId, Template.class, port);
         assertEquals(templateId, response.getBody().getId());
     }
 
     @Test
     public void getTemplateByIdFail() {
-        ResponseEntity<Template> response = requestUtils.getRequest("/template/" + getRandomLowercaseNumeric(24), Template.class, port);
+        var response = requestUtils.getRequest("/template/" + getRandomLowercaseNumeric(24), Template.class, port);
         assertNotEquals(templateId, response.getBody().getId());
     }
 
 
     private static Template getNewTemplate() {
         List<TemplateField> tfs = new ArrayList<>();
-        tfs.add(new TemplateField(getRandomAlphabets(15), DataType.STRING));
-        tfs.add(new TemplateField(getRandomAlphabets(15), DataType.IMAGE));
+        tfs.add(new TemplateField(getRandomAlphabets(15), DataType.STRING.getType().getSimpleName()));
+        tfs.add(new TemplateField(getRandomAlphabets(15), DataType.IMAGE.getType().getSimpleName()));
 
         return new Template(templateId,
                 userId,

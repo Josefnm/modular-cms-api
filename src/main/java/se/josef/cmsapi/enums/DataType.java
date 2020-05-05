@@ -1,18 +1,18 @@
 package se.josef.cmsapi.enums;
 
-import java.util.Date;
+import se.josef.cmsapi.model.document.contentField.*;
 
 /**
  * Datatypes that can be saved by the cms.
  */
 public enum DataType {
-    STRING(String.class),
-    FORMATTED_TEXT(String.class),
-    IMAGE(String.class), //address to image
-    NUMBER(Long.class),
-    DATE(Date.class),
-    BOOL(Boolean.class),
-    TEMPLATE(String.class); //reference to other template
+    STRING(StringField.class),
+    FORMATTED_TEXT(TextField.class),
+    IMAGE(ImageField.class), //address to image
+    NUMBER(NumberField.class),
+    DATE(DateField.class),
+    BOOL(BooleanField.class),
+    CONTENT(ModuleField.class); //reference to other template
     //TODO add more types
 
     private Class<?> type;

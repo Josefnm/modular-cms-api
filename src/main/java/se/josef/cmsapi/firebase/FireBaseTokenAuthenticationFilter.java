@@ -3,7 +3,6 @@ package se.josef.cmsapi.firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import se.josef.cmsapi.interfaces.TFunction;
@@ -24,22 +23,22 @@ public class FireBaseTokenAuthenticationFilter extends OncePerRequestFilter {
     TFunction<String, String> getAuthToken = headerValue -> headerValue.substring(7);
 
     /**
-     * checks headers for auth tokens, checks them against firebase and adds credentials to security context if they are valid
+     * checks headers for auth tokens, checks them against firebase and adds credentials to
+     * security context if they are valid
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String headerValue = request.getHeader(HEADER_KEY);
-
         if (headerValue != null && !headerValue.isBlank()) {
             try {
-                Authentication authentication = getAuthToken
+                var authentication = getAuthToken
                         .andThen(authenticateFirebaseToken)
                         .andThen(FirebaseAuthenticationToken::new)
                         .applyThrows(headerValue);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
-                log.error("Authentication token not valid: " + e.getLocalizedMessage());
+                log.error("Authentication token not valid: " + e.getMessage());
 
             }
         }

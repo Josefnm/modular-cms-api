@@ -23,7 +23,7 @@ public class FirebaseConfig {
         if (FirebaseApp.getApps().isEmpty()) {
             try {
                 // loads credentials from path specified by GOOGLE_APPLICATION_CREDENTIALS environmental variable
-                GoogleCredentials googleCredentials = GoogleCredentials.getApplicationDefault();
+                var googleCredentials = GoogleCredentials.getApplicationDefault();
                 FirebaseOptions options = new FirebaseOptions
                         .Builder()
                         .setCredentials(googleCredentials)
@@ -37,10 +37,11 @@ public class FirebaseConfig {
         }
     }
 
+
+    //needed for firebase auth in testing
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public FirebaseAuth getFirebaseAuth() {
-
         return FirebaseAuth.getInstance();
     }
 }

@@ -6,7 +6,6 @@ import se.josef.cmsapi.model.document.User;
 import se.josef.cmsapi.model.web.UserForm;
 import se.josef.cmsapi.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class UserResource {
         return userService.getCurrentUser();
     }
 
-    @GetMapping(value="/{id}")
+    @GetMapping(value = "/{id}")
     public @ResponseBody
     User getUserById(@PathVariable String id) {
         return userService.getById(id);

@@ -24,8 +24,8 @@ public class TemplateService {
     }
 
     public Template saveTemplate(TemplateForm templateForm) {
-        Date created=new Date();
-        String ownerId=userService.getUserId();
+        var created=new Date();
+        var ownerId=userService.getUserId();
         Template template=Template.builder()
                 .ownerId(ownerId)
                 .templateFields(templateForm.getTemplateFields())

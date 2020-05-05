@@ -1,8 +1,5 @@
 package se.josef.cmsapi.utils;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Answers;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,17 +10,14 @@ import se.josef.cmsapi.repository.TemplateRepository;
 import se.josef.cmsapi.repository.UserRepository;
 import se.josef.cmsapi.service.UserService;
 
-import javax.annotation.PostConstruct;
-
-
 /**
- * Load all mockbeans required by context or common methods.
+ * Load mocks of all beans required by context or common methods.
+ * These can be accessed by autowired in test classes
  */
 @Component
 public class MockBeansInit {
     @MockBean
     private MongoTemplate mongoTemplate;
-
     @MockBean
     private ContentRepository contentRepository;
     @MockBean
@@ -32,8 +26,6 @@ public class MockBeansInit {
     private UserRepository userRepository;
     @MockBean
     private ProjectRepository projectRepository;
-
     @SpyBean
     private UserService userService;
-
 }

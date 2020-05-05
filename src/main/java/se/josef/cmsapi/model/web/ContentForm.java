@@ -2,7 +2,7 @@ package se.josef.cmsapi.model.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import se.josef.cmsapi.model.document.ContentField;
+import se.josef.cmsapi.model.document.contentField.ContentField;
 
 import java.util.List;
 

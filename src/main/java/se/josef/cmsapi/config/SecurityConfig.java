@@ -22,6 +22,7 @@ import java.util.Arrays;
 @Configuration
 @Profile("!test")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Value("${spring.security.permitAll}")
     private String[] allowedUris;
 
@@ -31,13 +32,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
+        var config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE"));
         config.setAllowCredentials(true);
         config.addAllowedHeader("Authorization");
         config.addAllowedHeader("content-type");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
         return source;
