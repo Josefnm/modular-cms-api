@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 
 /**
- * Function that throws errors
+ * Function that can throw errors
  */
 @FunctionalInterface
 public interface TFunction<T, R> extends Function<T, R> {

@@ -13,12 +13,12 @@ import org.springframework.context.annotation.Configuration;
 public class JacksonConfig {
 
     /**
-     * Configures serialization and deserialization for requests
+     * Configures serialization and deserialization
      * @return
      */
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
+        var objectMapper = new ObjectMapper();
         objectMapper.registerModule(new ParameterNamesModule());
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

@@ -1,7 +1,6 @@
 package se.josef.cmsapi.service;
 
 import org.springframework.stereotype.Service;
-import se.josef.cmsapi.enums.DataType;
 import se.josef.cmsapi.exception.ContentException;
 import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.web.ContentForm;
@@ -9,7 +8,6 @@ import se.josef.cmsapi.repository.ContentRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ContentService {
@@ -24,8 +22,8 @@ public class ContentService {
     }
 
     public Content saveContent(ContentForm contentForm) {
-        String ownerId = userService.getUserId();
-        Date created = new Date();
+        var ownerId = userService.getUserId();
+        var created = new Date();
         Content content = Content.builder()
                 .ownerId(ownerId)
                 .created(created)
@@ -36,6 +34,7 @@ public class ContentService {
                 .projectId(contentForm.getProjectId())
                 .templateId(contentForm.getTemplateId())
                 .build();
+        System.out.println(content.getContentFields().get(0).getClass());
         return contentRepository.save(content);
     }
 
@@ -60,13 +59,4 @@ public class ContentService {
         return contentRepository.findByProjectIdOrderByCreatedDesc(projectId);
     }
 
-    //testing method
-    private <T> List<T> filterContentFieldByType(Content content, DataType dataType) {
-        return content
-                .getContentFields()
-                .stream()
-                .filter(contentField -> contentField.getDataType().equals(dataType))
-                .map(contentField -> (T) contentField.getData())
-                .collect(Collectors.toList());
-    }
 }

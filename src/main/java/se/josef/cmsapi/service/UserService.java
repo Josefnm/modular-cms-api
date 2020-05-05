@@ -13,9 +13,7 @@ import se.josef.cmsapi.model.document.User;
 import se.josef.cmsapi.model.web.UserForm;
 import se.josef.cmsapi.repository.UserRepository;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -32,11 +30,7 @@ public class UserService {
     }
 
     public User getCurrentUser() {
-        return userRepository
-                .findById(getUserId())
-                .orElseThrow(() ->
-                        new UserException("Could not find user profile")
-                );
+        return getById(getUserId());
     }
 
     public User getById(String id) {
@@ -49,23 +43,23 @@ public class UserService {
 
     public User signup(UserForm userForm) {
         try {
-            Optional<User> userFromDb = userRepository.findByEmailOrUserName(userForm.getEmail(), userForm.getUserName());
+            var userFromDb = userRepository.findByEmailOrUserName(userForm.getEmail(), userForm.getUserName());
 
             if (userFromDb.isEmpty()) {
 
-                UserRecord.CreateRequest createRequest = new UserRecord
+                var createRequest = new UserRecord
                         .CreateRequest()
                         .setEmail(userForm.getEmail())
                         .setPassword(userForm.getPassword());
 
-                UserRecord userRecord = FirebaseAuth.getInstance().createUser(createRequest);
-                User user = User.builder()
+                var userRecord = FirebaseAuth.getInstance().createUser(createRequest);
+                var user = User.builder()
                         .id(userRecord.getUid())
                         .userName(userForm.getUserName())
                         .email(userForm.getEmail())
                         .build();
 
-                User savedUser = userRepository.save(user);
+                var savedUser = userRepository.save(user);
                 log.info("Saved user to database with id: {}", savedUser.getId());
                 return savedUser;
             } else {
@@ -84,11 +78,13 @@ public class UserService {
     }
 
     public String getUserId() {
-        FirebaseToken firebaseToken = (FirebaseToken) SecurityContextHolder
+        var firebaseToken = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getCredentials();
-
-        return firebaseToken.getUid();
+        if (firebaseToken instanceof FirebaseToken) {
+            return ((FirebaseToken) firebaseToken).getUid();
+        }
+        return null;
     }
 }

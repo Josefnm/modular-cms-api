@@ -20,14 +20,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = {
             AuthException.class, UserException.class, ContentException.class, ProjectException.class})
     protected ResponseEntity<Object> clientConflictHandler(RuntimeException ex, WebRequest request) {
-        ErrorResponse message = new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+        var message = new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
 
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler
     protected ResponseEntity<Object> serverConflictHandler(RuntimeException ex, WebRequest request) {
-        ErrorResponse message = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        var message = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }

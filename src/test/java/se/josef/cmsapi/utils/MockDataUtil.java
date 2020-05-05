@@ -3,6 +3,10 @@ package se.josef.cmsapi.utils;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+
+/**
+ * Utility class for creating random data for tests
+ */
 public class MockDataUtil {
     private static String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static String lowercase = "abcdefghijklmnopqrstuvxyz";
@@ -24,37 +28,37 @@ public class MockDataUtil {
     }
 
     public static String getRandomAlphaNumeric(int len) {
-        String src = uppercase + number + lowercase;
+        var src = uppercase + number + lowercase;
         return getRandom(src, len);
     }
 
     public static String getRandomUppercase(int len) {
-        String src = uppercase;
+        var src = uppercase;
         return getRandom(src, len);
     }
 
     public static String getRandomLowercase(int len) {
-        String src = lowercase;
+        var src = lowercase;
         return getRandom(src, len);
     }
 
     public static String getRandomUppercaseNumeric(int len) {
-        String src = uppercase + number;
+        var src = uppercase + number;
         return getRandom(src, len);
     }
 
     public static String getRandomLowercaseNumeric(int len) {
-        String src = lowercase + number;
+        var src = lowercase + number;
         return getRandom(src, len);
     }
 
     public static String getRandomAlphabets(int len) {
-        String src = uppercase + lowercase;
+        var src = uppercase + lowercase;
         return getRandom(src, len);
     }
 
     public static String getRandomAlphaNumericAndSymbols(int len) {
-        String src = uppercase + number + lowercase + symbol;
+        var src = uppercase + number + lowercase + symbol;
         return getRandom(src, len);
     }
 

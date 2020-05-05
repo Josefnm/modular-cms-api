@@ -25,11 +25,12 @@ spec:
           imagePullPolicy: Always
           readinessProbe:
             httpGet:
+              #Make sure path matches exactly including trailing slash
               path: /api/
               port: 8080
           ports:
             - containerPort: 8080
-            # sensitive vars loaded using cloud secrets
+            # sensitive env vars loaded using cloud secrets
           env:
             - name: MONGODB_URI
               valueFrom:

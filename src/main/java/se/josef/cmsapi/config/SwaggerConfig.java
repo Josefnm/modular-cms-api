@@ -62,7 +62,8 @@ public class SwaggerConfig {
                 .forPaths(PathSelectors.any())
                 .build();
     }
-    // Allows adding auth Bearer token in the ui, the actual security settings for swagger doesn't really do anything.
+    // Allows adding auth Bearer token in the ui, the actual security
+    // settings for swagger doesn't really do anything.
     private ApiKey apiKey() {
         return new ApiKey(AUTHORIZATION_HEADER, AUTHORIZATION_HEADER, PASS_AS);
     }
@@ -78,7 +79,7 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        Contact contact = new Contact(contactName, contactUrl, contactEmail);
+        var contact = new Contact(contactName, contactUrl, contactEmail);
         return new ApiInfo(
                 title,
                 description,
