@@ -27,12 +27,12 @@ public class HealthCheckResource {
      */
     @GetMapping(value = "api")
     public ResponseEntity<?> HealthCheck2(HttpServletRequest request) {
-        log.info("health check path:/ origin: {}",request.getHeader("origin"));
+        log.info("health check path:/api origin: {}",request.getHeader("origin"));
         return ResponseEntity.ok().build();
     }
 
     //Used to test origin
-    @GetMapping(value = "api/cross")
+    @GetMapping(value = "/cross")
     public @ResponseBody
     String checkOrigin(HttpServletRequest request) {
         return request.getHeader("origin");
