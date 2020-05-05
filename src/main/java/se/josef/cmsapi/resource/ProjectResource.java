@@ -12,7 +12,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @Slf4j
-@RequestMapping(value = "api/project", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "project", produces = APPLICATION_JSON_VALUE)
 @RestController
 public class ProjectResource {
 
