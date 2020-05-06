@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import se.josef.cmsapi.firebase.FireBaseTokenAuthenticationFilter;
+import se.josef.cmsapi.firebase.FirebaseTokenAuthenticationFilter;
 
 import java.util.Arrays;
 
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(allowedUris).permitAll()
                 .antMatchers("/**").authenticated()
                 .and()
-                .addFilterBefore(new FireBaseTokenAuthenticationFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new FirebaseTokenAuthenticationFilter(), BasicAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .cors().and()

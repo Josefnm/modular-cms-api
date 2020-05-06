@@ -34,7 +34,6 @@ public class Content {
     @LastModifiedDate
     private Date updated;
     private String name;
-    private String description;
     private Boolean isPublic;
     private List<ContentField<?>> contentFields;
 }

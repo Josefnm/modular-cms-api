@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class FireBaseTokenAuthenticationFilter extends OncePerRequestFilter {
+public class FirebaseTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final static String HEADER_KEY = "Authorization";
 
