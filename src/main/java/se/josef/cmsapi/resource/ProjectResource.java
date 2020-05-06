@@ -24,13 +24,13 @@ public class ProjectResource {
 
     @PostMapping()
     public @ResponseBody
-    Project addUser(@RequestBody ProjectForm projectForm) {
+    Project addProject(@RequestBody ProjectForm projectForm) {
         return projectService.saveProject(projectForm);
     }
 
     @DeleteMapping("/{id}")
     public @ResponseBody
-    Project addUser(@PathVariable String id) {
+    Project deleteProject(@PathVariable String id) {
         return projectService.deleteProject(id);
     }
 

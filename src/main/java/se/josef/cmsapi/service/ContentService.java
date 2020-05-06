@@ -30,7 +30,6 @@ public class ContentService {
                 .updated(created)
                 .contentFields(contentForm.getContentFields())
                 .name(contentForm.getName())
-                .description(contentForm.getDescription())
                 .projectId(contentForm.getProjectId())
                 .templateId(contentForm.getTemplateId())
                 .build();
