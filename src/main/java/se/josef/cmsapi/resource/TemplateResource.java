@@ -34,16 +34,10 @@ public class TemplateResource {
         return templateService.findByProjectId(projectId);
     }
 
-
     @GetMapping("/{id}")
     public @ResponseBody
     Template getTemplateById(@PathVariable String id) {
         return templateService.getTemplateById(id);
     }
 
-    @GetMapping("/user")
-    public @ResponseBody
-    List<Template> getTemplateForCurrentUser() {
-        return templateService.getTemplateForCurrentUser();
-    }
 }

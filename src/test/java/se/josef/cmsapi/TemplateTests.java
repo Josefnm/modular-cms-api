@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import se.josef.cmsapi.enums.DataType;
@@ -15,6 +16,7 @@ import se.josef.cmsapi.model.document.Template;
 import se.josef.cmsapi.model.document.TemplateField;
 import se.josef.cmsapi.repository.TemplateRepository;
 import se.josef.cmsapi.service.UserService;
+import se.josef.cmsapi.util.UserUtils;
 import se.josef.cmsapi.utils.RequestUtils;
 
 import java.util.ArrayList;
@@ -41,8 +43,8 @@ public class TemplateTests {
     private int port;
     @Autowired
     private TemplateRepository templateRepository;
-    @Autowired
-    private UserService userService;
+    @MockBean
+    private UserUtils userUtils;
 
     @Autowired
     private RequestUtils requestUtils;
@@ -50,7 +52,7 @@ public class TemplateTests {
     @BeforeEach
     void setMockOutput() {
         var template = getNewTemplate();
-        doReturn(userId).when(userService).getUserId();
+        doReturn(userId).when(userUtils).getUserId();
         when(templateRepository.save(any())).thenReturn(template);
         when(templateRepository.findByIdAndOwnerId(templateId, userId)).thenReturn(java.util.Optional.of(template));
     }

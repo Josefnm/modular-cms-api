@@ -9,9 +9,10 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class ContentForm {
+    private String id;
     private String projectId;
     private String templateId;
     private String name;
-    private String description;
+    private boolean isPublic;
     private List<ContentField<?>> contentFields;
 }
