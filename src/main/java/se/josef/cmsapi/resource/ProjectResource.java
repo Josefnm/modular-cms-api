@@ -28,9 +28,15 @@ public class ProjectResource {
         return projectService.saveProject(projectForm);
     }
 
+    @PostMapping("/update")
+    public @ResponseBody
+    Project updateProject(@RequestBody ProjectForm projectForm) {
+        return projectService.updateProject(projectForm);
+    }
+
     @DeleteMapping("/{id}")
     public @ResponseBody
-    Project deleteProject(@PathVariable String id) {
+    boolean deleteProject(@PathVariable String id) {
         return projectService.deleteProject(id);
     }
 

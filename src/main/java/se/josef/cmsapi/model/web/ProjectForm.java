@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProjectForm {
 
+    private String id;
     private String ownerId;
     private List<String> memberIds;
     private String name;

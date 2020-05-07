@@ -2,10 +2,12 @@ package se.josef.cmsapi.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import se.josef.cmsapi.exception.ContentException;
+import se.josef.cmsapi.exception.TemplateException;
 import se.josef.cmsapi.model.document.Template;
 import se.josef.cmsapi.model.web.TemplateForm;
+import se.josef.cmsapi.repository.ProjectRepository;
 import se.josef.cmsapi.repository.TemplateRepository;
+import se.josef.cmsapi.util.UserUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -15,18 +17,20 @@ import java.util.List;
 public class TemplateService {
 
     private final TemplateRepository templateRepository;
-    private final UserService userService;
+    private final ProjectRepository projectRepository;
+    private final UserUtils userUtils;
 
 
-    public TemplateService(TemplateRepository templateRepository, UserService userService) {
+    public TemplateService(TemplateRepository templateRepository, ProjectRepository projectRepository, UserUtils userUtils) {
         this.templateRepository = templateRepository;
-        this.userService = userService;
+        this.projectRepository = projectRepository;
+        this.userUtils = userUtils;
     }
 
     public Template saveTemplate(TemplateForm templateForm) {
-        var created=new Date();
-        var ownerId=userService.getUserId();
-        Template template=Template.builder()
+        var created = new Date();
+        var ownerId = userUtils.getUserId();
+        Template template = Template.builder()
                 .ownerId(ownerId)
                 .templateFields(templateForm.getTemplateFields())
                 .name(templateForm.getName())
@@ -40,20 +44,20 @@ public class TemplateService {
     }
 
     public List<Template> findByProjectId(String projectId) {
+        var userId = userUtils.getUserId();
+        projectRepository
+                .findByMemberIdsAndId(userId, projectId)
+                .orElseThrow(() ->
+                        new TemplateException(String.format("User doesn't have access to project with id: %s", projectId))
+                );
         return templateRepository.findByProjectIdOrderByCreatedDesc(projectId);
     }
 
-    //TODO check access against project owner/members instead
     public Template getTemplateById(String id) {
         return templateRepository
-                .findByIdAndOwnerId(id, userService.getUserId())
+                .findById(id)
                 .orElseThrow(() ->
-                        new ContentException(String.format("Content with id %s is unavailable", id))
+                        new TemplateException(String.format("Content with id %s is unavailable", id))
                 );
-    }
-
-    public List<Template> getTemplateForCurrentUser() {
-        return templateRepository
-                .findByOwnerIdOrderByCreatedDesc(userService.getUserId());
     }
 }

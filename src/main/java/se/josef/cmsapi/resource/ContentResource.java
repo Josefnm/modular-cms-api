@@ -2,6 +2,7 @@ package se.josef.cmsapi.resource;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import se.josef.cmsapi.adapter.ContentAdapter;
 import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.web.ContentForm;
 import se.josef.cmsapi.service.ContentService;
@@ -16,15 +17,29 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class ContentResource {
 
     private final ContentService contentService;
+    private final ContentAdapter contentAdapter;
 
-    public ContentResource(ContentService contentService) {
+    public ContentResource(ContentService contentService, ContentAdapter contentAdapter) {
         this.contentService = contentService;
+        this.contentAdapter = contentAdapter;
     }
 
     @PostMapping()
     public @ResponseBody
     Content addContent(@RequestBody ContentForm contentForm) {
         return contentService.saveContent(contentForm);
+    }
+
+    @PostMapping("/update")
+    public @ResponseBody
+    Content updateProject(@RequestBody ContentForm contentForm) {
+        return contentAdapter.updateContent(contentForm);
+    }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    boolean deleteProject(@PathVariable String id) {
+        return contentAdapter.deleteContent(id);
     }
 
     @GetMapping()
@@ -35,8 +50,8 @@ public class ContentResource {
 
     @GetMapping("/{id}")
     public @ResponseBody
-    Content getContentById(@PathVariable String id) {
-        return contentService.getContentById(id);
+    Content getPublicContentById(@PathVariable String id) {
+        return contentService.getContentByIdAndPublic(id);
     }
 
     @GetMapping("/user")

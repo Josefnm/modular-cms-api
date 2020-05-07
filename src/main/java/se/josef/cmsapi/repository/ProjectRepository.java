@@ -14,7 +14,7 @@ public interface ProjectRepository extends MongoRepository<Project, String> {
 
     List<Project> findAllByOwnerIdOrderByCreatedDesc(String ownerId);
 
-    Optional<Project> findByIdAndMemberIds(String id, String memberId);
+    Optional<Project> findByMemberIdsAndId(String memberId, String id);
 
-    Optional<Project> deleteByIdAndOwnerId(String id, String ownerId);
+    Long deleteByIdAndOwnerId(String id, String ownerId);
 }

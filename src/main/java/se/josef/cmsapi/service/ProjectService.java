@@ -5,45 +5,54 @@ import org.springframework.stereotype.Service;
 import se.josef.cmsapi.exception.ProjectException;
 import se.josef.cmsapi.model.document.Project;
 import se.josef.cmsapi.model.web.ProjectForm;
+import se.josef.cmsapi.repository.ContentRepository;
 import se.josef.cmsapi.repository.ProjectRepository;
+import se.josef.cmsapi.repository.TemplateRepository;
+import se.josef.cmsapi.util.UserUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final UserService userService;
+    private final TemplateRepository templateRepository;
+    private final ContentRepository contentRepository;
+    private final UserUtils userUtils;
 
-
-    public ProjectService(ProjectRepository projectRepository, UserService userService) {
+    public ProjectService(ProjectRepository projectRepository, TemplateRepository templateRepository, ContentRepository contentRepository, UserUtils userUtils) {
         this.projectRepository = projectRepository;
-        this.userService = userService;
+        this.templateRepository = templateRepository;
+        this.contentRepository = contentRepository;
+        this.userUtils = userUtils;
     }
 
     public Project saveProject(ProjectForm projectForm) {
-        var ownerId=userService.getUserId();
-        var created=new Date();
-        Project project=Project.builder()
+        var ownerId = userUtils.getUserId();
+        var created = new Date();
+        Project project = Project.builder()
                 .ownerId(ownerId)
                 .name(projectForm.getName())
                 .description(projectForm.getDescription())
-                .memberIds(new ArrayList<>())
+                .memberIds(Collections.singletonList(ownerId))
                 .created(created)
                 .updated(created)
                 .build();
         return projectRepository.save(project);
     }
 
-    public Project deleteProject(String projectId) {
-        return projectRepository
-                .deleteByIdAndOwnerId(projectId, userService.getUserId())
-                .orElseThrow(() ->
-                        new ProjectException(String.format("Can't delete project with id %s ", projectId))
-                );
+    public boolean deleteProject(String projectId) {
+        Long numDeleted = projectRepository
+                .deleteByIdAndOwnerId(projectId, userUtils.getUserId());
+        if (numDeleted > 0) {
+            templateRepository.deleteByProjectId(projectId);
+            contentRepository.deleteByProjectId(projectId);
+            return true;
+        } else {
+            throw new ProjectException(String.format("Can't delete project with id; %s", projectId));
+        }
+
     }
 
     public List<Project> getAllProjects() {
@@ -52,21 +61,33 @@ public class ProjectService {
 
 
     public List<Project> getProjectsByUserId() {
-        try {
-            String uid = userService.getUserId();
-            return projectRepository.findAllByMemberIdsOrOwnerIdOrderByCreatedDesc(uid, uid);
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-            throw e;
-        }
+
+        String uid = userUtils.getUserId();
+        return projectRepository.findAllByMemberIdsOrOwnerIdOrderByCreatedDesc(uid, uid);
+
     }
 
     public Project getProjectById(String id) {
+        var userId = userUtils.getUserId();
         return projectRepository
-                .findByIdAndMemberIds(id, userService.getUserId())
+                .findByMemberIdsAndId(userId, id)
                 .orElseThrow(() ->
                         new ProjectException(String.format("Project with id %s is unavailable", id))
                 );
+    }
+
+    public Project updateProject(ProjectForm projectForm){
+        try{
+        var project = getProjectById(projectForm.getId());
+        project.setName(projectForm.getName());
+        project.setDescription(projectForm.getDescription());
+        project.setMemberIds(projectForm.getMemberIds());
+        return projectRepository.save(project);
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new ProjectException(e.getMessage());
+        }
     }
 
 }
