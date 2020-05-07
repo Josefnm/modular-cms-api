@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface TemplateRepository extends MongoRepository<Template, String> {
 
-    List<Template> findByOwnerIdOrderByCreatedDesc(String userId);
-    List<Template> findByProjectIdOrderByCreatedDesc(String userId);
-    Long deleteByProjectId(String projectId);
+    List<Template> findByProjectIdOrderByCreatedDesc(String projectId);
+    void deleteByProjectId(String projectId);
 }
