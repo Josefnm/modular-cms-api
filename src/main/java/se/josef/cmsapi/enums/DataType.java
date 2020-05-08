@@ -13,7 +13,6 @@ public enum DataType {
     DATE(DateField.class),
     BOOL(BooleanField.class),
     CONTENT(ModuleField.class); //reference to other template
-    //TODO add more types
 
     private Class<?> type;
 
