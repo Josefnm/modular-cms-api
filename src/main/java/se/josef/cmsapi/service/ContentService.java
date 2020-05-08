@@ -6,6 +6,7 @@ import se.josef.cmsapi.exception.ContentException;
 import se.josef.cmsapi.exception.TemplateException;
 import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.web.ContentForm;
+import se.josef.cmsapi.model.web.contentsearch.ContentSearch;
 import se.josef.cmsapi.repository.ContentRepository;
 import se.josef.cmsapi.repository.ProjectRepository;
 import se.josef.cmsapi.util.UserUtils;
@@ -49,7 +50,7 @@ public class ContentService {
 
     public Content getContentByIdAndPublic(String id) {
         return contentRepository
-                .findByIdAndIsPublicTrue(id, userUtils.getUserId())
+                .findByIdAndIsPublicTrue(id)
                 .orElseThrow(
                         () -> new ContentException(String.format("Content with id %s is unavailable", id))
                 );
@@ -101,6 +102,14 @@ public class ContentService {
         }
 
 
+    }
+
+    public List<Content> searchContent(List<ContentSearch<?>> searchFields,String projectId){
+        return contentRepository.searchByProjectId(searchFields,projectId);
+    }
+
+    public List<Content> searchPublicContent(List<ContentSearch<?>> searchFields){
+        return contentRepository.searchIsPublic(searchFields);
     }
 
 }

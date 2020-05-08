@@ -21,10 +21,4 @@ public class HealthCheckResource {
         return ResponseEntity.ok().build();
     }
 
-    //Used to test origin
-    @GetMapping(value = "/cross")
-    public @ResponseBody
-    String checkOrigin(HttpServletRequest request) {
-        return request.getHeader("origin");
-    }
 }

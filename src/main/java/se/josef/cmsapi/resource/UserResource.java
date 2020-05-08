@@ -27,38 +27,32 @@ public class UserResource {
     }
 
     @GetMapping
-    public @ResponseBody
-    User getUser() {
+    public User getUser() {
         return userService.getCurrentUser();
     }
 
     @GetMapping(value = "/{id}")
-    public @ResponseBody
-    User getUserById(@PathVariable String id) {
+    public User getUserById(@PathVariable String id) {
         return userService.getById(id);
     }
 
     @GetMapping(value = "/all")
-    public @ResponseBody
-    List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping(value = "/search")
-    public @ResponseBody
-    List<User> searchUsers(@RequestParam(defaultValue = "") String searchString, @RequestParam String projectId) {
+    public List<User> searchUsers(@RequestParam(defaultValue = "") String searchString, @RequestParam String projectId) {
         return userService.searchUsersNotInProject(searchString, projectId);
     }
 
     @GetMapping(value = "/project")
-    public @ResponseBody
-    List<User> getUsersByProject(@RequestParam String projectId) {
+    public List<User> getUsersByProject(@RequestParam String projectId) {
         return userAdapter.findUsersByProject(projectId);
     }
 
     @PostMapping(value = "/signup")
-    public @ResponseBody
-    User signup(@NotNull @RequestBody UserForm userForm) {
+    public User signup(@NotNull @RequestBody UserForm userForm) {
         return userService.signup(userForm);
     }
 
