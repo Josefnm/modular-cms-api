@@ -22,7 +22,9 @@ steps:
       - "clean"
       - "install"
       - "jib:build"
-      - "-Djib.container.environment=SPRING_PROFILES_ACTIVE=${_SPRING_PROFILES_ACTIVE}, DB_USER=${_DB_USER}, DB_PASS=${_DB_PASS}"
+      - "-DSPRING_PROFILES_ACTIVE=${_SPRING_PROFILES_ACTIVE}"
+      - "-DDB_USER=${_DB_USER}"
+      - "-DDB_PASS=${_DB_PASS}"
     volumes:
       - name: m2
         path: /root/.m2/
