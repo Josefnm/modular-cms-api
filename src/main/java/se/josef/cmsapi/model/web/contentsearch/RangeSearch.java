@@ -14,9 +14,18 @@ public abstract class RangeSearch<T> extends ContentSearch<RangeParameter<T>> {
     }
 
     public Criteria getCriteria() {
-        var criteriaStub = Criteria.where("name").is(getName()).and("data");
 
-        var elemCriteria = getRangeCriteria(criteriaStub, getParameters());
+        var lessThan=getParameters().getLessThan();
+        var moreThan=getParameters().getMoreThan();
+
+        var elemCriteria = Criteria.where("name").is(getName()).and("data");
+
+        if (lessThan != null) {
+            elemCriteria.lt(lessThan);
+        }
+        if (moreThan != null) {
+            elemCriteria.gt(moreThan);
+        }
 
         return Criteria.where("contentFields").elemMatch(elemCriteria);
     }

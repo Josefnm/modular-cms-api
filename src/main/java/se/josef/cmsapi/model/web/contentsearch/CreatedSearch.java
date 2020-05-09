@@ -18,8 +18,19 @@ public class CreatedSearch extends ContentSearch<RangeParameter<Date>> {
     }
 
     public Criteria getCriteria() {
-        var criteriaStub = Criteria.where(getName());
-        return getRangeCriteria(criteriaStub, getParameters());
+
+        var lessThan=getParameters().getLessThan();
+        var moreThan=getParameters().getMoreThan();
+        var criteria = Criteria.where(getName());
+
+        if (lessThan != null) {
+            criteria.lt(lessThan);
+        }
+        if (moreThan != null) {
+            criteria.gt(moreThan);
+        }
+
+        return criteria;
     }
 
 }
