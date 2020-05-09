@@ -32,6 +32,7 @@ import static se.josef.cmsapi.utils.MockDataUtil.getRandomAlphabets;
 import static se.josef.cmsapi.utils.MockDataUtil.getRandomLowercaseNumeric;
 
 @Slf4j
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
 public class TemplateTests {
