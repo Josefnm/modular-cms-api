@@ -21,10 +21,8 @@ steps:
     args:
       - "test"
       - "-DSPRING_PROFILES_ACTIVE=${_SPRING_PROFILES_ACTIVE}"
-      - "-SPRING_PROFILES_ACTIVE=${_SPRING_PROFILES_ACTIVE}"
       - "-DDB_USER=${_DB_USER}"
       - "-DDB_PASS=${_DB_PASS}"
-      - "-Djib.container.environment=SPRING_PROFILES_ACTIVE=${_SPRING_PROFILES_ACTIVE}"
     volumes:
       - name: m2
         path: /root/.m2/
