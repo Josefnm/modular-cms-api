@@ -14,13 +14,11 @@ public class RequestUtils {
 
     public <T> ResponseEntity<T> postRequest(String path,  Class<T> responseType, T body, int port) {
         var url="http://localhost:" +port+ "/api" + path;
-        ResponseEntity<T> tResponseEntity = restTemplate.postForEntity(url, new HttpEntity<>(body), responseType);
         return restTemplate.postForEntity(url, new HttpEntity<>(body), responseType);
     }
 
     public <T> ResponseEntity<T> getRequest(String path, Class<T> responseType, int port) {
         var url="http://localhost:" +port+ "/api" + path;
-
         return restTemplate.getForEntity(url,responseType);
     }
 }

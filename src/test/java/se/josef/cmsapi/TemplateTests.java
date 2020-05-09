@@ -44,8 +44,6 @@ public class TemplateTests {
     private TemplateRepository templateRepository;
     @Autowired
     private ProjectRepository projectRepository;
-    @Autowired
-    private UserRepository userRepository;
     @MockBean
     private UserUtils userUtils;
     @Autowired
@@ -61,7 +59,6 @@ public class TemplateTests {
     @BeforeEach
     void setMockOutputAndDatabase() {
         mongoTemplate.getDb().drop();
-        // userRepository.save(new User(userId, userName, userEmail, new Date(), new Date()));
         projectRepository.save(new Project(projectId, userId, Collections.singletonList(userId), new Date(), new Date(), getRandomLowercaseNumeric(15), getRandomAlphabets(200)));
         var template = getNewTemplate(templateId);
         templateRepository.save(template);

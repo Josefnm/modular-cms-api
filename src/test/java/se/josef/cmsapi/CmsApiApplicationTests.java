@@ -13,6 +13,7 @@ class CmsApiApplicationTests {
 
     @Test
     void contextLoads() {
+        log.info(System.getenv().toString());
     }
 
 }
