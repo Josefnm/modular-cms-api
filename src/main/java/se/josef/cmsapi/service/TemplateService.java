@@ -17,13 +17,13 @@ import java.util.List;
 public class TemplateService {
 
     private final TemplateRepository templateRepository;
-    private final ProjectRepository projectRepository;
+
     private final UserUtils userUtils;
 
 
-    public TemplateService(TemplateRepository templateRepository, ProjectRepository projectRepository, UserUtils userUtils) {
+    public TemplateService(TemplateRepository templateRepository, UserUtils userUtils) {
         this.templateRepository = templateRepository;
-        this.projectRepository = projectRepository;
+
         this.userUtils = userUtils;
     }
 
@@ -44,12 +44,6 @@ public class TemplateService {
     }
 
     public List<Template> findByProjectId(String projectId) {
-        var userId = userUtils.getUserId();
-        projectRepository
-                .findByMemberIdsAndId(userId, projectId)
-                .orElseThrow(() ->
-                        new TemplateException(String.format("User doesn't have access to project with id: %s", projectId))
-                );
         return templateRepository.findByProjectIdOrderByCreatedDesc(projectId);
     }
 
@@ -59,5 +53,8 @@ public class TemplateService {
                 .orElseThrow(() ->
                         new TemplateException(String.format("Content with id %s is unavailable", id))
                 );
+    }
+    public List<Template> searchByNameAndProjectId(String name,String projectId) {
+        return templateRepository.findByNameRegexAndProjectIdOrderByCreated(name,projectId);
     }
 }

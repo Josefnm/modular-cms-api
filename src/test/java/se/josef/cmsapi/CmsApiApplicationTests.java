@@ -12,13 +12,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 @Slf4j
-@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, EmbeddedMongoAutoConfiguration.class})
+@EnableAutoConfiguration
 class CmsApiApplicationTests {
 
 	@Test
 	void contextLoads() {
+		log.info(System.getenv().toString());
 	}
 
 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 
 /**
@@ -29,6 +30,8 @@ import lombok.NoArgsConstructor;
         @Type(value = TextField.class)
 })
 public abstract class ContentField<T> {
+    @Indexed
     private String name;
+    @Indexed
     private T data;
 }

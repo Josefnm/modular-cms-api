@@ -17,24 +17,24 @@ import se.josef.cmsapi.model.web.ErrorResponse;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     //TODO add more specific exception response codes
-    @ExceptionHandler(value = {
+    @ExceptionHandler(value = { TemplateException.class,
             AuthException.class, UserException.class, ContentException.class, ProjectException.class})
     protected ResponseEntity<Object> clientConflictHandler(RuntimeException ex, WebRequest request) {
-        var message = new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+        var message = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
 
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler
     protected ResponseEntity<Object> serverConflictHandler(RuntimeException ex, WebRequest request) {
-        var message = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        var message = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
 
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler(value = SecurityException.class)
     protected ResponseEntity<Object> securityConflictHandler(RuntimeException ex, WebRequest request) {
-        ErrorResponse message = new ErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        ErrorResponse message = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
 
         return handleExceptionInternal(ex, message, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }

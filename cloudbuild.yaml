@@ -1,4 +1,10 @@
 steps:
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args: [ '-c', 'gcloud secrets versions access latest --secret=secret-data > decrypted-data.txt' ]
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: 'bash'
+    args: [ '-c', 'docker login --username=my-user --password-stdin < decrypted-data.txt']
 
   # loads cached files
   - name: gcr.io/cloud-builders/gsutil

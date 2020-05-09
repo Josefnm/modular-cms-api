@@ -32,9 +32,8 @@ import static se.josef.cmsapi.utils.MockDataUtil.getRandomAlphabets;
 import static se.josef.cmsapi.utils.MockDataUtil.getRandomLowercaseNumeric;
 
 @Slf4j
-@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, SecurityAutoConfiguration.class})
+@EnableAutoConfiguration
 public class TemplateTests {
 
     private static final String templateId = getRandomLowercaseNumeric(24);
@@ -52,9 +51,10 @@ public class TemplateTests {
 
     @Autowired
     private RequestUtils requestUtils;
-
+/*
     @BeforeEach
     void setMockOutput() {
+        log.info(System.getenv().toString());
         var template = getNewTemplate();
         doReturn(userId).when(userUtils).getUserId();
         when(templateRepository.save(any())).thenReturn(template);
@@ -100,5 +100,5 @@ public class TemplateTests {
                 getRandomAlphabets(100),
                 true,
                 tfs);
-    }
+    }*/
 }

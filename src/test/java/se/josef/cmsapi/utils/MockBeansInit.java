@@ -16,16 +16,5 @@ import se.josef.cmsapi.service.UserService;
  */
 @Component
 public class MockBeansInit {
-    @MockBean
-    private MongoTemplate mongoTemplate;
-    @MockBean
-    private ContentRepository contentRepository;
-    @MockBean
-    private TemplateRepository templateRepository;
-    @MockBean
-    private UserRepository userRepository;
-    @MockBean
-    private ProjectRepository projectRepository;
-    @SpyBean
-    private UserService userService;
+
 }
