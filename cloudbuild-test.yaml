@@ -21,7 +21,7 @@ steps:
     args:
       - "test"
       - "-DSPRING_PROFILES_ACTIVE=${_SPRING_PROFILES_ACTIVE}"
-      - "-DDB_USER=${_DB_USER}"
+
       - "-DDB_PASS=${_DB_PASS}"
     volumes:
       - name: m2
