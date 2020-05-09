@@ -23,38 +23,32 @@ public class ProjectResource {
     }
 
     @PostMapping()
-    public @ResponseBody
-    Project addProject(@RequestBody ProjectForm projectForm) {
+    public Project addProject(@RequestBody ProjectForm projectForm) {
         return projectService.saveProject(projectForm);
     }
 
     @PostMapping("/update")
-    public @ResponseBody
-    Project updateProject(@RequestBody ProjectForm projectForm) {
+    public Project updateProject(@RequestBody ProjectForm projectForm) {
         return projectService.updateProject(projectForm);
     }
 
     @DeleteMapping("/{id}")
-    public @ResponseBody
-    boolean deleteProject(@PathVariable String id) {
+    public boolean deleteProject(@PathVariable String id) {
         return projectService.deleteProject(id);
     }
 
     @GetMapping()
-    public @ResponseBody
-    List<Project> getAllProject() {
+    public List<Project> getAllProject() {
         return projectService.getAllProjects();
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody
-    Project getProjectById(@PathVariable String id) {
+    public Project getProjectById(@PathVariable String id) {
         return projectService.getProjectById(id);
     }
 
     @GetMapping("/user")
-    public @ResponseBody
-    List<Project> getProjectForCurrentUser() {
+    public List<Project> getProjectForCurrentUser() {
         return projectService.getProjectsByUserId();
     }
 
