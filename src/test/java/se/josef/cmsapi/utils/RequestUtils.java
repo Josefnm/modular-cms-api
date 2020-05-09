@@ -14,7 +14,7 @@ public class RequestUtils {
 
     public <T> ResponseEntity<T> postRequest(String path,  Class<T> responseType, T body, int port) {
         var url="http://localhost:" +port+ "/api" + path;
-
+        ResponseEntity<T> tResponseEntity = restTemplate.postForEntity(url, new HttpEntity<>(body), responseType);
         return restTemplate.postForEntity(url, new HttpEntity<>(body), responseType);
     }
 

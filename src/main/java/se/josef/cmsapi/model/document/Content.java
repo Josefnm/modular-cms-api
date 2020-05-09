@@ -38,5 +38,6 @@ public class Content {
     @Indexed
     private String name;
     private Boolean isPublic;
+    @Indexed
     private List<ContentField<?>> contentFields;
 }
