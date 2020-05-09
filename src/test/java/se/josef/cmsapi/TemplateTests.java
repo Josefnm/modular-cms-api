@@ -61,7 +61,8 @@ public class TemplateTests {
         mongoTemplate.getDb().drop();
         projectRepository.save(new Project(projectId, userId, Collections.singletonList(userId), new Date(), new Date(), getRandomLowercaseNumeric(15), getRandomAlphabets(200)));
         var template = getNewTemplate(templateId);
-        templateRepository.save(template);
+        Template save = templateRepository.save(template);
+        log.debug(save.toString());
     }
 
     @Test
