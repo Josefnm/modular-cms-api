@@ -67,12 +67,15 @@ public class TemplateTests {
     @Test
     public void saveTemplateSuccess() {
         var response = requestUtils.postRequest("/template", Template.class, getNewTemplate(getRandomLowercaseNumeric(24)), port);
+        log.info(response.toString());
+
         assertEquals(userId, Objects.requireNonNull(response.getBody()).getOwnerId());
     }
 
     @Test
     public void getTemplatesByProjectIdSuccess() {
         var response = requestUtils.getRequest("/template/projectId/" + projectId, Template[].class, port);
+        log.info(response.toString());
         assertEquals(templateId, Objects.requireNonNull(response.getBody())[0].getId());
     }
 
