@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 @Slf4j
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, EmbeddedMongoAutoConfiguration.class})
+@EnableAutoConfiguration
 class CmsApiApplicationTests {
 
 	@Test

@@ -30,13 +30,18 @@ spec:
               port: 8080
           ports:
             - containerPort: 8080
-            # sensitive env vars loaded using cloud secrets
+            # sensitive env vars loaded using secrets
           env:
-            - name: MONGODB_URI
+            - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: mongodb
-                  key: uri
+                  name: database
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: database
+                  key: DB_PASS
             - name: FIREBASE_API_KEY
               valueFrom:
                 secretKeyRef:
