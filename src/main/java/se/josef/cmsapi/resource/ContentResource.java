@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import se.josef.cmsapi.adapter.ContentAdapter;
 import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.web.ContentForm;
+import se.josef.cmsapi.model.web.contentsearch.ContentSearch;
 import se.josef.cmsapi.service.ContentService;
 
 import java.util.List;
@@ -25,45 +26,48 @@ public class ContentResource {
     }
 
     @PostMapping()
-    public @ResponseBody
-    Content addContent(@RequestBody ContentForm contentForm) {
+    public Content addContent(@RequestBody ContentForm contentForm) {
         return contentService.saveContent(contentForm);
     }
 
     @PostMapping("/update")
-    public @ResponseBody
-    Content updateProject(@RequestBody ContentForm contentForm) {
+    public Content updateProject(@RequestBody ContentForm contentForm) {
         return contentAdapter.updateContent(contentForm);
     }
 
     @DeleteMapping("/{id}")
-    public @ResponseBody
-    boolean deleteProject(@PathVariable String id) {
+    public boolean deleteProject(@PathVariable String id) {
         return contentAdapter.deleteContent(id);
     }
 
     @GetMapping()
-    public @ResponseBody
-    List<Content> getAllPublicContent() {
+    public List<Content> getAllPublicContent() {
         return contentService.getAllPublicContent();
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody
-    Content getPublicContentById(@PathVariable String id) {
+    public Content getPublicContentById(@PathVariable String id) {
         return contentService.getContentByIdAndPublic(id);
     }
 
     @GetMapping("/user")
-    public @ResponseBody
-    List<Content> getContentForCurrentUser() {
+    public List<Content> getContentForCurrentUser() {
         return contentService.getContentForCurrentUser();
     }
 
     @GetMapping("/projectId/{projectId}")
-    public @ResponseBody
-    List<Content> getByProjectId(@PathVariable String projectId) {
+    public List<Content> getByProjectId(@PathVariable String projectId) {
         return contentService.findByProjectId(projectId);
+    }
+
+    @PostMapping("/search")
+    public List<Content> searchPublicContent(@RequestBody List<ContentSearch<?>> searchFields) {
+        return contentService.searchPublicContent(searchFields);
+    }
+
+    @PostMapping("/search/{projectId}")
+    public List<Content> searchContent(@RequestBody List<ContentSearch<?>> searchFields, @PathVariable String projectId) {
+        return contentAdapter.searchContent(searchFields,projectId);
     }
 
 }

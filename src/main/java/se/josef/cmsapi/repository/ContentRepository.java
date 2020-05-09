@@ -8,11 +8,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ContentRepository extends MongoRepository<Content, String> {
+public interface ContentRepository extends MongoRepository<Content, String>, ContentRepositoryCustom {
 
-    Optional<Content> findByIdAndIsPublicTrue(String id, String ownerId);
+    Optional<Content> findByIdAndIsPublicTrue(String id);
+
     List<Content> findByProjectIdOrderByCreatedDesc(String userId);
+
     List<Content> findByOwnerIdOrderByCreatedDesc(String userId);
+
     List<Content> findByIsPublicTrue();
+
     Long deleteByProjectId(String projectId);
 }

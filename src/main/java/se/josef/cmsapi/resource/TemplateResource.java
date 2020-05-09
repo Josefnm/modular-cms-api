@@ -23,20 +23,17 @@ public class TemplateResource {
     }
 
     @PostMapping()
-    public @ResponseBody
-    Template saveTemplate(@RequestBody TemplateForm templateForm) {
+    public Template saveTemplate(@RequestBody TemplateForm templateForm) {
         return templateService.saveTemplate(templateForm);
     }
 
     @GetMapping("/projectId/{projectId}")
-    public @ResponseBody
-    List<Template> getByProjectId(@PathVariable String projectId) {
+    public List<Template> getByProjectId(@PathVariable String projectId) {
         return templateService.findByProjectId(projectId);
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody
-    Template getTemplateById(@PathVariable String id) {
+    public Template getTemplateById(@PathVariable String id) {
         return templateService.getTemplateById(id);
     }
 
