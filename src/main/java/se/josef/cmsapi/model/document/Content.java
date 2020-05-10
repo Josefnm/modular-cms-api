@@ -29,11 +29,15 @@ public class Content {
     private String projectId;
     @Indexed
     private String templateId;
+    @Indexed
     @CreatedDate
     private Date created;
+    @Indexed
     @LastModifiedDate
     private Date updated;
+    @Indexed
     private String name;
     private Boolean isPublic;
+    @Indexed
     private List<ContentField<?>> contentFields;
 }

@@ -20,6 +20,8 @@ steps:
     entrypoint: mvn
     args:
       - "test"
+      - "-DDB_USER=${_DB_USER}"
+      - "-DDB_PASS=${_DB_PASS}"
     volumes:
       - name: m2
         path: /root/.m2/
