@@ -9,13 +9,12 @@ import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
 import org.springframework.data.mongodb.core.mapping.*;
 
-@Profile(value = "!test")
 @Configuration
-public class MongoConfiguration {
+public class MongoConfig {
     private final MongoTemplate mongoTemplate;
     private final MongoConverter mongoConverter;
 
-    public MongoConfiguration(MongoTemplate mongoTemplate, MongoConverter mongoConverter) {
+    public MongoConfig(MongoTemplate mongoTemplate, MongoConverter mongoConverter) {
         this.mongoTemplate = mongoTemplate;
         this.mongoConverter = mongoConverter;
     }
@@ -31,7 +30,8 @@ public class MongoConfiguration {
         if (!(mappingContext instanceof MongoMappingContext)) return;
 
         var mongoMappingContext = (MongoMappingContext) mappingContext;
-        for (BasicMongoPersistentEntity<?> persistentEntity : mongoMappingContext.getPersistentEntities()) {
+        for (var persistentEntity : mongoMappingContext.getPersistentEntities()) {
+
             var clazz = persistentEntity.getType();
             if (clazz.isAnnotationPresent(Document.class)) {
                 var resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);
