@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClientException;
 import se.josef.cmsapi.enums.DataType;
 import se.josef.cmsapi.model.document.Project;
@@ -31,7 +30,6 @@ import static org.mockito.Mockito.doReturn;
 import static se.josef.cmsapi.utils.MockDataUtil.*;
 
 @Slf4j
-@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
 public class TemplateTests {
