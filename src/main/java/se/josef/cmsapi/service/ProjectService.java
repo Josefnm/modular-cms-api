@@ -31,7 +31,7 @@ public class ProjectService {
     public Project saveProject(ProjectForm projectForm) {
         var ownerId = userUtils.getUserId();
         var created = new Date();
-        Project project = Project.builder()
+        var project = Project.builder()
                 .ownerId(ownerId)
                 .name(projectForm.getName())
                 .description(projectForm.getDescription())
@@ -62,7 +62,7 @@ public class ProjectService {
 
     public List<Project> getProjectsByUserId() {
 
-        String uid = userUtils.getUserId();
+        var uid = userUtils.getUserId();
         return projectRepository.findAllByMemberIdsOrOwnerIdOrderByCreatedDesc(uid, uid);
 
     }
