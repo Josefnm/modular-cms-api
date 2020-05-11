@@ -3,6 +3,7 @@ package se.josef.cmsapi.model.document;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -23,6 +24,7 @@ public class Template {
 
     private String id;
     @Indexed
+    @CreatedBy
     private String ownerId;
     @Indexed
     private String projectId;
@@ -34,4 +36,6 @@ public class Template {
     private String description;
     private Boolean isPublic;
     private List<TemplateField> templateFields;
+    //only used when returning name joined from user document, not stored in database
+    private String ownerName;
 }

@@ -13,6 +13,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClientException;
+import se.josef.cmsapi.config.SecurityAuditorAware;
 import se.josef.cmsapi.enums.DataType;
 import se.josef.cmsapi.model.document.Project;
 import se.josef.cmsapi.model.document.Template;
@@ -48,6 +49,8 @@ public class TemplateTests {
     private ProjectRepository projectRepository;
     @MockBean
     private UserUtils userUtils;
+    @MockBean
+    private SecurityAuditorAware securityAuditorAware;
     @Autowired
     MongoTemplate mongoTemplate;
     @Autowired
@@ -56,6 +59,7 @@ public class TemplateTests {
     @PostConstruct
     void setSecurityContextUser() {
         doReturn(userId).when(userUtils).getUserId();
+        doReturn(Optional.of(userId)).when(securityAuditorAware).getCurrentAuditor();
     }
 
     @BeforeEach
@@ -96,17 +100,18 @@ public class TemplateTests {
 
     private static Template getNewTemplate(String templateId) {
         List<TemplateField> tfs = new ArrayList<>();
-        tfs.add(new TemplateField(getRandomAlphabets(15), DataType.STRING.getType().getSimpleName()));
-        tfs.add(new TemplateField(getRandomAlphabets(15), DataType.IMAGE.getType().getSimpleName()));
+        tfs.add(new TemplateField(getRandomAlphabets(15), DataType.STRING));
+        tfs.add(new TemplateField(getRandomAlphabets(15), DataType.IMAGE));
 
-        return new Template(templateId,
-                userId,
-                projectId,
-                new Date(),
-                new Date(),
-                getRandomAlphabets(15),
-                getRandomAlphabets(100),
-                true,
-                tfs);
+        return Template.builder()
+                .name(getRandomAlphabets(15))
+                .description(getRandomAlphabets(100))
+                .projectId(projectId)
+                .created(new Date())
+                .updated(new Date())
+                .isPublic(true)
+                .templateFields(tfs)
+                .id(templateId).build();
+
     }
 }

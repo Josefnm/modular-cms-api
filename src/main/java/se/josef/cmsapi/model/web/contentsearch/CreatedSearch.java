@@ -6,8 +6,6 @@ import se.josef.cmsapi.model.web.contentsearch.parameter.RangeParameter;
 
 import java.util.Date;
 
-import static se.josef.cmsapi.model.web.contentsearch.utils.getRangeCriteria;
-
 @EqualsAndHashCode(callSuper = true)
 public class CreatedSearch extends ContentSearch<RangeParameter<Date>> {
     public CreatedSearch() {
@@ -19,8 +17,8 @@ public class CreatedSearch extends ContentSearch<RangeParameter<Date>> {
 
     public Criteria getCriteria() {
 
-        var lessThan=getParameters().getLessThan();
-        var moreThan=getParameters().getMoreThan();
+        var lessThan = getParameters().getLessThan();
+        var moreThan = getParameters().getMoreThan();
         var criteria = Criteria.where(getName());
 
         if (lessThan != null) {

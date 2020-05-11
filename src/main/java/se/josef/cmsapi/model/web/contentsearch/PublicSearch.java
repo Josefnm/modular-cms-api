@@ -9,7 +9,7 @@ public class PublicSearch extends ContentSearch<Boolean> {
     public PublicSearch() {
     }
 
-    public PublicSearch( Boolean parameters) {
+    public PublicSearch(Boolean parameters) {
         super(null, parameters);
     }
 

@@ -11,7 +11,6 @@ import se.josef.cmsapi.exception.UserException;
 import se.josef.cmsapi.model.document.Project;
 import se.josef.cmsapi.model.document.User;
 import se.josef.cmsapi.model.web.UserForm;
-import se.josef.cmsapi.repository.ProjectRepository;
 import se.josef.cmsapi.repository.UserRepository;
 import se.josef.cmsapi.util.UserUtils;
 
@@ -24,12 +23,11 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ProjectRepository projectRepository;
     private final UserUtils userUtils;
 
-    public UserService(UserRepository userRepository, ProjectRepository projectRepository, UserUtils userUtils) {
+
+    public UserService(UserRepository userRepository, UserUtils userUtils) {
         this.userRepository = userRepository;
-        this.projectRepository = projectRepository;
         this.userUtils = userUtils;
     }
 
@@ -49,6 +47,10 @@ public class UserService {
                 );
     }
 
+    /**
+     * Adds user on Firebase and to database, if they have a unique email and username.
+     * @return saved User
+     */
     public User signup(UserForm userForm) {
         try {
             var userFromDb = userRepository.findByEmailOrUserName(userForm.getEmail(), userForm.getUserName());
@@ -80,30 +82,33 @@ public class UserService {
                 }
             }
         } catch (FirebaseAuthException exception) {
-            log.warn("Error while saving Firebase user - {}", exception.getMessage());
+            log.warn("Error while saving Firebase user {}", exception.getMessage());
             throw new AuthException("Error creating user in firebase: " + exception.getMessage());
         }
     }
 
-    public List<User> searchUsersNotInProject(String searchString, String projectId) {
+    /**
+     * searches for users if a regex string is provided, otherwise returns all users
+     */
+    public List<User> searchUsers(String searchString) {
         List<User> users;
         if (StringUtils.isNotBlank(searchString)) {
             users = userRepository.searchUsers(searchString);
         } else {
             users = userRepository.findAll();
         }
-        var projectOpt = projectRepository.findById(projectId);
-        if (projectOpt.isPresent()) {
-            return filterUsersNotInProject(users, projectOpt.get());
-        }
         return users;
     }
 
-    private List<User> filterUsersNotInProject(List<User> users, Project project) {
-
-        // Hashset for better performance. Would need to add pagination with a large amount of users.
+    /**
+     * Returns users that are not in project.
+     * @param users
+     * @param project
+     * @return
+     */
+    public List<User> filterUsersNotInProject(List<User> users, Project project) {
+        // Hashset is used for better performance. Would need to add pagination with a large amount of users.
         var memberIds = new HashSet<>(project.getMemberIds());
-
         return users.stream()
                 .filter(user -> !memberIds.contains(user.getId()))
                 .collect(Collectors.toList());

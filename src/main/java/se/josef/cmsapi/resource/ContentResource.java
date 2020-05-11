@@ -36,7 +36,7 @@ public class ContentResource {
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteProject(@PathVariable String id) {
+    public boolean deleteContent(@PathVariable String id) {
         return contentAdapter.deleteContent(id);
     }
 
@@ -57,7 +57,7 @@ public class ContentResource {
 
     @GetMapping("/projectId/{projectId}")
     public List<Content> getByProjectId(@PathVariable String projectId) {
-        return contentService.findByProjectId(projectId);
+        return contentAdapter.findByProjectId(projectId);
     }
 
     @PostMapping("/search")
@@ -67,7 +67,7 @@ public class ContentResource {
 
     @PostMapping("/search/{projectId}")
     public List<Content> searchContent(@RequestBody List<ContentSearch<?>> searchFields, @PathVariable String projectId) {
-        return contentAdapter.searchContent(searchFields,projectId);
+        return contentAdapter.searchContent(searchFields, projectId);
     }
 
 }

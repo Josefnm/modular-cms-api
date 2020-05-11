@@ -4,6 +4,7 @@ package se.josef.cmsapi.model.document;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -24,6 +25,7 @@ public class Content {
 
     private String id;
     @Indexed
+    @CreatedBy
     private String ownerId;
     @Indexed
     private String projectId;
@@ -40,4 +42,8 @@ public class Content {
     private Boolean isPublic;
     @Indexed
     private List<ContentField<?>> contentFields;
+
+    //only used when returning name joined from user document, not persisted
+    private String ownerName;
+    private String templateName;
 }
