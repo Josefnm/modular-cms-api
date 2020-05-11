@@ -9,7 +9,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import se.josef.cmsapi.model.web.ErrorResponse;
 
-
 /**
  * returns specified error codes and messages as responses when throwing specified exceptions
  */
@@ -17,7 +16,7 @@ import se.josef.cmsapi.model.web.ErrorResponse;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     //TODO add more specific exception response codes
-    @ExceptionHandler(value = { TemplateException.class,
+    @ExceptionHandler(value = {TemplateException.class,
             AuthException.class, UserException.class, ContentException.class, ProjectException.class})
     protected ResponseEntity<Object> clientConflictHandler(RuntimeException ex, WebRequest request) {
         var message = new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());

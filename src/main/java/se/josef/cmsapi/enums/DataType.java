@@ -5,6 +5,7 @@ import se.josef.cmsapi.model.document.contentField.*;
 /**
  * Datatypes that can be saved by the cms.
  */
+// TODO remove this, not used
 public enum DataType {
     STRING(StringField.class),
     FORMATTED_TEXT(TextField.class),

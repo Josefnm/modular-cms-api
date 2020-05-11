@@ -16,8 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Collections;
 import java.util.List;
 
-/*
-Visit gosef.se/api/swagger-ui.html to check and test endpoints
+/**
+ * Visit gosef.se/api/swagger-ui.html to check endpoints
  */
 @EnableSwagger2
 @Configuration
@@ -43,6 +43,11 @@ public class SwaggerConfig {
     private String contactEmail;
 
 
+    /**
+     * configures swagger
+     *
+     * @return
+     */
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -50,34 +55,42 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))
                 .paths(PathSelectors.any())
                 .build()
-                .securitySchemes(Lists.newArrayList(apiKey()))
-                .securityContexts(Lists.newArrayList(securityContext()))
+                .securitySchemes(apiKey())
+                .securityContexts(securityContext())
                 .ignoredParameterTypes(RequestHeader.class)
                 .apiInfo(apiInfo());
     }
 
-    private SecurityContext securityContext() {
-        return SecurityContext.builder()
+    /**
+     * security configuration for swagger. Only allows you to manually enter bearer tokens.
+     */
+    private List<SecurityContext> securityContext() {
+        return Collections.singletonList(SecurityContext.builder()
                 .securityReferences(defaultAuth())
                 .forPaths(PathSelectors.any())
-                .build();
-    }
-    // Allows adding auth Bearer token in the ui, the actual security
-    // settings for swagger doesn't really do anything.
-    private ApiKey apiKey() {
-        return new ApiKey(AUTHORIZATION_HEADER, AUTHORIZATION_HEADER, PASS_AS);
+                .build());
     }
 
+    /**
+     * configures security header
+     */
+    private List<ApiKey> apiKey() {
+        return Collections.singletonList(new ApiKey(AUTHORIZATION_HEADER, AUTHORIZATION_HEADER, PASS_AS));
+    }
 
+    /**
+     * config for authorization scope
+     */
     private List<SecurityReference> defaultAuth() {
-
         AuthorizationScope[] authorizationScopes = {
                 new AuthorizationScope(AUTHORIZATION_SCOPE, AUTHORIZATION_SCOPE_DESC)};
-
         return Lists.newArrayList(
                 new SecurityReference(AUTHORIZATION_HEADER, authorizationScopes));
     }
 
+    /**
+     * api title, description etc
+     */
     private ApiInfo apiInfo() {
         var contact = new Contact(contactName, contactUrl, contactEmail);
         return new ApiInfo(

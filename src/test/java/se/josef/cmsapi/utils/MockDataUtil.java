@@ -23,7 +23,7 @@ public class MockDataUtil {
 
     }
 
-    private static char getRandomChar(String src){
+    private static char getRandomChar(String src) {
         return src.charAt((int) (src.length() * Math.random()));
     }
 

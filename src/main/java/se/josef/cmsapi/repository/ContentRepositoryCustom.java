@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface ContentRepositoryCustom {
 
-    List<Content> searchByProjectId(List<ContentSearch<?>> searchFields, String projectId);
-    List<Content> searchIsPublic(List<ContentSearch<?>> searchFields);
+    List<Content> findByProjectIdAndContentFields(List<ContentSearch<?>> searchFields, String projectId);
+
+    List<Content> findByIsPublicAndContentFields(List<ContentSearch<?>> searchFields);
+
+    List<Content> findByProjectIdOrderByCreatedDesc(String userId);
 
 }

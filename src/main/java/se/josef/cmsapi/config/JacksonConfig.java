@@ -14,6 +14,7 @@ public class JacksonConfig {
 
     /**
      * Configures serialization and deserialization
+     *
      * @return
      */
     @Bean

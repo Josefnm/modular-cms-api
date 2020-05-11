@@ -1,11 +1,9 @@
 package se.josef.cmsapi.firebase;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import se.josef.cmsapi.interfaces.TFunction;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,12 +16,8 @@ public class FirebaseTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final static String HEADER_KEY = "Authorization";
 
-    // Experimenting with functions.
-    TFunction<String, FirebaseToken> authenticateFirebaseToken = FirebaseAuth.getInstance()::verifyIdToken;
-    TFunction<String, String> getAuthToken = headerValue -> headerValue.substring(7);
-
     /**
-     * checks headers for auth tokens, checks them against firebase and adds credentials to
+     * checks headers for auth tokens, checks them against firebase and adds authentication credentials to
      * security context if they are valid
      */
     @Override
@@ -32,10 +26,10 @@ public class FirebaseTokenAuthenticationFilter extends OncePerRequestFilter {
         String headerValue = request.getHeader(HEADER_KEY);
         if (headerValue != null && !headerValue.isBlank()) {
             try {
-                var authentication = getAuthToken
-                        .andThen(authenticateFirebaseToken)
-                        .andThen(FirebaseAuthenticationToken::new)
-                        .applyThrows(headerValue);
+                // removes bearer prefix
+                var token = headerValue.substring(7);
+                var firebaseToken = FirebaseAuth.getInstance().verifyIdToken(token);
+                var authentication = new FirebaseAuthenticationToken(firebaseToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
                 log.error("Authentication token not valid: " + e.getMessage());

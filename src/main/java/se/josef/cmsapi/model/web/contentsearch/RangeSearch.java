@@ -3,8 +3,6 @@ package se.josef.cmsapi.model.web.contentsearch;
 import org.springframework.data.mongodb.core.query.Criteria;
 import se.josef.cmsapi.model.web.contentsearch.parameter.RangeParameter;
 
-import static se.josef.cmsapi.model.web.contentsearch.utils.getRangeCriteria;
-
 public abstract class RangeSearch<T> extends ContentSearch<RangeParameter<T>> {
     public RangeSearch() {
     }
@@ -15,8 +13,8 @@ public abstract class RangeSearch<T> extends ContentSearch<RangeParameter<T>> {
 
     public Criteria getCriteria() {
 
-        var lessThan=getParameters().getLessThan();
-        var moreThan=getParameters().getMoreThan();
+        var lessThan = getParameters().getLessThan();
+        var moreThan = getParameters().getMoreThan();
 
         var elemCriteria = Criteria.where("name").is(getName()).and("data");
 

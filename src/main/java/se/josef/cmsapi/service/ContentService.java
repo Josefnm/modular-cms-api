@@ -1,17 +1,15 @@
 package se.josef.cmsapi.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import se.josef.cmsapi.exception.ContentException;
-import se.josef.cmsapi.exception.TemplateException;
 import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.web.ContentForm;
 import se.josef.cmsapi.model.web.contentsearch.ContentSearch;
 import se.josef.cmsapi.repository.ContentRepository;
-import se.josef.cmsapi.repository.ProjectRepository;
 import se.josef.cmsapi.util.UserUtils;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,22 +17,16 @@ import java.util.List;
 public class ContentService {
 
     private final ContentRepository contentRepository;
-    private final ProjectRepository projectRepository;
     private final UserUtils userUtils;
 
-    public ContentService(ContentRepository contentRepository, ProjectRepository projectRepository, UserUtils userUtils) {
+
+    public ContentService(ContentRepository contentRepository, UserUtils userUtils) {
         this.contentRepository = contentRepository;
-        this.projectRepository = projectRepository;
         this.userUtils = userUtils;
     }
 
     public Content saveContent(ContentForm contentForm) {
-        var ownerId = userUtils.getUserId();
-        var created = new Date();
         Content content = Content.builder()
-                .ownerId(ownerId)
-                .created(created)
-                .updated(created)
                 .isPublic(contentForm.isPublic())
                 .contentFields(contentForm.getContentFields())
                 .name(contentForm.getName())
@@ -68,21 +60,19 @@ public class ContentService {
     }
 
     public List<Content> findByProjectId(String projectId) {
-        var userId = userUtils.getUserId();
-        projectRepository
-                .findByMemberIdsAndId(userId, projectId)
-                .orElseThrow(() ->
-                        new TemplateException(String.format("User doesn't have access to project with id: %s", projectId))
-                );
         return contentRepository.findByProjectIdOrderByCreatedDesc(projectId);
     }
 
-    public Content updateContent(ContentForm contentForm,Content content) {
+    @Async
+    public void deleteByProjectId(String projectId) {
+        contentRepository.deleteByProjectId(projectId);
+    }
+
+    public Content updateContent(ContentForm contentForm, Content content) {
         try {
 
             content.setIsPublic(contentForm.isPublic());
             content.setName(contentForm.getName());
-
             content.setContentFields(contentForm.getContentFields());
             return contentRepository.save(content);
 
@@ -98,18 +88,18 @@ public class ContentService {
             return true;
         } catch (Exception e) {
             log.error("error deleting project with id {}: {}", projectId, e.getMessage());
-            throw new ContentException(String.format("Can't delete project with id: %s", projectId));
+            throw new ContentException(String.format("Can't delete content with id: %s", projectId));
         }
 
 
     }
 
-    public List<Content> searchContent(List<ContentSearch<?>> searchFields,String projectId){
-        return contentRepository.searchByProjectId(searchFields,projectId);
+    public List<Content> searchContent(List<ContentSearch<?>> searchFields, String projectId) {
+        return contentRepository.findByProjectIdAndContentFields(searchFields, projectId);
     }
 
-    public List<Content> searchPublicContent(List<ContentSearch<?>> searchFields){
-        return contentRepository.searchIsPublic(searchFields);
+    public List<Content> searchPublicContent(List<ContentSearch<?>> searchFields) {
+        return contentRepository.findByIsPublicAndContentFields(searchFields);
     }
 
 }

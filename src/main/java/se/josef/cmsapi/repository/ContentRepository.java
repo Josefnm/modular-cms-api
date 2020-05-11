@@ -12,11 +12,10 @@ public interface ContentRepository extends MongoRepository<Content, String>, Con
 
     Optional<Content> findByIdAndIsPublicTrue(String id);
 
-    List<Content> findByProjectIdOrderByCreatedDesc(String userId);
 
     List<Content> findByOwnerIdOrderByCreatedDesc(String userId);
 
     List<Content> findByIsPublicTrue();
 
-    Long deleteByProjectId(String projectId);
+    void deleteByProjectId(String projectId);
 }

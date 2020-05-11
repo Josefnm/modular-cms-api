@@ -30,7 +30,7 @@ public class TemplateResource {
     }
 
     @GetMapping("/projectId/{projectId}")
-    public List<Template> getByProjectId(@PathVariable String projectId) {
+    public List<Template> getTemplateByProjectId(@PathVariable String projectId) {
         return templateAdapter.findByProjectId(projectId);
     }
 
@@ -41,7 +41,6 @@ public class TemplateResource {
 
     @GetMapping("/search/{projectId}")
     public List<Template> searchByNameAndProjectId(@PathVariable String projectId, @RequestParam String searchString) {
-        System.out.println(projectId);
         return templateAdapter.searchByNameAndProjectId(searchString, projectId);
     }
 

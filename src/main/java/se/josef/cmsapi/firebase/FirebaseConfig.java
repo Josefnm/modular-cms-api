@@ -19,6 +19,9 @@ import java.io.IOException;
 @Profile("!test")
 public class FirebaseConfig {
 
+    /**
+     * loads a firebase sdk instance with given credentials
+     */
     public FirebaseConfig() {
         if (FirebaseApp.getApps().isEmpty()) {
             try {

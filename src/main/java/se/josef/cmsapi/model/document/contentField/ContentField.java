@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 
 /**
  * Deserialization to correct subclass handled by annotations
- *
+ *  This class describes the data contained by Content documents
  * @param <T>
  */
 @Data
