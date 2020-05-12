@@ -40,7 +40,7 @@ public class TemplateResource {
     }
 
     @GetMapping("/search/{projectId}")
-    public List<Template> searchByNameAndProjectId(@PathVariable String projectId, @RequestParam String searchString) {
+    public List<Template> searchTemplateByNameAndProjectId(@PathVariable String projectId, @RequestParam String searchString) {
         return templateAdapter.searchByNameAndProjectId(searchString, projectId);
     }
 

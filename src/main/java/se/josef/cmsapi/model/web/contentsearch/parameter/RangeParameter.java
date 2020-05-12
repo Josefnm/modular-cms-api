@@ -4,6 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * parameter for searching values like dates and numbers
+ * @param <T>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

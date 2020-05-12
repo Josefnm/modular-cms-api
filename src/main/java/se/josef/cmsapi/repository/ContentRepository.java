@@ -12,9 +12,6 @@ public interface ContentRepository extends MongoRepository<Content, String>, Con
 
     Optional<Content> findByIdAndIsPublicTrue(String id);
 
-
-    List<Content> findByOwnerIdOrderByCreatedDesc(String userId);
-
     List<Content> findByIsPublicTrue();
 
     void deleteByProjectId(String projectId);

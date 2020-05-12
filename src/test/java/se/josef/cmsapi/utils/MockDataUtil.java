@@ -1,6 +1,12 @@
 package se.josef.cmsapi.utils;
 
-import java.util.Random;
+import se.josef.cmsapi.model.document.Project;
+import se.josef.cmsapi.model.document.Template;
+import se.josef.cmsapi.model.document.TemplateField;
+import se.josef.cmsapi.model.document.contentField.ImageField;
+import se.josef.cmsapi.model.document.contentField.StringField;
+
+import java.util.*;
 import java.util.stream.IntStream;
 
 
@@ -74,5 +80,33 @@ public class MockDataUtil {
 
     public static double getRandomDouble() {
         return new Random().nextDouble();
+    }
+
+
+    public static Template getNewTemplate(String templateId, String projectId,String name) {
+        List<TemplateField> tfs = new ArrayList<>();
+        tfs.add(new TemplateField(getRandomAlphabets(15), StringField.class.getSimpleName()));
+        tfs.add(new TemplateField(getRandomAlphabets(15), ImageField.class.getSimpleName()));
+
+        return Template.builder()
+                .name(name)
+                .description(getRandomAlphaNumericAndSymbols(100))
+                .projectId(projectId)
+                .created(new Date())
+                .updated(new Date())
+                .isPublic(true)
+                .templateFields(tfs)
+                .id(templateId)
+                .build();
+
+    }
+
+    public static Project getNewProject(String projectId, String ownerId) {
+        return Project.builder()
+                .id(projectId)
+                .memberIds(Collections.singletonList(ownerId))
+                .name(getRandomAlphabets(15))
+                .description(getRandomAlphaNumericAndSymbols(100))
+                .build();
     }
 }

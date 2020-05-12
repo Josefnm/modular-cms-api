@@ -8,7 +8,6 @@ import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.web.ContentForm;
 import se.josef.cmsapi.model.web.contentsearch.ContentSearch;
 import se.josef.cmsapi.repository.ContentRepository;
-import se.josef.cmsapi.util.UserUtils;
 
 import java.util.List;
 
@@ -17,14 +16,14 @@ import java.util.List;
 public class ContentService {
 
     private final ContentRepository contentRepository;
-    private final UserUtils userUtils;
 
-
-    public ContentService(ContentRepository contentRepository, UserUtils userUtils) {
+    public ContentService(ContentRepository contentRepository) {
         this.contentRepository = contentRepository;
-        this.userUtils = userUtils;
     }
 
+    /**
+     * creates content from contentform and saves it. returns saved content.
+     */
     public Content saveContent(ContentForm contentForm) {
         Content content = Content.builder()
                 .isPublic(contentForm.isPublic())
@@ -36,10 +35,16 @@ public class ContentService {
         return contentRepository.save(content);
     }
 
+    /**
+     * returns all content with isPublic true
+     */
     public List<Content> getAllPublicContent() {
         return contentRepository.findByIsPublicTrue();
     }
 
+    /**
+     * finds specific content by id if it is public
+     */
     public Content getContentByIdAndPublic(String id) {
         return contentRepository
                 .findByIdAndIsPublicTrue(id)
@@ -48,26 +53,38 @@ public class ContentService {
                 );
     }
 
+    /**
+     * finds specific content by id
+     */
     public Content getById(String id) {
-        return contentRepository.findById(id).orElseThrow(
-                () -> new ContentException(String.format("Content with id %s is unavailable", id))
-        );
-    }
-
-    public List<Content> getContentForCurrentUser() {
         return contentRepository
-                .findByOwnerIdOrderByCreatedDesc(userUtils.getUserId());
+                .findById(id)
+                .orElseThrow(
+                        () -> new ContentException(String.format("Content with id %s is unavailable", id))
+                );
     }
 
+    /**
+     * finds all content belonging to a project
+     * @param projectId
+     * @return
+     */
     public List<Content> findByProjectId(String projectId) {
         return contentRepository.findByProjectIdOrderByCreatedDesc(projectId);
     }
 
+    /**
+     * Asynchronous deletion of all the contents that belong to project
+     */
     @Async
     public void deleteByProjectId(String projectId) {
         contentRepository.deleteByProjectId(projectId);
     }
 
+    /**
+     * Updates content name, contentfields and isPublic by form values
+     */
+    //TODO validate form
     public Content updateContent(ContentForm contentForm, Content content) {
         try {
 
@@ -82,22 +99,28 @@ public class ContentService {
         }
     }
 
-    public boolean deleteContent(String projectId) {
+    /**
+     * delete content document by its id.
+     */
+    public void deleteContent(String contentId) {
         try {
-            contentRepository.deleteById(projectId);
-            return true;
+            contentRepository.deleteById(contentId);
         } catch (Exception e) {
-            log.error("error deleting project with id {}: {}", projectId, e.getMessage());
-            throw new ContentException(String.format("Can't delete content with id: %s", projectId));
+            log.error("error deleting project with id {}: {}", contentId, e.getMessage());
+            throw new ContentException(String.format("Can't delete content with id: %s", contentId));
         }
-
-
     }
 
+    /**
+     * Searches for content that belongs to project with search criteria specified by searchFields
+     */
     public List<Content> searchContent(List<ContentSearch<?>> searchFields, String projectId) {
         return contentRepository.findByProjectIdAndContentFields(searchFields, projectId);
     }
 
+    /**
+     * Searches for public content that belongs to project with search criteria specified by searchFields
+     */
     public List<Content> searchPublicContent(List<ContentSearch<?>> searchFields) {
         return contentRepository.findByIsPublicAndContentFields(searchFields);
     }

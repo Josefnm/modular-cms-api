@@ -10,24 +10,25 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class TemplateAdapter extends Adapter {
+public class TemplateAdapter {
 
     private final TemplateService templateService;
+    private final ProjectService projectService;
 
     public TemplateAdapter(ProjectService projectService, TemplateService templateService) {
-        super(projectService);
+        this.projectService = projectService;
         this.templateService = templateService;
     }
 
     public List<Template> searchByNameAndProjectId(String name, String projectId) {
-        return checkIfMemberOfProjectAsync(
+        return projectService.checkIfMemberOfProjectAsync(
                 projectId,
                 () -> templateService.searchByNameAndProjectId(name, projectId)
         );
     }
 
     public List<Template> findByProjectId(String projectId) {
-        return checkIfMemberOfProjectAsync(
+        return projectService.checkIfMemberOfProjectAsync(
                 projectId,
                 () -> templateService.findByProjectId(projectId)
         );

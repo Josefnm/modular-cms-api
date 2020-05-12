@@ -4,11 +4,9 @@ import lombok.EqualsAndHashCode;
 import se.josef.cmsapi.model.web.contentsearch.parameter.RangeParameter;
 
 @EqualsAndHashCode(callSuper = true)
-public class NumberSearch extends RangeSearch<Long> {
-    public NumberSearch() {
-    }
+public class FieldNumberSearch extends RangeSearch<Long> {
 
-    public NumberSearch(String name, RangeParameter<Long> parameters) {
+    public FieldNumberSearch(String name, RangeParameter<Long> parameters) {
         super(name, parameters);
     }
 }

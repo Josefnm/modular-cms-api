@@ -16,7 +16,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     }
 
     /**
-     * Searches for users by email and name
+     * Searches for users by email or name
      *
      * @param searchString
      * @return

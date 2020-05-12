@@ -12,14 +12,14 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class ContentAdapter extends Adapter{
-
+public class ContentAdapter{
 
     private final ContentService contentService;
+    private final ProjectService projectService;
 
-    public ContentAdapter(ProjectService projectService, ContentService contentService) {
-        super(projectService);
+    public ContentAdapter(ContentService contentService, ProjectService projectService) {
         this.contentService = contentService;
+        this.projectService = projectService;
     }
 
     public Content updateContent(ContentForm contentForm) {
@@ -28,10 +28,10 @@ public class ContentAdapter extends Adapter{
         return contentService.updateContent(contentForm, content);
     }
 
-    public boolean deleteContent(String contentId) {
+    public void deleteContent(String contentId) {
         var content = contentService.getById(contentId);
         projectService.existsByIdAndMember(content.getProjectId());
-        return contentService.deleteContent(contentId);
+        contentService.deleteContent(contentId);
     }
 
     public List<Content> searchContent(List<ContentSearch<?>> searchFields, String projectId) {
@@ -40,6 +40,9 @@ public class ContentAdapter extends Adapter{
     }
 
     public List<Content> findByProjectId(String projectId) {
-        return checkIfMemberOfProjectAsync(projectId, () -> contentService.findByProjectId(projectId));
+        return projectService.checkIfMemberOfProjectAsync(
+                projectId,
+                () -> contentService.findByProjectId(projectId)
+        );
     }
 }

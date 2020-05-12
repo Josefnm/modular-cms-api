@@ -26,7 +26,7 @@ public class ProjectResource {
     }
 
     @PostMapping()
-    public Project addProject(@RequestBody ProjectForm projectForm) {
+    public Project saveProject(@RequestBody ProjectForm projectForm) {
         return projectService.saveProject(projectForm);
     }
 

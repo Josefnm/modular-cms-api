@@ -12,6 +12,8 @@ import se.josef.cmsapi.util.UserUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 
 @Service
 @Slf4j
@@ -88,6 +90,30 @@ public class ProjectService {
         } catch (Exception e) {
             log.error("updateProject: {}", e.getMessage());
             throw new ProjectException(String.format("Could not update project: %s", e.getMessage()));
+        }
+    }
+
+    /**
+     * Async method used to check if user has access to supplied
+     * data by checking if they are members of the project it belongs to.
+     *
+     * @param projectId project to check that user belongs to
+     * @param supplier  method for retrieving requested data
+     * @param <T> type of data requested
+     * @return requested data
+     */
+    public <T> T checkIfMemberOfProjectAsync(String projectId, Supplier<T> supplier) {
+        var voidFuture = existsByIdAndMemberAsync(projectId);
+
+        var suppliedFuture = CompletableFuture.supplyAsync(supplier);
+
+        CompletableFuture.allOf(voidFuture, suppliedFuture).join();
+
+        try {
+            return suppliedFuture.get();
+        } catch (InterruptedException | ExecutionException e) {
+            log.error("multithreading error: {}", e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 

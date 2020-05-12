@@ -1,5 +1,6 @@
 package se.josef.cmsapi.model.document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class User {
 
     private String id;
     @Indexed
+    @JsonProperty("name")
     private String userName;
     @Indexed
     private String email;

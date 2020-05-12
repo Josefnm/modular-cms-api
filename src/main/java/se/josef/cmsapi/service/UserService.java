@@ -31,20 +31,27 @@ public class UserService {
         this.userUtils = userUtils;
     }
 
+    /**
+     * returns all users
+     */
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * returns User profile for the authenticated user.
+     */
     public User getCurrentUser() {
         return getById(userUtils.getUserId());
     }
 
+    /**
+     * Finds a user by their id
+     */
     public User getById(String id) {
         return userRepository
                 .findById(id)
-                .orElseThrow(
-                        () -> new UserException("Could not find user profile")
-                );
+                .orElseThrow(() -> new UserException("Could not find user profile"));
     }
 
     /**
@@ -102,9 +109,6 @@ public class UserService {
 
     /**
      * Returns users that are not in project.
-     * @param users
-     * @param project
-     * @return
      */
     public List<User> filterUsersNotInProject(List<User> users, Project project) {
         // Hashset is used for better performance. Would need to add pagination with a large amount of users.
@@ -112,9 +116,11 @@ public class UserService {
         return users.stream()
                 .filter(user -> !memberIds.contains(user.getId()))
                 .collect(Collectors.toList());
-
     }
 
+    /**
+     * Returns user profiles for the project members
+     */
     public List<User> findUsersByProject(Project project) {
         return userRepository.findByIdIn(project.getMemberIds());
     }
