@@ -2,6 +2,7 @@ package se.josef.cmsapi;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -42,9 +43,9 @@ import static se.josef.cmsapi.utils.MockDataUtil.getRandomLowercaseNumeric;
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 public class ProjectTests {
 
-    private static final String projectId1 = getRandomLowercaseNumeric(24);
-    private static final String projectId2 = getRandomLowercaseNumeric(24);
-    private static final String projectId3 = getRandomLowercaseNumeric(24);
+    private static final String projectId1 = new ObjectId().toString();
+    private static final String projectId2 = new ObjectId().toString();
+    private static final String projectId3 = new ObjectId().toString();
 
     private static final String projectName1 = "my project";
     private static final String projectDescription1 = "this is a project that is and else or yes no hello";
@@ -76,7 +77,6 @@ public class ProjectTests {
 
     @PostConstruct
     void setSecurityContextUser() throws FirebaseAuthException {
-        // extra drop for redundancy
         mongoTemplate.getDb().drop();
         doReturn(userId1).when(userService).saveToFirebase(any());
         doReturn(userId1).when(userUtils).getUserId();
@@ -98,7 +98,7 @@ public class ProjectTests {
         }
 
         @BeforeEach
-        void setMockOutputAndDatabase() {
+        void saveDefaultProject() {
             var project = Project.builder()
                     .id(projectId1)
                     .ownerId(userId1)

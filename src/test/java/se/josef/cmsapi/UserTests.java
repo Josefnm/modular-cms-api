@@ -2,6 +2,7 @@ package se.josef.cmsapi;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -35,14 +36,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static se.josef.cmsapi.utils.MockDataUtil.*;
 
-
 @Slf4j
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 public class UserTests {
 
-    private static final String projectId = getRandomLowercaseNumeric(24);
+    private static final String projectId = new ObjectId().toString();
     private static final String userId1 = getRandomLowercaseNumeric(24);
     private static final String userName1 = "josef josefsson";
     private static final String email1 = "josef@josef.josef";

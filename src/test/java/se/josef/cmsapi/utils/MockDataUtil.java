@@ -7,6 +7,7 @@ import se.josef.cmsapi.model.document.User;
 import se.josef.cmsapi.model.document.contentField.ImageField;
 import se.josef.cmsapi.model.document.contentField.StringField;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -15,10 +16,10 @@ import java.util.stream.IntStream;
  * Utility class for creating random data for tests
  */
 public class MockDataUtil {
-    private static String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static String lowercase = "abcdefghijklmnopqrstuvxyz";
-    private static String number = "0123456789";
-    private static String symbol = "~!@#$%^&*()_+~=-{}\\[]|;':\",./<>?";
+    private static final String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String lowercase = "abcdefghijklmnopqrstuvxyz";
+    private static final String number = "0123456789";
+    private static final String symbol = "~!@#$%^&*()_+~=-{}\\[]|;':\",./<>?";
 
     public static String getRandom(String src, int length) {
         return IntStream
@@ -81,6 +82,14 @@ public class MockDataUtil {
 
     public static double getRandomDouble() {
         return new Random().nextDouble();
+    }
+
+    public static Date getEarlierDate(int minusDays){
+        return java.sql.Timestamp.valueOf(LocalDateTime.now().minusDays(minusDays));
+    }
+
+    public static Date getLaterDate(int plusDays){
+        return java.sql.Timestamp.valueOf(LocalDateTime.now().plusDays(plusDays));
     }
 
 

@@ -57,7 +57,7 @@ public class ContentResource {
         return contentAdapter.findByProjectId(projectId);
     }
 
-    @PostMapping("/searchPublic")
+    @PostMapping("/search")
     public List<Content> searchPublicContent(@RequestBody List<ContentSearch<?>> searchFields) {
         return contentService.searchPublicContent(searchFields);
     }

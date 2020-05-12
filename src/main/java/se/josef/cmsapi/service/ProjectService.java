@@ -70,8 +70,8 @@ public class ProjectService {
      * async wrapper for existsByIdAndMember to provide Executor for securitycontext
      */
     @Async
-    public CompletableFuture<Void> existsByIdAndMemberAsync(String id) {
-        existsByIdAndMember(id);
+    public CompletableFuture<Void> existsByIdAndMemberAsync(String projectId) {
+        existsByIdAndMember(projectId);
         return CompletableFuture.completedFuture(null);
     }
 

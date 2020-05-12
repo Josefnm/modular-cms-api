@@ -1,6 +1,7 @@
 package se.josef.cmsapi;
 
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
@@ -34,16 +35,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 import static se.josef.cmsapi.utils.MockDataUtil.*;
 
-
 @Slf4j
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
 public class TemplateTests {
 
-    private static final String templateId = getRandomLowercaseNumeric(24);
+    private static final String templateId = new ObjectId().toString();
     private static final String userId = getRandomLowercaseNumeric(24);
-    private static final String projectId = getRandomLowercaseNumeric(24);
+    private static final String projectId = new ObjectId().toString();
     private static final String templateName1 = "my test template";
     private static final String templateName2 = "my best template";
     private static final String templateName3 = "my bezt template";
