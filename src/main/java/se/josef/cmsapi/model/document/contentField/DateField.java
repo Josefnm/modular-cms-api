@@ -6,5 +6,7 @@ import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 public class DateField extends ContentField<Date> {
-
+    public DateField(String name, Date data) {
+        super(name, data);
+    }
 }

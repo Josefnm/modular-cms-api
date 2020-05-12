@@ -4,8 +4,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import se.josef.cmsapi.model.web.contentsearch.parameter.RangeParameter;
 
 public abstract class RangeSearch<T> extends ContentSearch<RangeParameter<T>> {
-    public RangeSearch() {
-    }
 
     public RangeSearch(String name, RangeParameter<T> parameters) {
         super(name, parameters);

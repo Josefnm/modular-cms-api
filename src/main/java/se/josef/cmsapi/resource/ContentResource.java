@@ -1,6 +1,7 @@
 package se.josef.cmsapi.resource;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.josef.cmsapi.adapter.ContentAdapter;
 import se.josef.cmsapi.model.document.Content;
@@ -31,13 +32,14 @@ public class ContentResource {
     }
 
     @PostMapping("/update")
-    public Content updateProject(@RequestBody ContentForm contentForm) {
+    public Content updateContent(@RequestBody ContentForm contentForm) {
         return contentAdapter.updateContent(contentForm);
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteContent(@PathVariable String id) {
-        return contentAdapter.deleteContent(id);
+    public ResponseEntity<Void> deleteContent(@PathVariable String id) {
+        contentAdapter.deleteContent(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping()
@@ -48,11 +50,6 @@ public class ContentResource {
     @GetMapping("/{id}")
     public Content getPublicContentById(@PathVariable String id) {
         return contentService.getContentByIdAndPublic(id);
-    }
-
-    @GetMapping("/user")
-    public List<Content> getContentForCurrentUser() {
-        return contentService.getContentForCurrentUser();
     }
 
     @GetMapping("/projectId/{projectId}")

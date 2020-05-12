@@ -1,5 +1,6 @@
 package se.josef.cmsapi.model.web.contentsearch;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -12,7 +13,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 
 /**
  * Deserialization to correct subclass handled by annotations
- *
+ * Each subclass handles how to create a search criteria. A list of these can then be used to make advanced searches.
  * @param <T>
  */
 @Data
@@ -21,19 +22,22 @@ import org.springframework.data.mongodb.core.query.Criteria;
 @JsonTypeInfo(use = Id.NAME,
         property = "type")
 @JsonSubTypes({
-        @Type(value = BooleanSearch.class),
+        @Type(value = FieldExactSearch.class),
         @Type(value = DateSearch.class),
-        @Type(value = ModuleSearch.class),
-        @Type(value = NumberSearch.class),
-        @Type(value = StringSearch.class),
-        @Type(value = CreatedSearch.class),
-        @Type(value = PublicSearch.class),
-        @Type(value = NameSearch.class),
+        @Type(value = FieldDateSearch.class),
+        @Type(value = RegexSearch.class),
+        @Type(value = FieldNumberSearch.class),
+        @Type(value = FieldRegexSearch.class),
+        @Type(value = ExactSearch.class),
 })
 public abstract class ContentSearch<T> {
     private String name;
     private T parameters;
 
-    // Used to build a search query. Each impl must return a valid search Criteria
+    /**
+     * builds a query criteria from the fields.
+     * @return
+     */
+    @JsonIgnore
     public abstract Criteria getCriteria();
 }

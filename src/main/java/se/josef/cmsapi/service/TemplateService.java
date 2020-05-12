@@ -20,6 +20,11 @@ public class TemplateService {
         this.templateRepository = templateRepository;
     }
 
+    /**
+     * save new template with data from template form
+     * @param templateForm
+     * @return
+     */
     public Template saveTemplate(TemplateForm templateForm) {
         Template template = Template.builder()
                 .templateFields(templateForm.getTemplateFields())
@@ -30,10 +35,18 @@ public class TemplateService {
         return templateRepository.save(template);
     }
 
+    /**
+     * find templates that belongs to project
+     */
     public List<Template> findByProjectId(String projectId) {
+        var x=templateRepository.findByProjectIdOrderByCreatedDesc(projectId);
+        log.info("size "+x.size());
         return templateRepository.findByProjectIdOrderByCreatedDesc(projectId);
     }
 
+    /**
+     * Finds a template by its id
+     */
     public Template getTemplateById(String id) {
         return templateRepository
                 .findById(id)
@@ -42,11 +55,17 @@ public class TemplateService {
                 );
     }
 
+    /**
+     * Asynchronous deletion of all the templates that belong to project
+     */
     @Async
     public void deleteByProjectId(String projectId) {
         templateRepository.deleteByProjectId(projectId);
     }
 
+    /**
+     * Find template by project and regex match for name
+     */
     public List<Template> searchByNameAndProjectId(String name, String projectId) {
         return templateRepository.findByNameRegexAndProjectIdOrderByCreated(name, projectId);
     }

@@ -4,12 +4,9 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 @EqualsAndHashCode(callSuper = true)
-public class StringSearch extends ContentSearch<String> {
+public class FieldRegexSearch extends ContentSearch<String> {
 
-    public StringSearch() {
-    }
-
-    public StringSearch(String name, String parameters) {
+    public FieldRegexSearch(String name, String parameters) {
         super(name, parameters);
     }
 

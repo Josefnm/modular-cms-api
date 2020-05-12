@@ -1,15 +1,13 @@
 package se.josef.cmsapi.model.web.contentsearch;
 
+
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 @EqualsAndHashCode(callSuper = true)
-public class BooleanSearch extends ContentSearch<Boolean> {
+public class FieldExactSearch<T> extends ContentSearch<T> {
 
-    public BooleanSearch() {
-    }
-
-    public BooleanSearch(String name, Boolean parameters) {
+    public FieldExactSearch(String name, T parameters) {
         super(name, parameters);
     }
 

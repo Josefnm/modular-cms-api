@@ -4,17 +4,14 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 @EqualsAndHashCode(callSuper = true)
-public class PublicSearch extends ContentSearch<Boolean> {
+public class RegexSearch extends ContentSearch<String> {
 
-    public PublicSearch() {
-    }
-
-    public PublicSearch(Boolean parameters) {
-        super(null, parameters);
+    public RegexSearch(String name, String parameters) {
+        super(name, parameters);
     }
 
     @Override
     public Criteria getCriteria() {
-        return Criteria.where("isPublic").is(getParameters());
+        return Criteria.where(getName()).regex(getParameters(), "i");
     }
 }

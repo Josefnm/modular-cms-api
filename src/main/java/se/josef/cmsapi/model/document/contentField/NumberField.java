@@ -4,5 +4,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 public class NumberField extends ContentField<Long> {
-
+    public NumberField(String name, Long data) {
+        super(name, data);
+    }
 }
