@@ -12,15 +12,21 @@ public class RequestUtils {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    public <T> ResponseEntity<T> postRequest(String path, Class<T> responseType, T body, int port) {
+    public <T,R> ResponseEntity<R> postRequest(String path, Class<R> responseType, T body, int port) {
         var url = "http://localhost:" + port + "/api" + path;
 
         return restTemplate.postForEntity(url, new HttpEntity<>(body), responseType);
     }
 
-    public <T> ResponseEntity<T> getRequest(String path, Class<T> responseType, int port) {
+    public <R> ResponseEntity<R> getRequest(String path, Class<R> responseType, int port) {
         var url = "http://localhost:" + port + "/api" + path;
 
         return restTemplate.getForEntity(url, responseType);
+    }
+
+    public  void deleteRequest(String path, int port) {
+        var url = "http://localhost:" + port + "/api" + path;
+
+         restTemplate.delete(url);
     }
 }

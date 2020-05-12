@@ -42,10 +42,6 @@ public class ProjectService {
         return projectRepository.deleteByIdAndOwnerId(projectId, userUtils.getUserId());
     }
 
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
-    }
-
     public List<Project> getProjectsByUserId() {
 
         var uid = userUtils.getUserId();

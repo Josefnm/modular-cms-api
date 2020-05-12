@@ -69,9 +69,9 @@ public class UserService {
                         .setEmail(userForm.getEmail())
                         .setPassword(userForm.getPassword());
 
-                var userRecord = FirebaseAuth.getInstance().createUser(createRequest);
+                var userId = saveToFirebase(createRequest);
                 var user = User.builder()
-                        .id(userRecord.getUid())
+                        .id(userId)
                         .userName(userForm.getUserName())
                         .email(userForm.getEmail())
                         .build();
@@ -92,6 +92,13 @@ public class UserService {
             log.warn("Error while saving Firebase user {}", exception.getMessage());
             throw new AuthException("Error creating user in firebase: " + exception.getMessage());
         }
+    }
+
+    /**
+     * saves user to firebase and returns user id (method extracted for testing purposes)
+     */
+    public String saveToFirebase(UserRecord.CreateRequest createRequest) throws FirebaseAuthException {
+        return FirebaseAuth.getInstance().createUser(createRequest).getUid();
     }
 
     /**

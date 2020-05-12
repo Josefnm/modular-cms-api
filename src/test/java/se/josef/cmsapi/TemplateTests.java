@@ -1,7 +1,10 @@
 package se.josef.cmsapi;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -13,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClientException;
 import se.josef.cmsapi.config.SecurityAuditorAware;
 import se.josef.cmsapi.model.document.Template;
+import se.josef.cmsapi.model.web.TemplateForm;
 import se.josef.cmsapi.repository.ProjectRepository;
 import se.josef.cmsapi.repository.TemplateRepository;
 import se.josef.cmsapi.util.UserUtils;
@@ -20,13 +24,16 @@ import se.josef.cmsapi.utils.RequestUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 import static se.josef.cmsapi.utils.MockDataUtil.*;
+
 
 @Slf4j
 @ActiveProfiles("test")
@@ -65,6 +72,7 @@ public class TemplateTests {
         doReturn(userId).when(userUtils).getUserId();
         doReturn(Optional.of(userId)).when(securityAuditorAware).getCurrentAuditor();
     }
+
     @PreDestroy
     void preDestroy() {
         mongoTemplate.getDb().drop();
@@ -80,8 +88,8 @@ public class TemplateTests {
 
         @Test
         public void saveTemplateSuccess() {
-            var template = getNewTemplate(null, projectId,getRandomAlphaNumericAndSymbols(15));
-            var response = requestUtils.postRequest("/template", Template.class, template, port);
+            var templateForm = new TemplateForm(projectId, getRandomAlphaNumeric(12), getRandomAlphaNumericAndSymbols(100), new ArrayList<>());
+            var response = requestUtils.postRequest("/template", Template.class, templateForm, port);
 
             assertEquals(userId, Objects.requireNonNull(response.getBody()).getOwnerId());
         }
@@ -92,10 +100,10 @@ public class TemplateTests {
         @PostConstruct
         void setMockOutputAndDatabase() {
             var project = getNewProject(projectId, userId);
-            var template1 = getNewTemplate(templateId, projectId,templateName1);
-            var template2 = getNewTemplate(getRandomLowercaseNumeric(24), projectId,templateName2);
-            var template3 = getNewTemplate(getRandomLowercaseNumeric(24), projectId,templateName3);
-            var template4 = getNewTemplate(getRandomLowercaseNumeric(24), getRandomLowercaseNumeric(24),templateName1);
+            var template1 = getNewTemplate(templateId, projectId, templateName1);
+            var template2 = getNewTemplate(getRandomLowercaseNumeric(24), projectId, templateName2);
+            var template3 = getNewTemplate(getRandomLowercaseNumeric(24), projectId, templateName3);
+            var template4 = getNewTemplate(getRandomLowercaseNumeric(24), getRandomLowercaseNumeric(24), templateName1);
 
             var projectFuture = CompletableFuture.runAsync(() -> projectRepository.save(project));
             var templateFuture1 = CompletableFuture.runAsync(() -> templateRepository.save(template1));
@@ -103,19 +111,19 @@ public class TemplateTests {
             var templateFuture3 = CompletableFuture.runAsync(() -> templateRepository.save(template3));
             var templateFuture4 = CompletableFuture.runAsync(() -> templateRepository.save(template4));
 
-            CompletableFuture.allOf(projectFuture, templateFuture1, templateFuture2, templateFuture3,templateFuture4).join();
+            CompletableFuture.allOf(projectFuture, templateFuture1, templateFuture2, templateFuture3, templateFuture4).join();
         }
 
         @Test
         public void getTemplatesByProjectIdSuccess() {
-            var response = requestUtils.getRequest("/template/projectId/" + projectId+"", Template[].class, port);
+            var response = requestUtils.getRequest("/template/projectId/" + projectId + "", Template[].class, port);
 
             assertEquals(3, Objects.requireNonNull(response.getBody()).length);
         }
 
         @Test
         public void getTemplateByProjectIdFail() {
-            Assertions.assertThrows(RestClientException.class,
+            assertThrows(RestClientException.class,
                     () -> requestUtils.getRequest("/template/projectId/" + getRandomLowercaseNumeric(24),
                             Template[].class,
                             port)
@@ -131,40 +139,50 @@ public class TemplateTests {
 
         @Test
         public void getTemplatesByIdFail() {
-            Assertions.assertThrows(RestClientException.class,
+            assertThrows(RestClientException.class,
                     () -> requestUtils.getRequest("/template/projectId/" + getRandomLowercaseNumeric(24),
                             Template[].class,
                             port)
             );
         }
+
         @Test
         public void searchTemplateByNameAndProjectIdSuccess1() {
-            String uri=String.format("/template/search/%s?searchString=%s", projectId, searchString1);
+            String uri = String.format("/template/search/%s?searchString=%s", projectId, searchString1);
             var response = requestUtils.getRequest(uri, Template[].class, port);
-            log.debug(response.toString());
 
             assertEquals(2, Objects.requireNonNull(response.getBody()).length);
         }
 
         @Test
         public void searchTemplateByNameAndProjectIdSuccess2() {
-            String uri=String.format("/template/search/%s?searchString=%s", projectId, searchString2);
+            var uri = String.format("/template/search/%s?searchString=%s", projectId, searchString2);
             var response = requestUtils.getRequest(uri, Template[].class, port);
-            log.debug(response.toString());
 
             assertEquals(3, Objects.requireNonNull(response.getBody()).length);
         }
+
         @Test
         public void searchTemplateByNameAndProjectIdNoResults() {
-            String uri=String.format("/template/search/%s?searchString=%s", projectId, getRandomLowercaseNumeric(8));
-            var response= requestUtils.getRequest(uri, Template[].class, port);
+            var uri = String.format("/template/search/%s?searchString=%s", projectId, getRandomLowercaseNumeric(8));
+            var response = requestUtils.getRequest(uri, Template[].class, port);
+
             assertEquals(0, Objects.requireNonNull(response.getBody()).length);
         }
 
         @Test
+        public void searchTemplateByNameAndProjectIdEmptyString() {
+            var uri = String.format("/template/search/%s?searchString=", projectId);
+            var response = requestUtils.getRequest(uri, Template[].class, port);
+
+            assertEquals(3, Objects.requireNonNull(response.getBody()).length);
+        }
+
+        @Test
         public void searchTemplateByNameAndProjectIdThrows() {
-            String uri=String.format("/template/search/%s?searchString=%s", getRandomLowercaseNumeric(24), searchString2);
-            Assertions.assertThrows(RestClientException.class,
+            var uri = String.format("/template/search/%s?searchString=%s", getRandomLowercaseNumeric(24), searchString2);
+
+            assertThrows(RestClientException.class,
                     () -> requestUtils.getRequest(uri,
                             Template[].class,
                             port)

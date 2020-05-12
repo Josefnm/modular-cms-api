@@ -3,6 +3,7 @@ package se.josef.cmsapi.utils;
 import se.josef.cmsapi.model.document.Project;
 import se.josef.cmsapi.model.document.Template;
 import se.josef.cmsapi.model.document.TemplateField;
+import se.josef.cmsapi.model.document.User;
 import se.josef.cmsapi.model.document.contentField.ImageField;
 import se.josef.cmsapi.model.document.contentField.StringField;
 
@@ -101,12 +102,21 @@ public class MockDataUtil {
 
     }
 
-    public static Project getNewProject(String projectId, String ownerId) {
+    public static Project getNewProject(String projectId, String... memberIds) {
         return Project.builder()
                 .id(projectId)
-                .memberIds(Collections.singletonList(ownerId))
+                .ownerId(memberIds[0])
+                .memberIds(Arrays.asList(memberIds))
                 .name(getRandomAlphabets(15))
                 .description(getRandomAlphaNumericAndSymbols(100))
+                .build();
+    }
+
+    public static User getNewUser(String userId, String name,String email) {
+        return User.builder()
+                .id(userId)
+                .userName(name)
+                .email(email)
                 .build();
     }
 }

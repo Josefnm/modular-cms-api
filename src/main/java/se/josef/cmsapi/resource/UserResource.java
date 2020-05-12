@@ -42,7 +42,7 @@ public class UserResource {
     }
 
     @GetMapping(value = "/search")
-    public List<User> searchUsers(@RequestParam(defaultValue = "") String searchString, @RequestParam String projectId) {
+    public List<User> searchUsersNotInProject(@RequestParam(defaultValue = "") String searchString, @RequestParam String projectId) {
         return userAdapter.searchUsersNotInProject(searchString, projectId);
     }
 

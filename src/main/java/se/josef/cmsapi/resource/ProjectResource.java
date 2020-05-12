@@ -41,11 +41,6 @@ public class ProjectResource {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping()
-    public List<Project> getAllProject() {
-        return projectService.getAllProjects();
-    }
-
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable String id) {
         return projectService.findByIdAndMember(id);
