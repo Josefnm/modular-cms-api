@@ -24,10 +24,12 @@ public class ProjectService {
 
     public ProjectService(ProjectRepository projectRepository, UserUtils userUtils) {
         this.projectRepository = projectRepository;
-
         this.userUtils = userUtils;
     }
 
+    /**
+     * save new project from project form
+     */
     public Project saveProject(ProjectForm projectForm) {
         var ownerId = userUtils.getUserId();
         var project = Project.builder()
@@ -38,31 +40,41 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    /**
+     * deletes project if user is the owner
+     */
     public Long deleteProject(String projectId) {
         return projectRepository.deleteByIdAndOwnerId(projectId, userUtils.getUserId());
     }
 
+    /**
+     * Returns all projects user is a member of
+     */
     public List<Project> getProjectsByUserId() {
-
         var uid = userUtils.getUserId();
-        return projectRepository.findAllByMemberIdsOrOwnerIdOrderByCreatedDesc(uid, uid);
-
+        return projectRepository.findAllByMemberIdsOrderByCreatedDesc(uid, uid);
     }
 
-    public Project findByIdAndMember(String id) {
+    /**
+     * Returns project if user is a member
+     */
+    public Project findByIdAndMember(String projectId) {
         var userId = userUtils.getUserId();
         return projectRepository
-                .findByMemberIdsAndId(userId, id)
+                .findByMemberIdsAndId(userId, projectId)
                 .orElseThrow(() ->
-                        new ProjectException(String.format("Project with id %s is unavailable", id))
+                        new ProjectException(String.format("Project with id %s is unavailable", projectId))
                 );
     }
 
-    public void existsByIdAndMember(String id) {
+    /**
+     * Checks if user is member of project, used for security
+     */
+    public void existsByIdAndMember(String projectId) {
         var userId = userUtils.getUserId();
-        Boolean isMember = projectRepository.existsByMemberIdsAndId(userId, id);
+        Boolean isMember = projectRepository.existsByMemberIdsAndId(userId, projectId);
         if (!isMember) {
-            throw new ProjectException(String.format("User is not a member of project with id: %s ", id));
+            throw new ProjectException(String.format("User is not a member of project with id: %s ", projectId));
         }
     }
 
@@ -75,6 +87,9 @@ public class ProjectService {
         return CompletableFuture.completedFuture(null);
     }
 
+    /**
+     * Update name, description and members
+     */
     public Project updateProject(ProjectForm projectForm) {
         try {
             var project = findByIdAndMember(projectForm.getId());
@@ -90,8 +105,9 @@ public class ProjectService {
     }
 
     /**
-     * Async method used to check if user has access to supplied
-     * data by checking if they are members of the project it belongs to.
+     * Async method used to check if user has access to data retrieved
+     * by supplier lambda before returning  the result.
+     * The purpose is to improve performance
      *
      * @param projectId project to check that user belongs to
      * @param supplier  method for retrieving requested data

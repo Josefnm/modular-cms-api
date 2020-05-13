@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 /**
- * response for ExceptionHandler
+ * Response for ExceptionHandler
  */
 @Data
 @AllArgsConstructor

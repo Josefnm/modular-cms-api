@@ -55,7 +55,7 @@ public class UserService {
     }
 
     /**
-     * Adds user on Firebase and to database, if they have a unique email and username.
+     * Adds user to Firebase and database, if they have a unique email and username.
      * @return saved User
      */
     public User signup(UserForm userForm) {
@@ -95,7 +95,8 @@ public class UserService {
     }
 
     /**
-     * saves user to firebase and returns user id (method extracted for testing purposes)
+     * saves user to firebase (method extracted for mocking in tests)
+     * @return firebase user id
      */
     public String saveToFirebase(UserRecord.CreateRequest createRequest) throws FirebaseAuthException {
         return FirebaseAuth.getInstance().createUser(createRequest).getUid();

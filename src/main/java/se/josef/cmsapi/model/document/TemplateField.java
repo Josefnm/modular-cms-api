@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class TemplateField {
     private String name;
-    //Allowed datatypes are the names of the contentfield subclasses
+    //Allowed dataTypes values are the names of the ContentField subclasses
     private String dataType;
 }

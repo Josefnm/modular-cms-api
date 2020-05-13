@@ -12,11 +12,10 @@ public class HealthCheckResource {
 
     /**
      * Used by kubernetes health checks
-     *
      * @return Status 200
      */
     @GetMapping()
-    public ResponseEntity<?> HealthCheck() {
+    public ResponseEntity<Void> HealthCheck() {
         return ResponseEntity.ok().build();
     }
 

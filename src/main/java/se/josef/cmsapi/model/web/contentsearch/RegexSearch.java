@@ -3,6 +3,7 @@ package se.josef.cmsapi.model.web.contentsearch;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.query.Criteria;
 
+
 @EqualsAndHashCode(callSuper = true)
 public class RegexSearch extends ContentSearch<String> {
 
@@ -10,6 +11,9 @@ public class RegexSearch extends ContentSearch<String> {
         super(name, parameters);
     }
 
+    /**
+     * Criteria for partial string matches
+     */
     @Override
     public Criteria getCriteria() {
         return Criteria.where(getName()).regex(getParameters(), "i");

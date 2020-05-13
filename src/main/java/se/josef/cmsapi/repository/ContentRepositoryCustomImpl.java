@@ -23,29 +23,6 @@ public class ContentRepositoryCustomImpl extends AbstractCustomImpl implements C
     }
 
 
-    @Override
-    public List<Content> findByProjectIdAndContentFields(List<ContentSearch<?>> searchFields, String projectId) {
-        var criteria = Criteria.where("projectId").is(projectId);
-        return search(searchFields, criteria);
-    }
-
-    @Override
-    public List<Content> findByIsPublicAndContentFields(List<ContentSearch<?>> searchFields) {
-        var criteria = Criteria.where("isPublic").is(true);
-        return search(searchFields, criteria);
-    }
-
-    private List<Content> search(List<ContentSearch<?>> searchFields, Criteria... extraCriteria) {
-
-        var criteria = searchFields.stream()
-                .map(ContentSearch::getCriteria)
-                .toArray(Criteria[]::new);
-        var allCriteria = ArrayUtils.addAll(extraCriteria, criteria);
-        var joinedCriteria = new Criteria().andOperator(allCriteria);
-
-        return executeQuery(joinedCriteria);
-
-    }
 
     /**
      * Returns content with matching projectId
@@ -54,6 +31,42 @@ public class ContentRepositoryCustomImpl extends AbstractCustomImpl implements C
     @Override
     public List<Content> findByProjectIdOrderByCreatedDesc(String projectId) {
         return executeQuery(Criteria.where("projectId").is(projectId));
+    }
+
+    /**
+     * Search for documents match searchFields criteria and projectId
+     */
+    @Override
+    public List<Content> findByProjectIdAndContentFields(List<ContentSearch<?>> searchFields, String projectId) {
+        var criteria = Criteria.where("projectId").is(projectId);
+        var joinedCriteria = combineCriteria(searchFields, criteria);
+        return executeQuery(joinedCriteria);
+    }
+
+    /**
+     * Search for documents match searchFields criteria that are public
+     */
+    @Override
+    public List<Content> findByIsPublicAndContentFields(List<ContentSearch<?>> searchFields) {
+        var criteria = Criteria.where("isPublic").is(true);
+        var joinedCriteria = combineCriteria(searchFields, criteria);
+        return executeQuery(joinedCriteria);
+    }
+
+    /**
+     * Creates search criteria from searchFields and combines them with additional criteria
+     * using andOperator
+     * @param searchFields source of search criteria
+     * @param extraCriteria additional criteria
+     * @return combined criteria
+     */
+    private Criteria combineCriteria(List<ContentSearch<?>> searchFields, Criteria... extraCriteria) {
+
+        var criteria = searchFields.stream()
+                .map(ContentSearch::getCriteria)
+                .toArray(Criteria[]::new);
+        var allCriteria = ArrayUtils.addAll(extraCriteria, criteria);
+        return new Criteria().andOperator(allCriteria);
     }
 
     private List<Content> executeQuery(Criteria criteria) {
@@ -66,7 +79,8 @@ public class ContentRepositoryCustomImpl extends AbstractCustomImpl implements C
                     project(Content.class).and(toObjectId("$templateId")).as("templateId"),
                     userLookupOp(),
                     templateLookupOp(),
-                    ownerNameProjectionOp(Content.class).andExpression("template.name").as("templateName")
+                    ownerNameProjectionOp(Content.class)
+                            .andExpression("template.name").as("templateName")
             );
             return getResultForQuery(aggregation, Content.class);
         } catch (Exception e) {
@@ -75,6 +89,9 @@ public class ContentRepositoryCustomImpl extends AbstractCustomImpl implements C
         }
     }
 
+    /**
+     * joins template document to content document with matching templateId
+     */
     LookupOperation templateLookupOp() {
         return lookup("template", "templateId", "_id", "template");
     }

@@ -24,21 +24,42 @@ public class TemplateResource {
         this.templateAdapter = templateAdapter;
     }
 
+    /**
+     * Saves a new template
+     * @param templateForm for creating new template
+     * @return the saved template
+     */
     @PostMapping()
     public Template saveTemplate(@RequestBody TemplateForm templateForm) {
         return templateService.saveTemplate(templateForm);
     }
 
+    /**
+     * get all templates that belong to project
+     * @param projectId the project the templates belong to
+     * @return found templates
+     */
     @GetMapping("/projectId/{projectId}")
     public List<Template> getTemplateByProjectId(@PathVariable String projectId) {
         return templateAdapter.findByProjectId(projectId);
     }
 
+    /**
+     * get a template by its id
+     * @param id of the template
+     * @return found template
+     */
     @GetMapping("/{id}")
     public Template getTemplateById(@PathVariable String id) {
         return templateService.getTemplateById(id);
     }
 
+    /**
+     * regex search on template name for templates that belong to a specific project.
+     * @param projectId for the project
+     * @param searchString regex for partial match
+     * @return templates matching criteria
+     */
     @GetMapping("/search/{projectId}")
     public List<Template> searchTemplateByNameAndProjectId(@PathVariable String projectId, @RequestParam String searchString) {
         return templateAdapter.searchByNameAndProjectId(searchString, projectId);

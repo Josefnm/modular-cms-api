@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * parameter for searching values like dates and numbers
- * @param <T>
+ * Parameter for searching values like dates and numbers
+ * Can safely be initialized with both or either but not neither
  */
 @Data
 @AllArgsConstructor

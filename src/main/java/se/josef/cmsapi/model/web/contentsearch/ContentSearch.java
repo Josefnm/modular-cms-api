@@ -12,9 +12,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 
 
 /**
- * Deserialization to correct subclass handled by annotations
- * Each subclass handles how to create a search criteria. A list of these can then be used to make advanced searches.
- * @param <T>
+ * Deserialization to correct subclass handled by annotations with the type property.
+ * Each subclass handles how to create a search criteria. A list of these can then be used to
+ * make advanced searches.
+ * Subclasses named Field are for searching on ContentFields, the other subclasses are for searching on the
+ * contents other properties
  */
 @Data
 @AllArgsConstructor
@@ -35,8 +37,7 @@ public abstract class ContentSearch<T> {
     private T parameters;
 
     /**
-     * builds a query criteria from the fields.
-     * @return
+     * builds a query criteria from the name and parameters
      */
     @JsonIgnore
     public abstract Criteria getCriteria();

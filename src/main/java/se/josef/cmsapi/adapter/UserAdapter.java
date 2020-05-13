@@ -26,14 +26,20 @@ public class UserAdapter {
         this.taskExecutor = taskExecutor;
     }
 
+    /**
+     * Finds all users that are members of project
+     */
     public List<User> findUsersByProject(String projectId) {
         var project = projectService.findByIdAndMember(projectId);
         return userService.findUsersByProject(project);
     }
 
-    public List<User> searchUsersNotInProject(String searchString, String projectId) {
+    /**
+     * regex search on user name/email, excludes the ones that are already members
+     */
+    public List<User> searchUsersNotInProject(String searchRegex, String projectId) {
 
-        var usersFuture = CompletableFuture.supplyAsync(() -> userService.searchUsers(searchString));
+        var usersFuture = CompletableFuture.supplyAsync(() -> userService.searchUsers(searchRegex));
         var projectFuture = CompletableFuture.supplyAsync(() -> projectService.findByIdAndMember(projectId), taskExecutor);
         CompletableFuture.allOf(usersFuture, projectFuture).join();
         try {

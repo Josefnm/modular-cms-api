@@ -20,6 +20,9 @@ public class TemplateAdapter {
         this.templateService = templateService;
     }
 
+    /**
+     * regex search on template name, restricted by project membership
+     */
     public List<Template> searchByNameAndProjectId(String name, String projectId) {
         return projectService.checkIfMemberOfProjectAsync(
                 projectId,
@@ -27,6 +30,9 @@ public class TemplateAdapter {
         );
     }
 
+    /**
+     * returns templates for project if user is a member
+     */
     public List<Template> findByProjectId(String projectId) {
         return projectService.checkIfMemberOfProjectAsync(
                 projectId,

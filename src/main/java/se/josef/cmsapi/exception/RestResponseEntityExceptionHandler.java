@@ -12,10 +12,10 @@ import se.josef.cmsapi.model.web.ErrorResponse;
 /**
  * returns specified error codes and messages as responses when throwing specified exceptions
  */
+//TODO add more specific exception response codes
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    //TODO add more specific exception response codes
     @ExceptionHandler(value = {TemplateException.class,
             AuthException.class, UserException.class, ContentException.class, ProjectException.class})
     protected ResponseEntity<Object> clientConflictHandler(RuntimeException ex, WebRequest request) {

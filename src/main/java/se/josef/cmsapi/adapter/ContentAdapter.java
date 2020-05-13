@@ -22,23 +22,39 @@ public class ContentAdapter{
         this.projectService = projectService;
     }
 
+    /**
+     * First checks if the user is a member of the project the content belongs to,
+     * then updates the content
+     */
     public Content updateContent(ContentForm contentForm) {
         var content = contentService.getById(contentForm.getId());
         projectService.existsByIdAndMember(content.getProjectId());
         return contentService.updateContent(contentForm, content);
     }
 
+    /**
+     * First checks if the user is a member of the project the content belongs to,
+     * then deletes the content
+     */
     public void deleteContent(String contentId) {
         var content = contentService.getById(contentId);
         projectService.existsByIdAndMember(content.getProjectId());
         contentService.deleteContent(contentId);
     }
 
+    /**
+     * Search for content, restricted by project membership
+     */
     public List<Content> searchContent(List<ContentSearch<?>> searchFields, String projectId) {
-        projectService.findByIdAndMember(projectId);
-        return contentService.searchContent(searchFields, projectId);
+        projectService.existsByIdAndMember(projectId);
+        return projectService.checkIfMemberOfProjectAsync(
+                projectId,
+                () -> contentService.searchContent(searchFields, projectId)
+        );
     }
-
+    /**
+     * returns all the projects content if user is a member
+     */
     public List<Content> findByProjectId(String projectId) {
         return projectService.checkIfMemberOfProjectAsync(
                 projectId,

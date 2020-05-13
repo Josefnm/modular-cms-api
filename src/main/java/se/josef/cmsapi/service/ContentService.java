@@ -54,7 +54,7 @@ public class ContentService {
     }
 
     /**
-     * finds specific content by id
+     * finds specified content by id
      */
     public Content getById(String id) {
         return contentRepository

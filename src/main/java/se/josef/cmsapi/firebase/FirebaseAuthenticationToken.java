@@ -6,7 +6,8 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import java.util.ArrayList;
 
 /**
- * containers credentials from firebase. Can be retrieved from context to get current user data.
+ * Implementation for firebase authentication token.
+ * Can be retrieved from security context to get the current users data.
  */
 public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
 
