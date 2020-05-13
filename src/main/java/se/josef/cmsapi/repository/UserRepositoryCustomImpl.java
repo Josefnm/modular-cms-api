@@ -24,7 +24,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     public List<User> searchUsers(String searchString) {
         Criteria criteria = new Criteria()
                 .orOperator(
-                        Criteria.where("userName").regex(searchString, "i"),
+                        Criteria.where("name").regex(searchString, "i"),
                         Criteria.where("email").regex(searchString, "i")
                 );
         Query query = new Query(criteria);

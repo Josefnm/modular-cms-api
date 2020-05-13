@@ -55,12 +55,12 @@ public class UserService {
     }
 
     /**
-     * Adds user to Firebase and database, if they have a unique email and username.
+     * Adds user to Firebase and database, if they have a unique email and name.
      * @return saved User
      */
     public User signup(UserForm userForm) {
         try {
-            var userFromDb = userRepository.findByEmailOrUserName(userForm.getEmail(), userForm.getUserName());
+            var userFromDb = userRepository.findByEmailOrName(userForm.getEmail(), userForm.getName());
 
             if (userFromDb.isEmpty()) {
 
@@ -72,7 +72,7 @@ public class UserService {
                 var userId = saveToFirebase(createRequest);
                 var user = User.builder()
                         .id(userId)
-                        .userName(userForm.getUserName())
+                        .name(userForm.getName())
                         .email(userForm.getEmail())
                         .build();
 
@@ -84,8 +84,8 @@ public class UserService {
                     log.warn("User already exists with email: {}", userForm.getEmail());
                     throw new AuthException("An account is already registered to this email: " + userForm.getEmail());
                 } else {
-                    log.warn("User already exists with userName: {}", userForm.getUserName());
-                    throw new AuthException("User already exists with name: " + userForm.getUserName());
+                    log.warn("User already exists with name: {}", userForm.getName());
+                    throw new AuthException("User already exists with name: " + userForm.getName());
                 }
             }
         } catch (FirebaseAuthException exception) {
