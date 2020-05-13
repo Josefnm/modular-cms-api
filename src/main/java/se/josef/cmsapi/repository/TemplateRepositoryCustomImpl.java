@@ -21,6 +21,7 @@ public class TemplateRepositoryCustomImpl extends AbstractCustomImpl implements 
     /**
      * Finds templates matching projectId
      * Joins owners user name to the entity
+     *
      * @param projectId of the project they belong to
      * @return matching templates
      */
@@ -32,7 +33,8 @@ public class TemplateRepositoryCustomImpl extends AbstractCustomImpl implements 
     /**
      * Finds templates matching parameters
      * Joins owners user name to the entity
-     * @param name regex string
+     *
+     * @param name      regex string
      * @param projectId of the project the template belongs to
      * @return matching templates
      */
@@ -43,6 +45,7 @@ public class TemplateRepositoryCustomImpl extends AbstractCustomImpl implements 
 
     /**
      * Aggregation query that finds matching templates and joins author name to them
+     *
      * @param criteria
      * @return matching templates
      */

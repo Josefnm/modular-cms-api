@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import se.josef.cmsapi.adapter.ProjectAdapter;
 import se.josef.cmsapi.model.document.Project;
 import se.josef.cmsapi.model.web.ProjectForm;
+import se.josef.cmsapi.model.web.ProjectUpdateForm;
 import se.josef.cmsapi.service.ProjectService;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class ProjectResource {
 
     /**
      * Saves a new project
+     *
      * @param projectForm or creating new template
      * @return the saved template
      */
@@ -37,16 +39,18 @@ public class ProjectResource {
 
     /**
      * Updates project with name, description and/or members
-     * @param projectForm update data
+     *
+     * @param projectUpdateForm update data
      * @return updated project
      */
     @PostMapping("/update")
-    public Project updateProject(@RequestBody ProjectForm projectForm) {
-        return projectService.updateProject(projectForm);
+    public Project updateProject(@RequestBody ProjectUpdateForm projectUpdateForm) {
+        return projectService.updateProject(projectUpdateForm);
     }
 
     /**
      * delete project and all its associated contents and templates.
+     *
      * @param id for project
      * @return 200 on success
      */
@@ -58,6 +62,7 @@ public class ProjectResource {
 
     /**
      * get project by its id
+     *
      * @param id for project
      * @return found project
      */
@@ -68,6 +73,7 @@ public class ProjectResource {
 
     /**
      * get all projects user is a member of
+     *
      * @return found projects
      */
     @GetMapping("/user")

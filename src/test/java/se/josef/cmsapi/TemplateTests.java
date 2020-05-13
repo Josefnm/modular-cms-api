@@ -25,6 +25,7 @@ import se.josef.cmsapi.utils.RequestUtils;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -102,17 +103,16 @@ public class TemplateTests {
         @PostConstruct
         void setMockOutputAndDatabase() {
             var project = getNewProject(PROJECT_ID, USER_ID);
-            var template1 = getNewTemplate(TEMPLATE_ID, PROJECT_ID, TEMPLATE_NAME_1);
-            var template2 = getNewTemplate(randomAlphanumeric(24), PROJECT_ID, TEMPLATE_NAME_2);
-            var template3 = getNewTemplate(randomAlphanumeric(24), PROJECT_ID, TEMPLATE_NAME_3);
-            var template4 = getNewTemplate(randomAlphanumeric(24), randomAlphanumeric(24), TEMPLATE_NAME_1);
+            var templates = List.of(
+                    getNewTemplate(TEMPLATE_ID, PROJECT_ID, TEMPLATE_NAME_1),
+                    getNewTemplate(randomAlphanumeric(24), PROJECT_ID, TEMPLATE_NAME_2),
+                    getNewTemplate(randomAlphanumeric(24), PROJECT_ID, TEMPLATE_NAME_3),
+                    getNewTemplate(randomAlphanumeric(24), randomAlphanumeric(24), TEMPLATE_NAME_1)
+            );
 
             CompletableFuture.allOf(
                     runAsync(() -> projectRepository.save(project)),
-                    runAsync(() -> templateRepository.save(template1)),
-                    runAsync(() -> templateRepository.save(template2)),
-                    runAsync(() -> templateRepository.save(template3)),
-                    runAsync(() -> templateRepository.save(template4)))
+                    runAsync(() -> templateRepository.saveAll(templates)))
                     .join();
         }
 

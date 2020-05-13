@@ -28,6 +28,7 @@ public class UserResource {
 
     /**
      * Finds authenticated user by id from security context
+     *
      * @return current user
      */
     @GetMapping
@@ -54,8 +55,9 @@ public class UserResource {
 
     /**
      * Search for members that are not part of specified project already
+     *
      * @param searchString regex for partial match
-     * @param projectId to exclude users that belong to this project
+     * @param projectId    to exclude users that belong to this project
      * @return users matching search criteria
      */
     @GetMapping(value = "/search")
@@ -65,6 +67,7 @@ public class UserResource {
 
     /**
      * get users that are members of project
+     *
      * @param projectId
      * @return users found
      */
@@ -75,6 +78,7 @@ public class UserResource {
 
     /**
      * Register a new user
+     *
      * @param userForm registration data
      * @return registered user
      */

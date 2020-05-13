@@ -10,6 +10,7 @@ public class UserUtils {
     /**
      * Retrieves user id from security context.
      * Needs to be mocked in tests
+     *
      * @return userId
      */
     public String getUserId() {

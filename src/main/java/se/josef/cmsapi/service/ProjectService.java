@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import se.josef.cmsapi.exception.ProjectException;
 import se.josef.cmsapi.model.document.Project;
 import se.josef.cmsapi.model.web.ProjectForm;
+import se.josef.cmsapi.model.web.ProjectUpdateForm;
 import se.josef.cmsapi.repository.ProjectRepository;
 import se.josef.cmsapi.util.UserUtils;
 
@@ -90,12 +91,12 @@ public class ProjectService {
     /**
      * Update name, description and members
      */
-    public Project updateProject(ProjectForm projectForm) {
+    public Project updateProject(ProjectUpdateForm projectUpdateForm) {
         try {
-            var project = findByIdAndMember(projectForm.getId());
-            project.setName(projectForm.getName());
-            project.setDescription(projectForm.getDescription());
-            project.setMemberIds(projectForm.getMemberIds());
+            var project = findByIdAndMember(projectUpdateForm.getId());
+            project.setName(projectUpdateForm.getName());
+            project.setDescription(projectUpdateForm.getDescription());
+            project.setMemberIds(projectUpdateForm.getMemberIds());
             return projectRepository.save(project);
 
         } catch (Exception e) {
@@ -111,7 +112,7 @@ public class ProjectService {
      *
      * @param projectId project to check that user belongs to
      * @param supplier  method for retrieving requested data
-     * @param <T> type of data requested
+     * @param <T>       type of data requested
      * @return requested data
      */
     public <T> T checkIfMemberOfProjectAsync(String projectId, Supplier<T> supplier) {

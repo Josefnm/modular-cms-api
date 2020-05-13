@@ -20,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import se.josef.cmsapi.config.SecurityAuditorAware;
 import se.josef.cmsapi.model.document.Project;
 import se.josef.cmsapi.model.web.ProjectForm;
+import se.josef.cmsapi.model.web.ProjectUpdateForm;
 import se.josef.cmsapi.repository.ProjectRepository;
 import se.josef.cmsapi.service.UserService;
 import se.josef.cmsapi.util.UserUtils;
@@ -27,13 +28,8 @@ import se.josef.cmsapi.utils.RequestUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.util.*;
 
-import static java.util.concurrent.CompletableFuture.runAsync;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -115,7 +111,7 @@ public class ProjectTests {
 
         @Test
         public void saveProjectSuccess() {
-            var projectForm = new ProjectForm(null, USER_ID_1, null, PROJECT_NAME_2, PROJECT_DESCRIPTION_2);
+            var projectForm = new ProjectForm(PROJECT_NAME_2, PROJECT_DESCRIPTION_2);
 
             var response = requestUtils.postRequest("/project", Project.class, projectForm, port);
 
@@ -132,7 +128,7 @@ public class ProjectTests {
             members.add(randomAlphanumeric(24));
 
 
-            var projectForm = new ProjectForm(PROJECT_ID_1, USER_ID_1, members, UPDATED_PROJECT_NAME_1, UPDATED_PROJECT_DESCRIPTION_1);
+            var projectForm = new ProjectUpdateForm(PROJECT_ID_1, members, UPDATED_PROJECT_NAME_1, UPDATED_PROJECT_DESCRIPTION_1);
 
             var response = requestUtils.postRequest("/project/update", Project.class, projectForm, port);
 
@@ -154,15 +150,12 @@ public class ProjectTests {
 
         @PostConstruct
         void setMockOutputAndDatabase() {
-            var project1 = getNewProject(PROJECT_ID_1, USER_ID_1, USER_ID_2);
-            var project2 = getNewProject(PROJECT_ID_2, USER_ID_2, USER_ID_1);
-            var project3 = getNewProject(PROJECT_ID_3, USER_ID_2, USER_ID_3);
-
-            CompletableFuture.allOf(
-                    runAsync(() -> projectRepository.save(project1)),
-                    runAsync(() -> projectRepository.save(project2)),
-                    runAsync(() -> projectRepository.save(project3)))
-                    .join();
+            var projects = List.of(
+                    getNewProject(PROJECT_ID_1, USER_ID_1, USER_ID_2),
+                    getNewProject(PROJECT_ID_2, USER_ID_2, USER_ID_1),
+                    getNewProject(PROJECT_ID_3, USER_ID_2, USER_ID_3)
+            );
+            projectRepository.saveAll(projects);
         }
 
         @Test

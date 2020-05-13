@@ -29,6 +29,7 @@ import se.josef.cmsapi.utils.RequestUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -141,15 +142,15 @@ public class UserTests {
         @PostConstruct
         void setMockOutputAndDatabase() {
             var project = getNewProject(PROJECT_ID, USER_ID_1, USER_ID_2);
-            var user1 = getNewUser(USER_ID_1, USER_NAME_1, EMAIL_1);
-            var user2 = getNewUser(USER_ID_2, USER_NAME_2, EMAIL_2);
-            var user3 = getNewUser(USER_ID_3, USER_NAME_3, EMAIL_3);
+            var users = List.of(
+                    getNewUser(USER_ID_1, USER_NAME_1, EMAIL_1),
+                    getNewUser(USER_ID_2, USER_NAME_2, EMAIL_2),
+                    getNewUser(USER_ID_3, USER_NAME_3, EMAIL_3)
+            );
 
             CompletableFuture.allOf(
                     runAsync(() -> projectRepository.save(project)),
-                    runAsync(() -> userRepository.save(user1)),
-                    runAsync(() -> userRepository.save(user2)),
-                    runAsync(() -> userRepository.save(user3)))
+                    runAsync(() -> userRepository.saveAll(users)))
                     .join();
         }
 

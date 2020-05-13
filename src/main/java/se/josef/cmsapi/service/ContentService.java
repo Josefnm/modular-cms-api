@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import se.josef.cmsapi.exception.ContentException;
 import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.web.ContentForm;
+import se.josef.cmsapi.model.web.ContentUpdateForm;
 import se.josef.cmsapi.model.web.contentsearch.ContentSearch;
 import se.josef.cmsapi.repository.ContentRepository;
 
@@ -66,6 +67,7 @@ public class ContentService {
 
     /**
      * finds all content belonging to a project
+     *
      * @param projectId
      * @return
      */
@@ -85,17 +87,17 @@ public class ContentService {
      * Updates content name, contentfields and isPublic by form values
      */
     //TODO validate form
-    public Content updateContent(ContentForm contentForm, Content content) {
+    public Content updateContent(ContentUpdateForm contentUpdateForm, Content content) {
         try {
 
-            content.setIsPublic(contentForm.isPublic());
-            content.setName(contentForm.getName());
-            content.setContentFields(contentForm.getContentFields());
+            content.setIsPublic(contentUpdateForm.isPublic());
+            content.setName(contentUpdateForm.getName());
+            content.setContentFields(contentUpdateForm.getContentFields());
             return contentRepository.save(content);
 
         } catch (Exception e) {
-            log.error("error updating project with id {}: {}", contentForm.getId(), e.getMessage());
-            throw new ContentException(String.format("Can't delete project with id %s: %s", contentForm.getId(), e.getMessage()));
+            log.error("error updating project with id {}: {}", contentUpdateForm.getId(), e.getMessage());
+            throw new ContentException(String.format("Can't delete project with id %s: %s", contentUpdateForm.getId(), e.getMessage()));
         }
     }
 

@@ -22,6 +22,7 @@ public class TemplateService {
 
     /**
      * save new template with data from template form
+     *
      * @param templateForm
      * @return
      */
@@ -39,8 +40,6 @@ public class TemplateService {
      * find templates that belongs to project
      */
     public List<Template> findByProjectId(String projectId) {
-        var x=templateRepository.findByProjectIdOrderByCreatedDesc(projectId);
-        log.info("size "+x.size());
         return templateRepository.findByProjectIdOrderByCreatedDesc(projectId);
     }
 

@@ -22,6 +22,7 @@ import se.josef.cmsapi.config.SecurityAuditorAware;
 import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.document.contentField.*;
 import se.josef.cmsapi.model.web.ContentForm;
+import se.josef.cmsapi.model.web.ContentUpdateForm;
 import se.josef.cmsapi.model.web.contentsearch.*;
 import se.josef.cmsapi.model.web.contentsearch.parameter.RangeParameter;
 import se.josef.cmsapi.repository.ContentRepository;
@@ -152,7 +153,7 @@ public class ContentTests {
             contentFields.add(new StringField(randomAlphanumeric(12), randomAlphanumeric(12)));
             contentFields.add(new DateField(randomAlphanumeric(12), new Date()));
 
-            var contentForm = new ContentForm(CONTENT_ID_1, null, null, UPDATED_CONTENT_NAME_1, false, contentFields);
+            var contentForm = new ContentUpdateForm(CONTENT_ID_1, UPDATED_CONTENT_NAME_1, false, contentFields);
             var response = requestUtils.postRequest("/content/update", Content.class, contentForm, port);
 
             assertEquals(USER_ID_1, requireNonNull(response.getBody()).getOwnerId());
@@ -162,7 +163,7 @@ public class ContentTests {
 
         @Test
         public void addContentSuccess() {
-            var contentForm = new ContentForm(null, PROJECT_ID_1, TEMPLATE_ID_1, randomAlphanumeric(12), true, new ArrayList<>());
+            var contentForm = new ContentForm(PROJECT_ID_1, TEMPLATE_ID_1, randomAlphanumeric(12), true, new ArrayList<>());
             var response = requestUtils.postRequest("/content", Content.class, contentForm, port);
 
             assertEquals(USER_ID_1, requireNonNull(response.getBody()).getOwnerId());
@@ -187,10 +188,12 @@ public class ContentTests {
             var project = getNewProject(PROJECT_ID_1, USER_ID_1);
 
             var user = getNewUser(USER_ID_1, randomAlphanumeric(12), randomAlphanumeric(12));
+            var templates = List.of(
+                    getNewTemplate(TEMPLATE_ID_1, PROJECT_ID_1, randomAlphanumeric(12)),
+                    getNewTemplate(TEMPLATE_ID_2, PROJECT_ID_1, randomAlphanumeric(12)),
+                    getNewTemplate(TEMPLATE_ID_3, PROJECT_ID_1, randomAlphanumeric(12))
+            );
 
-            var template1 = getNewTemplate(TEMPLATE_ID_1, PROJECT_ID_1, randomAlphanumeric(12));
-            var template2 = getNewTemplate(TEMPLATE_ID_2, PROJECT_ID_1, randomAlphanumeric(12));
-            var template3 = getNewTemplate(TEMPLATE_ID_3, PROJECT_ID_1, randomAlphanumeric(12));
 
             List<ContentField<?>> fieldsDoMatch = List.of(
                     new BooleanField(BOOL_NAME, true),
@@ -256,16 +259,13 @@ public class ContentTests {
                     .created(new Date())
                     .build();
 
+            List<Content> contents = List.of(content1, content2, content3, content4);
+
             CompletableFuture.allOf(
                     runAsync(() -> projectRepository.save(project)),
                     runAsync(() -> userRepository.save(user)),
-                    runAsync(() -> templateRepository.save(template1)),
-                    runAsync(() -> templateRepository.save(template2)),
-                    runAsync(() -> templateRepository.save(template3)),
-                    runAsync(() -> contentRepository.save(content1)),
-                    runAsync(() -> contentRepository.save(content2)),
-                    runAsync(() -> contentRepository.save(content3)),
-                    runAsync(() -> contentRepository.save(content4)))
+                    runAsync(() -> templateRepository.saveAll(templates)),
+                    runAsync(() -> contentRepository.saveAll(contents)))
                     .join();
         }
 
