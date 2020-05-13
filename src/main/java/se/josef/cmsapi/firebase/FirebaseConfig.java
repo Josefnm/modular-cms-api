@@ -20,7 +20,7 @@ import java.io.IOException;
 public class FirebaseConfig {
 
     /**
-     * loads a firebase sdk instance with given credentials
+     * Creates a firebase sdk instance with given credentials
      */
     public FirebaseConfig() {
         if (FirebaseApp.getApps().isEmpty()) {

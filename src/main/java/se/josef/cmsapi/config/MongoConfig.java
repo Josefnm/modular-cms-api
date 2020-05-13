@@ -34,12 +34,12 @@ public class MongoConfig {
         var mongoMappingContext = (MongoMappingContext) mappingContext;
         for (var persistentEntity : mongoMappingContext.getPersistentEntities()) {
 
-            var clazz = persistentEntity.getType();
-            if (clazz.isAnnotationPresent(Document.class)) {
+            var tClass = persistentEntity.getType();
+            if (tClass.isAnnotationPresent(Document.class)) {
                 var resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);
 
-                var indexOps = mongoTemplate.indexOps(clazz);
-                resolver.resolveIndexFor(clazz).forEach(indexOps::ensureIndex);
+                var indexOps = mongoTemplate.indexOps(tClass);
+                resolver.resolveIndexFor(tClass).forEach(indexOps::ensureIndex);
             }
         }
 

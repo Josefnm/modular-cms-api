@@ -21,6 +21,9 @@ public class ProjectAdapter {
         this.templateService = templateService;
     }
 
+    /**
+     * delete project and all its contents and templates
+     */
     public void deleteProject(String projectId) {
         Long numDeleted = projectService.deleteProject(projectId);
         if (numDeleted > 0) {

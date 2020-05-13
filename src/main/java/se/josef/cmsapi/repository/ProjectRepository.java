@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ProjectRepository extends MongoRepository<Project, String> {
 
-    List<Project> findAllByMemberIdsOrOwnerIdOrderByCreatedDesc(String memberId, String ownerId);
+    List<Project> findAllByMemberIdsOrderByCreatedDesc(String memberId, String ownerId);
 
     Optional<Project> findByMemberIdsAndId(String memberId, String id);
 

@@ -34,7 +34,6 @@ public class Template {
     private Date updated;
     private String name;
     private String description;
-    private Boolean isPublic;
     private List<TemplateField> templateFields;
     //only used when returning name joined from user document, not stored in database
     private String ownerName;

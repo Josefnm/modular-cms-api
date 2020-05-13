@@ -6,6 +6,9 @@ import se.josef.cmsapi.model.document.contentField.ContentField;
 
 import java.util.List;
 
+/**
+ * Form for saving/updating content
+ */
 @AllArgsConstructor
 @Data
 public class ContentForm {

@@ -3,7 +3,10 @@ package se.josef.cmsapi;
 import com.google.firebase.auth.FirebaseAuthException;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -30,12 +33,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import static java.util.concurrent.CompletableFuture.runAsync;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static se.josef.cmsapi.utils.MockDataUtil.getNewProject;
-import static se.josef.cmsapi.utils.MockDataUtil.getRandomLowercaseNumeric;
 
 @Slf4j
 @ActiveProfiles("test")
@@ -43,21 +47,21 @@ import static se.josef.cmsapi.utils.MockDataUtil.getRandomLowercaseNumeric;
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 public class ProjectTests {
 
-    private static final String projectId1 = new ObjectId().toString();
-    private static final String projectId2 = new ObjectId().toString();
-    private static final String projectId3 = new ObjectId().toString();
+    private static final String PROJECT_ID_1 = new ObjectId().toString();
+    private static final String PROJECT_ID_2 = new ObjectId().toString();
+    private static final String PROJECT_ID_3 = new ObjectId().toString();
 
-    private static final String projectName1 = "my project";
-    private static final String projectDescription1 = "this is a project that is and else or yes no hello";
-    private static final String updatedProjectName1 = "updated project name";
-    private static final String updatedProjectDescription1 = "updated description";
+    private static final String PROJECT_NAME_1 = "my project";
+    private static final String PROJECT_DESCRIPTION_1 = "this is a project that is and else or yes no hello";
+    private static final String UPDATED_PROJECT_NAME_1 = "updated project name";
+    private static final String UPDATED_PROJECT_DESCRIPTION_1 = "updated description";
 
-    private static final String projectName2 = "my second project";
-    private static final String projectDescription2 = "project description2";
+    private static final String PROJECT_NAME_2 = "my second project";
+    private static final String PROJECT_DESCRIPTION_2 = "project description2";
 
-    private static final String userId1 = getRandomLowercaseNumeric(24);
-    private static final String userId2 = getRandomLowercaseNumeric(24);
-    private static final String userId3 = getRandomLowercaseNumeric(24);
+    private static final String USER_ID_1 = randomAlphanumeric(24);
+    private static final String USER_ID_2 = randomAlphanumeric(24);
+    private static final String USER_ID_3 = randomAlphanumeric(24);
 
 
     @LocalServerPort
@@ -78,9 +82,9 @@ public class ProjectTests {
     @PostConstruct
     void setSecurityContextUser() throws FirebaseAuthException {
         mongoTemplate.getDb().drop();
-        doReturn(userId1).when(userService).saveToFirebase(any());
-        doReturn(userId1).when(userUtils).getUserId();
-        doReturn(Optional.of(userId1)).when(securityAuditorAware).getCurrentAuditor();
+        doReturn(USER_ID_1).when(userService).saveToFirebase(any());
+        doReturn(USER_ID_1).when(userUtils).getUserId();
+        doReturn(Optional.of(USER_ID_1)).when(securityAuditorAware).getCurrentAuditor();
     }
 
 
@@ -100,47 +104,47 @@ public class ProjectTests {
         @BeforeEach
         void saveDefaultProject() {
             var project = Project.builder()
-                    .id(projectId1)
-                    .ownerId(userId1)
-                    .memberIds(Collections.singletonList(userId1))
-                    .name(projectName1)
-                    .description(projectDescription1)
+                    .id(PROJECT_ID_1)
+                    .ownerId(USER_ID_1)
+                    .memberIds(Collections.singletonList(USER_ID_1))
+                    .name(PROJECT_NAME_1)
+                    .description(PROJECT_DESCRIPTION_1)
                     .build();
             projectRepository.save(project);
         }
 
         @Test
         public void saveProjectSuccess() {
-            var projectForm = new ProjectForm(null, userId1, null, projectName2, projectDescription2);
+            var projectForm = new ProjectForm(null, USER_ID_1, null, PROJECT_NAME_2, PROJECT_DESCRIPTION_2);
 
             var response = requestUtils.postRequest("/project", Project.class, projectForm, port);
 
-            assertEquals(projectName2, Objects.requireNonNull(response.getBody()).getName());
-            assertEquals(projectDescription2, response.getBody().getDescription());
-            assertEquals(userId1, response.getBody().getOwnerId());
-            assertEquals(userId1, response.getBody().getMemberIds().get(0));
+            assertEquals(PROJECT_NAME_2, Objects.requireNonNull(response.getBody()).getName());
+            assertEquals(PROJECT_DESCRIPTION_2, response.getBody().getDescription());
+            assertEquals(USER_ID_1, response.getBody().getOwnerId());
+            assertEquals(USER_ID_1, response.getBody().getMemberIds().get(0));
         }
 
         @Test
         public void updateProjectSuccess() {
             var members = new ArrayList<String>();
-            members.add(userId1);
-            members.add(getRandomLowercaseNumeric(24));
+            members.add(USER_ID_1);
+            members.add(randomAlphanumeric(24));
 
 
-            var projectForm = new ProjectForm(projectId1, userId1, members, updatedProjectName1, updatedProjectDescription1);
+            var projectForm = new ProjectForm(PROJECT_ID_1, USER_ID_1, members, UPDATED_PROJECT_NAME_1, UPDATED_PROJECT_DESCRIPTION_1);
 
             var response = requestUtils.postRequest("/project/update", Project.class, projectForm, port);
 
-            assertEquals(updatedProjectName1, Objects.requireNonNull(response.getBody()).getName());
-            assertEquals(updatedProjectDescription1, response.getBody().getDescription());
-            assertEquals(userId1, response.getBody().getOwnerId());
+            assertEquals(UPDATED_PROJECT_NAME_1, Objects.requireNonNull(response.getBody()).getName());
+            assertEquals(UPDATED_PROJECT_DESCRIPTION_1, response.getBody().getDescription());
+            assertEquals(USER_ID_1, response.getBody().getOwnerId());
             assertEquals(2, response.getBody().getMemberIds().size());
         }
 
         @Test
         public void deleteProjectSuccess() {
-            assertDoesNotThrow(() -> requestUtils.deleteRequest("/project/" + projectId1, port));
+            assertDoesNotThrow(() -> requestUtils.deleteRequest("/project/" + PROJECT_ID_1, port));
         }
 
     }
@@ -150,36 +154,36 @@ public class ProjectTests {
 
         @PostConstruct
         void setMockOutputAndDatabase() {
-            var project1 = getNewProject(projectId1, userId1, userId2);
-            var project2 = getNewProject(projectId2, userId2, userId1);
-            var project3 = getNewProject(projectId3, userId2, userId3);
+            var project1 = getNewProject(PROJECT_ID_1, USER_ID_1, USER_ID_2);
+            var project2 = getNewProject(PROJECT_ID_2, USER_ID_2, USER_ID_1);
+            var project3 = getNewProject(PROJECT_ID_3, USER_ID_2, USER_ID_3);
 
-            var projectFuture1 = CompletableFuture.runAsync(() -> projectRepository.save(project1));
-            var projectFuture2 = CompletableFuture.runAsync(() -> projectRepository.save(project2));
-            var projectFuture3 = CompletableFuture.runAsync(() -> projectRepository.save(project3));
-
-            CompletableFuture.allOf(projectFuture1, projectFuture2, projectFuture3).join();
+            CompletableFuture.allOf(
+                    runAsync(() -> projectRepository.save(project1)),
+                    runAsync(() -> projectRepository.save(project2)),
+                    runAsync(() -> projectRepository.save(project3)))
+                    .join();
         }
 
         @Test
         public void getProjectByIdSuccess() {
-            var response = requestUtils.getRequest("/project/" + projectId1, Project.class, port);
+            var response = requestUtils.getRequest("/project/" + PROJECT_ID_1, Project.class, port);
 
-            assertEquals(projectId1, Objects.requireNonNull(response.getBody()).getId());
-            assertEquals(userId1, response.getBody().getOwnerId());
+            assertEquals(PROJECT_ID_1, Objects.requireNonNull(response.getBody()).getId());
+            assertEquals(USER_ID_1, response.getBody().getOwnerId());
         }
 
         @Test
         public void getProjectByIdSuccess2() {
-            var response = requestUtils.getRequest("/project/" + projectId2, Project.class, port);
+            var response = requestUtils.getRequest("/project/" + PROJECT_ID_2, Project.class, port);
 
-            assertEquals(projectId2, Objects.requireNonNull(response.getBody()).getId());
-            assertEquals(userId2, response.getBody().getOwnerId());
+            assertEquals(PROJECT_ID_2, Objects.requireNonNull(response.getBody()).getId());
+            assertEquals(USER_ID_2, response.getBody().getOwnerId());
         }
 
         @Test
         public void getProjectByIdFail() {
-            var response = requestUtils.getRequest("/project/" + projectId3, Project.class, port);
+            var response = requestUtils.getRequest("/project/" + PROJECT_ID_3, Project.class, port);
 
             assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         }

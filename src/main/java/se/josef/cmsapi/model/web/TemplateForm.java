@@ -6,6 +6,9 @@ import se.josef.cmsapi.model.document.TemplateField;
 
 import java.util.List;
 
+/**
+ * Form for saving templates
+ */
 @Data
 @AllArgsConstructor
 public class TemplateForm {

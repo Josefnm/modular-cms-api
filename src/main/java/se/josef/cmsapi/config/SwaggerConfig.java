@@ -45,8 +45,6 @@ public class SwaggerConfig {
 
     /**
      * configures swagger
-     *
-     * @return
      */
     @Bean
     public Docket api() {
