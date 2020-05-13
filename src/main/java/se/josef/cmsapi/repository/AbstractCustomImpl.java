@@ -32,7 +32,7 @@ public abstract class AbstractCustomImpl {
      * @param tClass base entity of the query
      */
     ProjectionOperation ownerNameProjectionOp(Class<?> tClass) {
-        return project(tClass).andExpression("owner.userName").as("ownerName");
+        return project(tClass).andExpression("owner.name").as("ownerName");
     }
 
     /**

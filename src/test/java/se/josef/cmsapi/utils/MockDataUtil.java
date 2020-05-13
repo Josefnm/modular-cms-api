@@ -74,7 +74,7 @@ public class MockDataUtil {
     public static User getNewUser(String userId, String name, String email) {
         return User.builder()
                 .id(userId)
-                .userName(name)
+                .name(name)
                 .email(email)
                 .build();
     }

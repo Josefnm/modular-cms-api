@@ -114,7 +114,7 @@ public class UserTests {
 
             var response = requestUtils.postRequest("/user/signup", User.class, userForm, port);
 
-            assertEquals(name, requireNonNull(response.getBody()).getUserName());
+            assertEquals(name, requireNonNull(response.getBody()).getName());
         }
 
         @Test

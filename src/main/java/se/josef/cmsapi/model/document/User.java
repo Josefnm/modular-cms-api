@@ -22,8 +22,7 @@ public class User {
 
     private String id;
     @Indexed
-    @JsonProperty("name")
-    private String userName;
+    private String name;
     @Indexed
     private String email;
     @CreatedDate
