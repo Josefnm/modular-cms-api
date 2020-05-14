@@ -12,6 +12,7 @@ public class HealthCheckResource {
 
     /**
      * Used by kubernetes health checks
+     *
      * @return Status 200
      */
     @GetMapping()

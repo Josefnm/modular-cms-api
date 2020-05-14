@@ -14,6 +14,7 @@ import se.josef.cmsapi.model.web.UserForm;
 import se.josef.cmsapi.repository.UserRepository;
 import se.josef.cmsapi.util.UserUtils;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,6 +57,7 @@ public class UserService {
 
     /**
      * Adds user to Firebase and database, if they have a unique email and name.
+     *
      * @return saved User
      */
     public User signup(UserForm userForm) {
@@ -74,6 +76,7 @@ public class UserService {
                         .id(userId)
                         .name(userForm.getName())
                         .email(userForm.getEmail())
+                        .created(new Date())
                         .build();
 
                 var savedUser = userRepository.save(user);
@@ -96,6 +99,7 @@ public class UserService {
 
     /**
      * saves user to firebase (method extracted for mocking in tests)
+     *
      * @return firebase user id
      */
     public String saveToFirebase(UserRecord.CreateRequest createRequest) throws FirebaseAuthException {

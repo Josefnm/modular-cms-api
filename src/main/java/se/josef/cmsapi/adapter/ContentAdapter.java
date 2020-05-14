@@ -3,7 +3,7 @@ package se.josef.cmsapi.adapter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import se.josef.cmsapi.model.document.Content;
-import se.josef.cmsapi.model.web.ContentForm;
+import se.josef.cmsapi.model.web.ContentUpdateForm;
 import se.josef.cmsapi.model.web.contentsearch.ContentSearch;
 import se.josef.cmsapi.service.ContentService;
 import se.josef.cmsapi.service.ProjectService;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class ContentAdapter{
+public class ContentAdapter {
 
     private final ContentService contentService;
     private final ProjectService projectService;
@@ -26,10 +26,10 @@ public class ContentAdapter{
      * First checks if the user is a member of the project the content belongs to,
      * then updates the content
      */
-    public Content updateContent(ContentForm contentForm) {
-        var content = contentService.getById(contentForm.getId());
+    public Content updateContent(ContentUpdateForm contentUpdateForm) {
+        var content = contentService.getById(contentUpdateForm.getId());
         projectService.existsByIdAndMember(content.getProjectId());
-        return contentService.updateContent(contentForm, content);
+        return contentService.updateContent(contentUpdateForm, content);
     }
 
     /**
@@ -52,6 +52,7 @@ public class ContentAdapter{
                 () -> contentService.searchContent(searchFields, projectId)
         );
     }
+
     /**
      * returns all the projects content if user is a member
      */

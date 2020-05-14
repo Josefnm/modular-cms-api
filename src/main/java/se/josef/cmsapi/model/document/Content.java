@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import se.josef.cmsapi.model.document.contentField.ContentField;
@@ -15,7 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * Content created by a user. Content is created from a template that models which contentFields it can contain.
+ * Content belongs to a specific project.
  **/
 @Document
 @Data

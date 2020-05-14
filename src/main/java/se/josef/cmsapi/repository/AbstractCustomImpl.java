@@ -29,6 +29,7 @@ public abstract class AbstractCustomImpl {
     /**
      * Projects the properties of the base class and name of the user,
      * excluding the other user properties from the result
+     *
      * @param tClass base entity of the query
      */
     ProjectionOperation ownerNameProjectionOp(Class<?> tClass) {
@@ -37,9 +38,10 @@ public abstract class AbstractCustomImpl {
 
     /**
      * returns result of the aggregation query
+     *
      * @param aggregation the search query
-     * @param outputType class of the aggregation result and name of the collection
-     * @param <T> Type of returned documents
+     * @param outputType  class of the aggregation result and name of the collection
+     * @param <T>         Type of returned documents
      * @return entities matching query
      */
     <T> List<T> getResultForQuery(Aggregation aggregation, Class<T> outputType) {

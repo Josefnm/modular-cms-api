@@ -6,6 +6,7 @@ import se.josef.cmsapi.model.web.contentsearch.parameter.RangeParameter;
 /**
  * Abstract implementation of get criteria, but separate subclasses
  * are needed to deserialize Dates and Longs correctly since Dates are sent as timestamps
+ *
  * @param <T>
  */
 public abstract class RangeSearch<T> extends ContentSearch<RangeParameter<T>> {

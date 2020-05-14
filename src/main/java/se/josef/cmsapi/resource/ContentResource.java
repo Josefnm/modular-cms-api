@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import se.josef.cmsapi.adapter.ContentAdapter;
 import se.josef.cmsapi.model.document.Content;
 import se.josef.cmsapi.model.web.ContentForm;
+import se.josef.cmsapi.model.web.ContentUpdateForm;
 import se.josef.cmsapi.model.web.contentsearch.ContentSearch;
 import se.josef.cmsapi.service.ContentService;
 
@@ -25,8 +26,10 @@ public class ContentResource {
         this.contentService = contentService;
         this.contentAdapter = contentAdapter;
     }
+
     /**
      * Saves a new content document
+     *
      * @param contentForm for creating new content
      * @return the saved content
      */
@@ -37,16 +40,18 @@ public class ContentResource {
 
     /**
      * Updates contents name, isPublic and/or contentfields
-     * @param contentForm update data
+     *
+     * @param contentUpdateForm update data
      * @return updated content
      */
     @PostMapping("/update")
-    public Content updateContent(@RequestBody ContentForm contentForm) {
-        return contentAdapter.updateContent(contentForm);
+    public Content updateContent(@RequestBody ContentUpdateForm contentUpdateForm) {
+        return contentAdapter.updateContent(contentUpdateForm);
     }
 
     /**
      * delete the content
+     *
      * @param id of the content
      * @return 200 if success
      */
@@ -58,6 +63,7 @@ public class ContentResource {
 
     /**
      * get all public content
+     *
      * @return found content
      */
     @GetMapping()
@@ -67,6 +73,7 @@ public class ContentResource {
 
     /**
      * get a content document if it is public
+     *
      * @param id of the content
      * @return found content
      */
@@ -77,6 +84,7 @@ public class ContentResource {
 
     /**
      * get content that belongs to a project
+     *
      * @param projectId of the project
      * @return found content
      */
@@ -87,6 +95,7 @@ public class ContentResource {
 
     /**
      * searches for content that is public and matches the criteria specified
+     *
      * @param contentSearches criteria for the search
      * @return matching contents
      */
@@ -97,8 +106,9 @@ public class ContentResource {
 
     /**
      * searches for content that belnogs to project and matches the criteria specified
+     *
      * @param searchFields criteria for the search
-     * @param projectId of project they belong to
+     * @param projectId    of project they belong to
      * @return matching content
      */
     @PostMapping("/search/{projectId}")

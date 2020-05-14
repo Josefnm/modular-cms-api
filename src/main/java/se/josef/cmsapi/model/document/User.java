@@ -1,6 +1,5 @@
 package se.josef.cmsapi.model.document;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,6 @@ public class User {
     private String name;
     @Indexed
     private String email;
-    @CreatedDate
     private Date created;
     @LastModifiedDate
     private Date updated;

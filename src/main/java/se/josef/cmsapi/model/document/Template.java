@@ -14,7 +14,7 @@ import java.util.List;
 
 
 /**
- * A model for a type of content.
+ * A model for a type of content. Belongs to a specific project
  */
 @Document
 @Data
@@ -32,6 +32,7 @@ public class Template {
     private Date created;
     @LastModifiedDate
     private Date updated;
+    @Indexed
     private String name;
     private String description;
     private List<TemplateField> templateFields;

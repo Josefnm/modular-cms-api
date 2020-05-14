@@ -23,7 +23,6 @@ public class ContentRepositoryCustomImpl extends AbstractCustomImpl implements C
     }
 
 
-
     /**
      * Returns content with matching projectId
      * owner name is joined to document via aggregation lookup
@@ -56,7 +55,8 @@ public class ContentRepositoryCustomImpl extends AbstractCustomImpl implements C
     /**
      * Creates search criteria from searchFields and combines them with additional criteria
      * using andOperator
-     * @param searchFields source of search criteria
+     *
+     * @param searchFields  source of search criteria
      * @param extraCriteria additional criteria
      * @return combined criteria
      */

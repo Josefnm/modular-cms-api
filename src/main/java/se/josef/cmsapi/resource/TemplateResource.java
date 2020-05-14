@@ -26,6 +26,7 @@ public class TemplateResource {
 
     /**
      * Saves a new template
+     *
      * @param templateForm for creating new template
      * @return the saved template
      */
@@ -36,6 +37,7 @@ public class TemplateResource {
 
     /**
      * get all templates that belong to project
+     *
      * @param projectId the project the templates belong to
      * @return found templates
      */
@@ -46,6 +48,7 @@ public class TemplateResource {
 
     /**
      * get a template by its id
+     *
      * @param id of the template
      * @return found template
      */
@@ -56,7 +59,8 @@ public class TemplateResource {
 
     /**
      * regex search on template name for templates that belong to a specific project.
-     * @param projectId for the project
+     *
+     * @param projectId    for the project
      * @param searchString regex for partial match
      * @return templates matching criteria
      */

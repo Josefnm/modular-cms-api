@@ -14,6 +14,7 @@ public class SecurityAuditorAware implements AuditorAware<String> {
     /**
      * Used by mongo auditing to access user id for the @CreatedBY annotation
      * Needs to be mocked in tests
+     *
      * @return
      */
     @Override

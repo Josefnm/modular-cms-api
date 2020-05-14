@@ -7,13 +7,12 @@ import se.josef.cmsapi.model.document.contentField.ContentField;
 import java.util.List;
 
 /**
- * Form for saving content
+ * Form for updating content
  */
 @AllArgsConstructor
 @Data
-public class ContentForm {
-    private String projectId;
-    private String templateId;
+public class ContentUpdateForm {
+    private String id;
     private String name;
     private boolean isPublic;
     private List<ContentField<?>> contentFields;
