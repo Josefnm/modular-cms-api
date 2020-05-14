@@ -2,6 +2,7 @@ package se.josef.cmsapi.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -15,13 +16,13 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 import static org.springframework.data.mongodb.core.aggregation.ConvertOperators.ToObjectId.toObjectId;
 
 @Slf4j
-public class ContentRepositoryCustomImpl extends AbstractCustomImpl implements ContentRepositoryCustom {
+public class ContentRepositoryCustomImpl implements ContentRepositoryCustom {
 
+    private final MongoTemplate mongoTemplate;
 
     public ContentRepositoryCustomImpl(MongoTemplate mongoTemplate) {
-        super(mongoTemplate);
+        this.mongoTemplate = mongoTemplate;
     }
-
 
     /**
      * Returns content with matching projectId
@@ -74,15 +75,16 @@ public class ContentRepositoryCustomImpl extends AbstractCustomImpl implements C
             // Note: correct ordering is important
             var aggregation = newAggregation(
                     match(criteria),
-                    byCreatedDescSortOp(),
+                    sort(Sort.Direction.DESC, "created"),
                     // transforms string foreign keys to objectIds to make lookup work
                     project(Content.class).and(toObjectId("$templateId")).as("templateId"),
-                    userLookupOp(),
+                    lookup("user", "ownerId", "_id", "owner"),
                     templateLookupOp(),
-                    ownerNameProjectionOp(Content.class)
+                    project(Content.class).andExpression("owner.name").as("ownerName")
                             .andExpression("template.name").as("templateName")
             );
-            return getResultForQuery(aggregation, Content.class);
+            var aggregationResults = mongoTemplate.aggregate(aggregation, Content.class.getSimpleName().toLowerCase(), Content.class);
+            return aggregationResults.getMappedResults();
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new ContentException(e.getMessage());

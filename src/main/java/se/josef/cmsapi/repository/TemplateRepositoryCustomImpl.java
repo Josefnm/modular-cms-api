@@ -1,6 +1,7 @@
 package se.josef.cmsapi.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import se.josef.cmsapi.exception.TemplateException;
@@ -8,14 +9,15 @@ import se.josef.cmsapi.model.document.Template;
 
 import java.util.List;
 
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 @Slf4j
-public class TemplateRepositoryCustomImpl extends AbstractCustomImpl implements TemplateRepositoryCustom {
+public class TemplateRepositoryCustomImpl implements TemplateRepositoryCustom {
+
+    private final MongoTemplate mongoTemplate;
 
     public TemplateRepositoryCustomImpl(MongoTemplate mongoTemplate) {
-        super(mongoTemplate);
+        this.mongoTemplate = mongoTemplate;
     }
 
     /**
@@ -53,11 +55,13 @@ public class TemplateRepositoryCustomImpl extends AbstractCustomImpl implements 
         try {
             var aggregation = newAggregation(
                     match(criteria),
-                    byCreatedDescSortOp(),
-                    userLookupOp(),
-                    ownerNameProjectionOp(Template.class)
+                    sort(Sort.Direction.DESC, "created"),
+                    lookup("user", "ownerId", "_id", "owner"),
+                    project(Template.class).andExpression("owner.name").as("ownerName")
             );
-            return getResultForQuery(aggregation, Template.class);
+            var aggregationResults = mongoTemplate.aggregate(aggregation, Template.class.getSimpleName().toLowerCase(), Template.class);
+
+            return aggregationResults.getMappedResults();
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new TemplateException("Database error");
